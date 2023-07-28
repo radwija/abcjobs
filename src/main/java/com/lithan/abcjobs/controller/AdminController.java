@@ -11,6 +11,6 @@ public class AdminController {
     public ModelAndView mantap(Model model) {
         String text = "Thymeleaf works!";
         model.addAttribute("text", text);
-        return new ModelAndView("mantap");
+        return new ModelAndView("admin");
     }
 }
