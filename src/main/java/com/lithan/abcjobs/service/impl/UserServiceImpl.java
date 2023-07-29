@@ -18,6 +18,7 @@ public class UserServiceImpl implements UserService {
     public void saveUser(RegistrationRequest registrationRequest) {
         User user = new User();
         user.setName(registrationRequest.getName());
+        user.setUsername(registrationRequest.getUsername());
         user.setEmail(registrationRequest.getEmail());
         user.setPassword(registrationRequest.getPassword());
 
@@ -27,5 +28,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return userRepository.getUserByUsername(username);
     }
 }

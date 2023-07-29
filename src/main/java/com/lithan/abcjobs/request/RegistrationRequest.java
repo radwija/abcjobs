@@ -2,6 +2,7 @@ package com.lithan.abcjobs.request;
 
 public class RegistrationRequest {
     private String name;
+    private String username;
 
 //    @Email
     private String email;
@@ -15,6 +16,14 @@ public class RegistrationRequest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
