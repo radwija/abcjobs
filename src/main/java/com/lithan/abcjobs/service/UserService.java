@@ -1,13 +1,12 @@
 package com.lithan.abcjobs.service;
 
 import com.lithan.abcjobs.entity.User;
-import com.lithan.abcjobs.request.UserRequest;
-import org.springframework.stereotype.Service;
+import com.lithan.abcjobs.request.RegistrationRequest;
 
 import java.util.List;
 
 public interface UserService {
-    void saveUser(UserRequest user);
+    void saveUser(RegistrationRequest user);
 
     List<User> getAllUsers();
 }

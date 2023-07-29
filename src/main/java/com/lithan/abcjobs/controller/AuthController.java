@@ -1,8 +1,6 @@
 package com.lithan.abcjobs.controller;
 
-import com.lithan.abcjobs.entity.User;
-import com.lithan.abcjobs.repository.UserRepository;
-import com.lithan.abcjobs.request.UserRequest;
+import com.lithan.abcjobs.request.RegistrationRequest;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,17 +17,17 @@ public class AuthController {
     @GetMapping("/register")
     public ModelAndView registerView() {
         ModelAndView registrationPage = new ModelAndView("registration");
-        UserRequest userRequest = new UserRequest();
-        registrationPage.addObject("userRequest", userRequest);
+        RegistrationRequest registrationRequest = new RegistrationRequest();
+        registrationPage.addObject("registrationRequest", registrationRequest);
 
         return registrationPage;
     }
 
     @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute UserRequest userRequest) {
-        userService.saveUser(userRequest);
+    public String saveUser(@ModelAttribute RegistrationRequest registrationRequest) {
+        userService.saveUser(registrationRequest);
 
-        return "redirect:/mantap";
+        return "redirect:/register";
     }
 
 

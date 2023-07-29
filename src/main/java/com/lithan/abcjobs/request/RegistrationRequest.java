@@ -1,8 +1,6 @@
 package com.lithan.abcjobs.request;
 
-import jakarta.validation.constraints.Email;
-
-public class UserRequest {
+public class RegistrationRequest {
     private String name;
 
 //    @Email
