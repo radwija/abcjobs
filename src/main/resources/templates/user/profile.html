@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+
 <body>
-<h1>Profile page</h1>
-<p th:text="${user.name}"/>
-<p th:text="${user.username}"/>
-<p th:text="${user.email}"/>
+    <h1>Profile page</h1>
+    <p>Name: <span th:text="${user.name}" /></p>
+    <p>Username: <span th:text="${user.username}" /></p>
+    <p>Email: <span th:text="${user.email}" /></p>
 </body>
+
 </html>

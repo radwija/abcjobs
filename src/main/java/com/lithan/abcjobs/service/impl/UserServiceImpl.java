@@ -1,6 +1,7 @@
 package com.lithan.abcjobs.service.impl;
 
 import com.lithan.abcjobs.entity.User;
+import com.lithan.abcjobs.exception.UserNotFoundException;
 import com.lithan.abcjobs.repository.UserRepository;
 import com.lithan.abcjobs.request.RegistrationRequest;
 import com.lithan.abcjobs.service.UserService;
@@ -32,6 +33,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUsername(String username) {
-        return userRepository.getUserByUsername(username);
+        User user = userRepository.getUserByUsername(username);
+        if (user == null) {
+            throw new UserNotFoundException("User not found with username: " + username);
+        }
+        return user;
     }
 }
