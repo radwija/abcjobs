@@ -41,7 +41,7 @@ public class AuthController {
 
             String emailToActivate = registrationRequest.getEmail();
             redirectAttributes.addFlashAttribute("emailToActivate", emailToActivate);
-            return new ModelAndView("redirect:/thank-you");
+            return new ModelAndView("redirect:/thankYou");
         } catch (CredentialAlreadyTakenException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return new ModelAndView("registration/registration");
@@ -50,7 +50,7 @@ public class AuthController {
 
     @GetMapping("/thank-you")
     public ModelAndView thankYouPageView(Model model) {
-        return new ModelAndView("registration/thank-you");
+        return new ModelAndView("registration/thankYou");
     }
 
     @GetMapping("/register-confirmation")
@@ -58,7 +58,7 @@ public class AuthController {
         try {
             User activatedUser = userService.activateAccount(id);
             model.addAttribute("activatedEmail", activatedUser.getEmail());
-            return new ModelAndView("registration/register-confirmation");
+            return new ModelAndView("registration/registerConfirmation");
         } catch (UserNotFoundException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return new ModelAndView("exception/userActivationNotFound");
