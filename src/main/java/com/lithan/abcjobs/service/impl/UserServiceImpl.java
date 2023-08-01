@@ -2,12 +2,13 @@ package com.lithan.abcjobs.service.impl;
 
 import com.lithan.abcjobs.constraint.ERole;
 import com.lithan.abcjobs.entity.User;
-import com.lithan.abcjobs.entity.UserDetail;
+import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.CredentialAlreadyTakenException;
 import com.lithan.abcjobs.exception.UserNotFoundException;
-import com.lithan.abcjobs.repository.UserDetailRepository;
+import com.lithan.abcjobs.repository.UserProfileRepository;
 import com.lithan.abcjobs.repository.UserRepository;
 import com.lithan.abcjobs.request.RegistrationRequest;
+import com.lithan.abcjobs.service.EmailSenderService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,10 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Autowired
-    UserDetailRepository userDetailRepository;
+    UserProfileRepository userProfileRepository;
+
+    @Autowired
+    EmailSenderService emailSenderService;
 
     @Override
     public void saveUserRegister(RegistrationRequest registrationRequest) {
@@ -39,14 +43,20 @@ public class UserServiceImpl implements UserService {
         user.setRole(ERole.ROLE_USER.toString());
         user.setActive(false);
 
-        UserDetail userDetail = new UserDetail();
-        userDetail.setFirstName(registrationRequest.getFirstName());
-        userDetail.setLastName(registrationRequest.getLastName());
-        userDetail.setUser(user);
+        UserProfile userProfile = new UserProfile();
+        userProfile.setFirstName(registrationRequest.getFirstName());
+        userProfile.setLastName(registrationRequest.getLastName());
+
+        userProfile.setUser(user);
+        user.setUserProfile(userProfile);
 
         userRepository.save(user);
-        userDetailRepository.save(userDetail);
 
+        emailSenderService.sendActivationLink(user.getEmail(),
+                "Account Activation | ABC Jobs Portal",
+                "Thanks for registering in ABC Jobs Portal. Here is you activation URL to get started your journey in ABC Jobs Portal!" +
+                        "\n" +
+                        "http://localhost:8080/register-confirmation?id=" + userRepository.findByEmail(user.getEmail()).getUserId());
     }
 
     @Override

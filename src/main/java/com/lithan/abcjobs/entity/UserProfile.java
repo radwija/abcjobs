@@ -3,7 +3,7 @@ package com.lithan.abcjobs.entity;
 import javax.persistence.*;
 
 @Entity
-public class UserDetail {
+public class UserProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userDetailId;

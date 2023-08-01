@@ -15,7 +15,7 @@ public class User {
     Long userId;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
-    private UserDetail userDetail;
+    private UserProfile userProfile;
 
     private String username;
 
@@ -35,12 +35,12 @@ public class User {
         this.userId = userId;
     }
 
-    public UserDetail getUserDetail() {
-        return userDetail;
+    public UserProfile getUserProfile() {
+        return userProfile;
     }
 
-    public void setUserDetail(UserDetail userDetail) {
-        this.userDetail = userDetail;
+    public void setUserProfile(UserProfile userDetail) {
+        this.userProfile = userDetail;
     }
 
     public String getUsername() {

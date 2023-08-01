@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AuthController {
@@ -23,7 +24,7 @@ public class AuthController {
 
     @GetMapping("/register")
     public ModelAndView registerView() {
-        ModelAndView registrationPage = new ModelAndView("registration");
+        ModelAndView registrationPage = new ModelAndView("registration/registration");
         RegistrationRequest registrationRequest = new RegistrationRequest();
         registrationPage.addObject("registrationRequest", registrationRequest);
 
@@ -31,14 +32,22 @@ public class AuthController {
     }
 
     @PostMapping("/saveUserRegister")
-    public ModelAndView saveUser(@ModelAttribute RegistrationRequest registrationRequest, Model model) {
+    public ModelAndView saveUser(@ModelAttribute RegistrationRequest registrationRequest, Model model, RedirectAttributes redirectAttributes) {
         try {
             userService.saveUserRegister(registrationRequest);
-            return new ModelAndView("index");
+
+            String emailToActivate = registrationRequest.getEmail();
+            redirectAttributes.addFlashAttribute("emailToActivate", emailToActivate);
+            return new ModelAndView("redirect:/thank-you");
         } catch (CredentialAlreadyTakenException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return new ModelAndView("registration");
+            return new ModelAndView("registration/registration");
         }
+    }
+
+    @GetMapping("/thank-you")
+    public ModelAndView thankYouPageView(Model model) {
+        return new ModelAndView("registration/thank-you");
     }
 
 
