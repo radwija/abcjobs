@@ -1,7 +1,5 @@
 package com.lithan.abcjobs.entity;
 
-import jakarta.validation.constraints.Email;
-
 import javax.persistence.*;
 
 
@@ -13,31 +11,25 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-
-    private String name;
+    @Column(name = "user_id")
+    Long userId;
 
     private String username;
 
-//    @Email
     private String email;
 
     private String password;
 
-    public Long getId() {
-        return id;
+    private String role;
+
+    private Boolean isActive;
+
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -62,5 +54,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 }

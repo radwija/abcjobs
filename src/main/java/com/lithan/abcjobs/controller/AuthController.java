@@ -14,6 +14,11 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
+    @GetMapping({"","/"})
+    public ModelAndView handleRootRequest() {
+        return new ModelAndView("index");
+    }
+
     @GetMapping("/register")
     public ModelAndView registerView() {
         ModelAndView registrationPage = new ModelAndView("registration");

@@ -1,7 +1,10 @@
 package com.lithan.abcjobs.service.impl;
 
+import com.lithan.abcjobs.constraint.ERole;
 import com.lithan.abcjobs.entity.User;
+import com.lithan.abcjobs.entity.UserDetail;
 import com.lithan.abcjobs.exception.UserNotFoundException;
+import com.lithan.abcjobs.repository.UserDetailRepository;
 import com.lithan.abcjobs.repository.UserRepository;
 import com.lithan.abcjobs.request.RegistrationRequest;
 import com.lithan.abcjobs.service.UserService;
@@ -15,14 +18,24 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    UserDetailRepository userDetailRepository;
+
     @Override
     public void saveUser(RegistrationRequest registrationRequest) {
         User user = new User();
-        user.setName(registrationRequest.getName());
+        UserDetail userDetail = new UserDetail();
+
+        userDetail.setFirstName(registrationRequest.getFirstName());
+        userDetail.setLastName(registrationRequest.getLastName());
+
         user.setUsername(registrationRequest.getUsername());
         user.setEmail(registrationRequest.getEmail());
         user.setPassword(registrationRequest.getPassword());
+        user.setRole(ERole.ROLE_USER.toString());
+        user.setActive(false);
 
+        userDetailRepository.save(userDetail);
         userRepository.save(user);
     }
 
