@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -75,11 +76,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User activateAccount(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User activatedUser = userOptional.get();
+            activatedUser.setActive(true);
 
-        User activatedUser = userRepository.findById(userId).get();
-        activatedUser.setActive(true);
+            userRepository.save(activatedUser);
+            return activatedUser;
+        }
 
-        userRepository.save(activatedUser);
-        return userRepository.findById(userId).get();
+        throw new UserNotFoundException("Account not found:(");
     }
 }

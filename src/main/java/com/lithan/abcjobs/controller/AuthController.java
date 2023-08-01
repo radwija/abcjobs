@@ -60,8 +60,8 @@ public class AuthController {
             model.addAttribute("activatedEmail", activatedUser.getEmail());
             return new ModelAndView("registration/register-confirmation");
         } catch (UserNotFoundException e) {
-            model.addAttribute("errorMessage", e);
-            return new ModelAndView("exception/userNotFound");
+            model.addAttribute("errorMessage", e.getMessage());
+            return new ModelAndView("exception/userActivationNotFound");
         }
     }
 }
