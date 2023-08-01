@@ -1,9 +1,11 @@
 package com.lithan.abcjobs.controller;
 
+import com.lithan.abcjobs.exception.CredentialAlreadyTakenException;
 import com.lithan.abcjobs.request.RegistrationRequest;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,11 +30,15 @@ public class AuthController {
         return registrationPage;
     }
 
-    @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute RegistrationRequest registrationRequest) {
-        userService.saveUser(registrationRequest);
-
-        return "redirect:/register";
+    @PostMapping("/saveUserRegister")
+    public ModelAndView saveUser(@ModelAttribute RegistrationRequest registrationRequest, Model model) {
+        try {
+            userService.saveUserRegister(registrationRequest);
+            return new ModelAndView("index");
+        } catch (CredentialAlreadyTakenException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return new ModelAndView("registration");
+        }
     }
 
 

@@ -8,11 +8,8 @@ public class UserDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userDetailId;
 
-    @Column(name = "user_id")
-    private Long userId;
-
-    @OneToOne(optional = false)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", insertable = false, updatable = false)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private User user;
     private String firstName;
     private String lastName;
@@ -26,6 +23,14 @@ public class UserDetail {
 
     public void setUserDetailId(Long userDetailId) {
         this.userDetailId = userDetailId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getFirstName() {

@@ -6,7 +6,7 @@ import com.lithan.abcjobs.request.RegistrationRequest;
 import java.util.List;
 
 public interface UserService {
-    void saveUser(RegistrationRequest user);
+    void saveUserRegister(RegistrationRequest user);
 
     List<User> getAllUsers();
 
