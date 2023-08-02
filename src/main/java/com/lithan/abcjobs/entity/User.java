@@ -75,7 +75,7 @@ public class User {
         this.role = role;
     }
 
-    public Boolean getActive() {
+    public Boolean getIsActive() {
         return isActive;
     }
 

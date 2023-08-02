@@ -8,9 +8,16 @@
 
 <body>
     <h1>Profile page</h1>
-    <p>Name: <span th:text="${user.name}" /></p>
+    <!-- <p>Name: <span th:text="${user.name}" /></p> -->
+    <p>User ID: <span th:text="${user.userId}" /></p>
+    <p>Full name: <span th:text="${userProfile.firstName}" /> <span th:text="${userProfile.lastName}" /></p>
+    <p>Title: <span th:text="${userProfile.title}" /></p>
+    <p>City: <span th:text="${userProfile.city}" /></p>
+    <p>Country: <span th:text="${userProfile.country}" /></p>
     <p>Username: <span th:text="${user.username}" /></p>
     <p>Email: <span th:text="${user.email}" /></p>
+    <p>Role: <span th:text="${user.role}" /></p>
+    <p>Active: <span th:text="${user.isActive}" /></p>
 </body>
 
 </html>

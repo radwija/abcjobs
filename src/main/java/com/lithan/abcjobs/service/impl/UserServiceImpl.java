@@ -5,6 +5,7 @@ import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.CredentialAlreadyTakenException;
 import com.lithan.abcjobs.exception.UserNotFoundException;
+import com.lithan.abcjobs.exception.UserProfileNotFoundException;
 import com.lithan.abcjobs.repository.UserProfileRepository;
 import com.lithan.abcjobs.repository.UserRepository;
 import com.lithan.abcjobs.request.RegistrationRequest;
@@ -72,6 +73,15 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException("User not found with username: " + username);
         }
         return user;
+    }
+
+    @Override
+    public UserProfile getUserProfileByUsername(String username) {
+        User user = userRepository.getUserByUsername(username);
+        if (user == null || user.getUserProfile() == null) {
+            throw new UserProfileNotFoundException("User profile not found with username: " + username);
+        }
+        return user.getUserProfile();
     }
 
     @Override
