@@ -37,12 +37,15 @@ public class AuthController {
     }
 
     @GetMapping("/register")
-    public ModelAndView registerView() {
-        ModelAndView registrationPage = new ModelAndView("auth/registration/registration");
-        RegistrationRequest registrationRequest = new RegistrationRequest();
-        registrationPage.addObject("registrationRequest", registrationRequest);
+    public ModelAndView registerView(Principal principal) {
+        if (principal == null) {
+            ModelAndView registrationPage = new ModelAndView("auth/registration/registration");
+            RegistrationRequest registrationRequest = new RegistrationRequest();
+            registrationPage.addObject("registrationRequest", registrationRequest);
 
-        return registrationPage;
+            return registrationPage;
+        }
+        return new ModelAndView("redirect:/");
     }
 
     @PostMapping("/saveUserRegister")
@@ -77,7 +80,10 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public ModelAndView loginView() {
-        return new ModelAndView("auth/login/login");
+    public ModelAndView loginView(Principal principal) {
+        if (principal == null) {
+            return new ModelAndView("auth/login/login");
+        }
+        return new ModelAndView("redirect:/");
     }
 }
