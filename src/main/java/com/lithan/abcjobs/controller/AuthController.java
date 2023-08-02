@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -34,6 +35,24 @@ public class AuthController {
         model.addAttribute("user", authenticatedUser);
 
         return new ModelAndView("user/userDashboard");
+    }
+    @GetMapping("/loginSuccess")
+    public String loginSuccessHandle(Model model, Principal principal) {
+        // redirecting to login page if user not authenticated
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        User authenticatedUser = userService.getUserByUsername(principal.getName());
+        model.addAttribute("user", authenticatedUser);
+        // redirecting to admin page if user with ROLE_ADMIN as role authenticated
+        System.out.println("ROLE: " + authenticatedUser.getRole());
+        if (Objects.equals(authenticatedUser.getRole(), "ADMIN")) {
+            return "redirect:/admin";
+        }
+
+        // redirecting to home page if user with ROLE_USER as role authenticated
+        return "redirect:/";
     }
 
     @GetMapping("/register")

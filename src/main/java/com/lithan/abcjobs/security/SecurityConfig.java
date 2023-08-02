@@ -1,6 +1,7 @@
 package com.lithan.abcjobs.security;
 
 import com.lithan.abcjobs.constraint.ERole;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -32,8 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
     }
 
-    String ROLE_ADMIN = "ROLE_" + ERole.ADMIN.toString();
-    String ROLE_USER = "ROLE_" + ERole.USER.toString();
+    static String ROLE_ADMIN = "ROLE_" + ERole.ADMIN.toString();
+    static String ROLE_USER = "ROLE_" + ERole.USER.toString();
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -42,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
                 .permitAll()
+                .defaultSuccessUrl("/loginSuccess")
                 .and()
                 .csrf()
                 .and()
@@ -56,10 +59,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login")
                 .invalidateHttpSession(true)
                 .and()
-                .formLogin()
-                .defaultSuccessUrl("/", false) // Default success URL for ROLE_USER
-                .and()
-                .formLogin()
-                .defaultSuccessUrl("/admin", false); // Default success URL for ROLE_ADMIN
+                .formLogin();
     }
 }
