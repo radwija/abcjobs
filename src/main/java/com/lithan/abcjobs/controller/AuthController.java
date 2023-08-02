@@ -27,7 +27,7 @@ public class AuthController {
 
     @GetMapping("/register")
     public ModelAndView registerView() {
-        ModelAndView registrationPage = new ModelAndView("registration/registration");
+        ModelAndView registrationPage = new ModelAndView("auth/registration/registration");
         RegistrationRequest registrationRequest = new RegistrationRequest();
         registrationPage.addObject("registrationRequest", registrationRequest);
 
@@ -41,16 +41,16 @@ public class AuthController {
 
             String emailToActivate = registrationRequest.getEmail();
             redirectAttributes.addFlashAttribute("emailToActivate", emailToActivate);
-            return new ModelAndView("redirect:/thankYou");
+            return new ModelAndView("redirect:/thank-you");
         } catch (CredentialAlreadyTakenException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return new ModelAndView("registration/registration");
+            return new ModelAndView("auth/registration/registration");
         }
     }
 
     @GetMapping("/thank-you")
     public ModelAndView thankYouPageView(Model model) {
-        return new ModelAndView("registration/thankYou");
+        return new ModelAndView("auth/registration/thankYou");
     }
 
     @GetMapping("/register-confirmation")
@@ -58,7 +58,7 @@ public class AuthController {
         try {
             User activatedUser = userService.activateAccount(id);
             model.addAttribute("activatedEmail", activatedUser.getEmail());
-            return new ModelAndView("registration/registerConfirmation");
+            return new ModelAndView("auth/registration/registerConfirmation");
         } catch (UserNotFoundException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return new ModelAndView("exception/userActivationNotFound");
