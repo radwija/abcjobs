@@ -1,5 +1,6 @@
 package com.lithan.abcjobs.controller;
 
+import com.lithan.abcjobs.constraint.ERole;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.exception.CredentialAlreadyTakenException;
 import com.lithan.abcjobs.exception.UserNotFoundException;
@@ -17,18 +18,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
+import java.util.Optional;
 
 @Controller
 public class AuthController {
     @Autowired
     private UserService userService;
 
-    @GetMapping({"","/"})
+    @GetMapping({"", "/"})
     public ModelAndView handleRootRequest(Model model, Principal principal) {
         if (principal == null) {
             return new ModelAndView("index");
         }
-        model.addAttribute("user", userService.getUserByUsername(principal.getName()));
+        User authenticatedUser = userService.getUserByUsername(principal.getName());
+        model.addAttribute("user", authenticatedUser);
+
         return new ModelAndView("user/userDashboard");
     }
 

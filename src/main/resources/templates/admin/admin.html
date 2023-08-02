@@ -91,12 +91,12 @@
 				<table border="1">
 					<tr>
 						<th>User ID</th>
-						<th>Full Name</th>
+						<th>Username</th>
 						<th>Email</th>
 					</tr>
 					<tr th:each="user: ${users}">
-						<td th:text="${user.id}" />
-						<td th:text="${user.name}" />
+						<td th:text="${user.userId}" />
+						<td th:text="${user.username}" />
 						<td th:text="${user.email}" />
 					</tr>
 				</table>

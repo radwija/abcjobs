@@ -20,6 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
     }
+
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -31,6 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
     }
 
+    String ROLE_ADMIN = "ROLE_" + ERole.ADMIN.toString();
+    String ROLE_USER = "ROLE_" + ERole.USER.toString();
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -39,18 +43,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/login")
 //                .failureUrl("/login_error")
                 .permitAll()
-                .defaultSuccessUrl("/")
                 .and()
                 .csrf()
                 .and()
                 .authorizeHttpRequests()
-                .antMatchers(HttpMethod.GET,"/register").permitAll()
-                .antMatchers(HttpMethod.GET,"/login").permitAll()
-                .antMatchers(HttpMethod.GET,"/u/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/register").permitAll()
+                .antMatchers(HttpMethod.GET, "/login").permitAll()
+                .antMatchers(HttpMethod.GET, "/u/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority(ROLE_ADMIN)
+                .antMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority(ROLE_ADMIN)
                 .and()
                 .logout()
                 .logoutSuccessUrl("/login")
-                .invalidateHttpSession(true);
-
+                .invalidateHttpSession(true)
+                .and()
+                .formLogin()
+                .defaultSuccessUrl("/", false) // Default success URL for ROLE_USER
+                .and()
+                .formLogin()
+                .defaultSuccessUrl("/admin", false); // Default success URL for ROLE_ADMIN
     }
 }
