@@ -9,9 +9,9 @@
 <body>
     <h1>Login Page</h1>
     <form th:action="@{/login}" method="POST">
-        <input type="text" placeholder="Username">
-        <input type="text" placeholder="Password">
-        <button type="submit">Login</button>
+        <input type="text" name="username" placeholder="Username">
+        <input type="password" name="password" placeholder="Password">
+        <input type="submit" name="Login" value="Login">
     </form>
 </body>
 

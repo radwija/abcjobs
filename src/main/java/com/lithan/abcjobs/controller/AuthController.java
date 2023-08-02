@@ -15,14 +15,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
+
 @Controller
 public class AuthController {
     @Autowired
     private UserService userService;
 
     @GetMapping({"","/"})
-    public ModelAndView handleRootRequest() {
-        return new ModelAndView("index");
+    public ModelAndView handleRootRequest(Model model, Principal principal) {
+        if (principal == null) {
+            return new ModelAndView("index");
+        }
+        model.addAttribute("user", userService.getUserByUsername(principal.getName()));
+        return new ModelAndView("user/userDashboard");
     }
 
     @GetMapping("/register")

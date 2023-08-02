@@ -12,6 +12,7 @@ import com.lithan.abcjobs.request.RegistrationRequest;
 import com.lithan.abcjobs.service.EmailSenderService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +29,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     EmailSenderService emailSenderService;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Override
     public void saveUserRegister(RegistrationRequest registrationRequest) {
         if (userRepository.existsByUsername(registrationRequest.getUsername()) && userRepository.existsByEmail(registrationRequest.getEmail())) {
@@ -38,11 +42,13 @@ public class UserServiceImpl implements UserService {
             throw new CredentialAlreadyTakenException("Email already taken");
         }
 
+        String encodedPassword = passwordEncoder.encode(registrationRequest.getPassword());
+
         User user = new User();
         user.setUsername(registrationRequest.getUsername());
         user.setEmail(registrationRequest.getEmail());
-        user.setPassword(registrationRequest.getPassword());
-        user.setRole(ERole.ROLE_USER.toString());
+        user.setPassword(encodedPassword);
+        user.setRole(ERole.USER.toString());
         user.setActive(false);
 
         UserProfile userProfile = new UserProfile();
