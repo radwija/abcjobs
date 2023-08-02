@@ -64,4 +64,9 @@ public class AuthController {
             return new ModelAndView("exception/userActivationNotFound");
         }
     }
+
+    @GetMapping("/login")
+    public ModelAndView loginView() {
+        return new ModelAndView("auth/login/login");
+    }
 }
