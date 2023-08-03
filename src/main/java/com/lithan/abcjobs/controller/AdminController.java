@@ -1,6 +1,8 @@
 package com.lithan.abcjobs.controller;
 
 import com.lithan.abcjobs.entity.User;
+import com.lithan.abcjobs.entity.UserProfile;
+import com.lithan.abcjobs.service.UserProfileService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,12 +18,17 @@ import java.util.List;
 public class AdminController {
     @Autowired
     UserService userService;
+
+    @Autowired
+    UserProfileService userProfileService;
+
     @GetMapping({"","/","/dashboard"})
     public ModelAndView mantap(Model model) {
         List<User> users = userService.getAllUsers();
-        String text = "Thymeleaf works!";
-        model.addAttribute("text", text);
+        List<UserProfile> userProfiles = userProfileService.getAllUserProfiles();
+        
         model.addAttribute("users", users);
+        model.addAttribute("userProfiles", userProfiles);
         return new ModelAndView("admin/admin");
     }
 }
