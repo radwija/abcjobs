@@ -7,6 +7,7 @@ import com.lithan.abcjobs.exception.UserNotFoundException;
 import com.lithan.abcjobs.repository.UserProfileRepository;
 import com.lithan.abcjobs.request.RegistrationRequest;
 import com.lithan.abcjobs.request.UpdateUserProfileRequest;
+import com.lithan.abcjobs.service.UserProfileService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,9 @@ import java.security.Principal;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserProfileService userProfileService;
 
     @Autowired
     UserProfileRepository userProfileRepository;
@@ -54,7 +58,7 @@ public class UserController {
         String username = principal.getName();
         System.out.println("username controller: " + username);
 
-        userService.saveUpdateUserProfile(userProfile, username);
+        userProfileService.saveUpdateUserProfile(userProfile, username);
         model.addAttribute("successMessage", "Profile updated successfully!");
         return new ModelAndView("redirect:/u/" + principal.getName());
 
