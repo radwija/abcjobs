@@ -27,7 +27,7 @@ public class AuthController {
     private UserService userService;
 
     @GetMapping({"", "/"})
-    public ModelAndView handleRootRequest(Model model, Principal principal) {
+    public ModelAndView handleRootRequest(Model model, Principal principal, HttpSession httpSession) {
         if (principal == null) {
             return new ModelAndView("index");
         }
