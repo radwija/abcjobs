@@ -21,16 +21,12 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end " id="navbarNav">
                 <ul class="navbar-nav">
-                    <li th:if="${#request.userPrincipal != null}" class="nav-item">
-                        <a class="nav-link" aria-current="page" th:href="@{/u/__${#request.userPrincipal.name}__}">
-                            <i class="bi bi-person-circle"></i> Profile</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" th:href="@{/}"><i class="bi bi-house-door-fill"></i>
                             Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/}"><i class="bi bi-people-fill"></i> People</a>
+                        <a class="nav-link" th:href="@{/people}"><i class="bi bi-people-fill"></i> People</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/jobs}"><i class="bi bi-briefcase-fill"></i> Jobs</a>
@@ -38,14 +34,33 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/threads}"><i class="bi bi-postcard-fill"></i> Threads</a>
                     </li>
+
                     <li th:if="${#request.isUserInRole('ROLE_ADMIN')}" class="nav-item">
                         <a class="nav-link" th:href="@{/admin}"><i class="bi bi-gear-wide-connected"></i> Admin</a>
                     </li>
-                    <li th:if="${#request.userPrincipal != null}" class="nav-item">
-                        <form th:action="@{/logout}" method="post">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                            <input type="submit" name="Logout" value="Logout" class="btn btn-primary"></input>
-                        </form>
+
+                    <li th:if="${#request.userPrincipal == null}" class="nav-item dropdown">
+                        <a class="btn btn-light" th:href="@{/register}">Register</a>
+                    </li>
+                    <li th:if="${#request.userPrincipal == null}" class="nav-item dropdown">
+                        <a class="btn btn-outline-primary" th:href="@{/login}">Login</a>
+                    </li>
+
+                    <li th:if="${#request.userPrincipal != null}" class="nav-item dropdown">
+                        <button class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle"></i> <span th:text="${#request.userPrincipal.name}">
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu">
+                            <li><a class="dropdown-item" aria-current="page"
+                                    th:href="@{/u/__${#request.userPrincipal.name}__}">
+                                    <i class="bi bi-person-circle"></i> Profile</a></li>
+                            <li>
+                                <form th:action="@{/logout}" method="post" class="dropdown-item">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                    <input type="submit" name="Logout" value="Logout" class="btn btn-danger"></input>
+                                </form>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>

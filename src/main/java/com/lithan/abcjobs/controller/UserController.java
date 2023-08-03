@@ -21,6 +21,11 @@ public class UserController {
     @Autowired
     UserProfileRepository userProfileRepository;
 
+    @GetMapping({"/u","/u/"})
+    public String peopleView() {
+        return "redirect:/people";
+    }
+
     @GetMapping("/u/{username}")
     public String profileView(@PathVariable String username, Model model) {
         try {
