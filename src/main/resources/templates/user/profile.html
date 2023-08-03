@@ -22,18 +22,46 @@
 
 <body>
     <div th:replace="components/navbar :: navbar"></div>
-    <h1>Profile page</h1>
-    <!-- <p>Name: <span th:text="${user.name}" /></p> -->
-    <p>User ID: <span th:text="${user.userId}" /></p>
-    <p>Full name: <span th:text="${userProfile.firstName}" /> <span th:text="${userProfile.lastName}" /></p>
-    <p>Title: <span th:text="${userProfile.title}" /></p>
-    <p>City: <span th:text="${userProfile.city}" /></p>
-    <p>Country: <span th:text="${userProfile.country}" /></p>
-    <p>Username: <span th:text="${user.username}" /></p>
-    <p>Email: <span th:text="${user.email}" /></p>
-    <p>Role: <span th:text="${user.role}" /></p>
-    <p>Active: <span th:text="${user.isActive}" /></p>
+    <div class="container">
+        <h1>Profile page</h1>
+        <!-- <p>Name: <span th:text="${user.name}" /></p> -->
+        <p>User ID: <span th:text="${user.userId}" /></p>
+        <p>Full name: <span th:text="${userProfile.firstName}" /> <span th:text="${userProfile.lastName}" /></p>
+        <p>Title: <span th:text="${userProfile.title}" /></p>
+        <p>City: <span th:text="${userProfile.city}" /></p>
+        <p>Country: <span th:text="${userProfile.country}" /></p>
+        <p>Username: <span th:text="${user.username}" /></p>
+        <p>Email: <span th:text="${user.email}" /></p>
+        <p>Role: <span th:text="${user.role}" /></p>
+        <p>Active: <span th:text="${user.isActive}" /></p>
 
+        <div th:if="${#request.userPrincipal.name == user.username || #request.isUserInRole('ROLE_ADMIN')}">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Update Profile
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div th:replace="components/footer :: footer"></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
