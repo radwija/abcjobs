@@ -35,10 +35,6 @@
                         <a class="nav-link" th:href="@{/threads}"><i class="bi bi-postcard-fill"></i> Threads</a>
                     </li>
 
-                    <li th:if="${#request.isUserInRole('ROLE_ADMIN')}" class="nav-item">
-                        <a class="nav-link" th:href="@{/admin}"><i class="bi bi-gear-wide-connected"></i> Admin</a>
-                    </li>
-
                     <li th:if="${#request.userPrincipal == null}" class="nav-item dropdown">
                         <a class="btn btn-light" th:href="@{/register}">Register</a>
                     </li>
@@ -51,9 +47,15 @@
                             <i class="bi bi-person-circle"></i> <span th:text="${#request.userPrincipal.name}">
                         </button>
                         <ul class="dropdown-menu dropdown-menu">
-                            <li><a class="dropdown-item" aria-current="page"
+                            <li>
+                                <a class="dropdown-item" aria-current="page"
                                     th:href="@{/u/__${#request.userPrincipal.name}__}">
-                                    <i class="bi bi-person-circle"></i> Profile</a></li>
+                                    <i class="bi bi-person-circle"></i> Profile</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" aria-current="page" th:href="@{/admin}">
+                                    <i class="bi bi-gear-wide-connected"></i> Admin</a>
+                            </li>
                             <li>
                                 <form th:action="@{/logout}" method="post" class="dropdown-item">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
