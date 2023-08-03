@@ -1,38 +1,11 @@
-package com.lithan.abcjobs.entity;
+package com.lithan.abcjobs.request;
 
-import javax.persistence.*;
-
-@Entity
-public class UserProfile {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_detail_id")
-    private Long userDetailId;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private User user;
+public class UpdateUserProfileRequest {
     private String firstName;
     private String lastName;
     private String title;
     private String city;
     private String country;
-
-    public Long getUserDetailId() {
-        return userDetailId;
-    }
-
-    public void setUserDetailId(Long userDetailId) {
-        this.userDetailId = userDetailId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public String getFirstName() {
         return firstName;

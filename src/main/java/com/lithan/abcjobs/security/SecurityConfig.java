@@ -54,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/u/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority(ROLE_ADMIN)
                 .antMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority(ROLE_ADMIN)
+                .antMatchers(HttpMethod.POST, "/saveUpdateUserProfile").hasAnyAuthority(ROLE_USER, ROLE_ADMIN)
                 .and()
                 .logout()
                 .logoutSuccessUrl("/login")
