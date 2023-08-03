@@ -25,26 +25,28 @@
 	<div th:replace="components/navbar :: navbar"></div>
 
 	<div class="container">
-		<table class="table">
-			<tr>
-				<th>User ID</th>
-				<th>Full Name</th>
-				<th>Username</th>
-				<th>Email</th>
-				<th>Action</th>
-			</tr>
-			<tr th:each="user: ${users}" scope="row">
-				<td th:text="${user.userId}" />
-				<td th:text="${user.userProfile.firstName + ' ' + user.userProfile.lastName}" />
-				<td th:text="${user.username}" />
-				<td th:text="${user.email}" />
-				<td>
-					<a th:href="@{/u/__${user.username}__}" class="btn btn-primary"><i class="bi bi-eye-fill"></i> View</a>
-					<a th:if="${user.role != 'ADMIN'}" th:href="@{#}" class="btn btn-danger"><i class="bi bi-trash3-fill"></i>
-						Delete</a>
-				</td>
-			</tr>
-		</table>
+		<div class="table-responsive">
+			<table class="table">
+				<tr>
+					<th>User ID</th>
+					<th>Full Name</th>
+					<th>Username</th>
+					<th>Email</th>
+					<th>Action</th>
+				</tr>
+				<tr th:each="user: ${users}" scope="row">
+					<td th:text="${user.userId}" />
+					<td th:text="${user.userProfile.firstName + ' ' + user.userProfile.lastName}" />
+					<td th:text="${user.username}" />
+					<td th:text="${user.email}" />
+					<td>
+						<a th:href="@{/u/__${user.username}__}" class="btn btn-primary"><i class="bi bi-eye-fill"></i> View</a>
+						<a th:if="${user.role != 'ADMIN'}" th:href="@{#}" class="btn btn-danger"><i class="bi bi-trash3-fill"></i>
+							Delete</a>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</div>
 	<div th:replace="components/footer :: footer"></div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
