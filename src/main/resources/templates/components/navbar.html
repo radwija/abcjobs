@@ -20,7 +20,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end " id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav" style="gap: 10px;">
                     <li th:if="${#request.userPrincipal != null}" class="nav-item">
                         <a class="nav-link" aria-current="page" th:href="@{/u/__${#request.userPrincipal.name}__}">
                             <i class="bi bi-person-circle"></i> Profile</a>
@@ -40,7 +40,7 @@
                     </li>
 
                     <li th:if="${#request.userPrincipal == null}" class="nav-item dropdown">
-                        <a class="btn btn-light" th:href="@{/register}">Register</a>
+                        <a class="btn btn-secondary" th:href="@{/register}">Register</a>
                     </li>
                     <li th:if="${#request.userPrincipal == null}" class="nav-item dropdown">
                         <a class="btn btn-outline-primary" th:href="@{/login}">Login</a>
