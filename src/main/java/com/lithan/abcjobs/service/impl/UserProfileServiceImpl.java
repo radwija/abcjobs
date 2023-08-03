@@ -6,16 +6,15 @@ import com.lithan.abcjobs.service.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserProfileServiceImpl implements UserProfileService {
     @Autowired
     UserProfileRepository userProfileRepository;
     @Override
-    public void saveUpdateUserProfile(UserProfile userProfile, String username) {
-//        User user = userRepository.getUserByUsername(username);
+    public void saveUpdateUserProfile(UserProfile userProfile) {
         UserProfile savedUserProfile = userProfileRepository.findById(userProfile.getUserDetailId()).get();
-//        System.out.println("username service: " + user.getUsername());
-//        System.out.println("city service: " + savedUserProfile.getCity());
 
         savedUserProfile.setFirstName(userProfile.getFirstName());
         savedUserProfile.setLastName(userProfile.getLastName());
@@ -25,4 +24,10 @@ public class UserProfileServiceImpl implements UserProfileService {
 
         userProfileRepository.save(savedUserProfile);
     }
+
+    @Override
+    public Optional<UserProfile> getUserProfileById(Long userProfileId) {
+        return userProfileRepository.findById(userProfileId);
+    }
+
 }

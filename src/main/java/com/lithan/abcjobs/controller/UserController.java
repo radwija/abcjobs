@@ -54,13 +54,14 @@ public class UserController {
     }
 
     @PostMapping("/saveUpdateUserProfile")
-    public ModelAndView saveUpdateUserProfile(@ModelAttribute("userProfile") UserProfile userProfile, Principal principal, Model model) {
-        String username = principal.getName();
-        System.out.println("username controller: " + username);
-
-        userProfileService.saveUpdateUserProfile(userProfile, username);
-        model.addAttribute("successMessage", "Profile updated successfully!");
-        return new ModelAndView("redirect:/u/" + principal.getName());
+    public ModelAndView saveUpdateUserProfile(@ModelAttribute("userProfile") UserProfile userProfile, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+        if (principal == null) {
+            return new ModelAndView("redirect:/login");
+        }
+        String profileUsername = userService.getUserById(userProfile.getUserDetailId()).get().getUsername();
+        userProfileService.saveUpdateUserProfile(userProfile);
+        redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully!");
+        return new ModelAndView("redirect:/u/" + profileUsername);
 
     }
 

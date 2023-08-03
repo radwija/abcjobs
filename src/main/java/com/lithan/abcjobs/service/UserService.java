@@ -6,6 +6,7 @@ import com.lithan.abcjobs.request.RegistrationRequest;
 import com.lithan.abcjobs.request.UpdateUserProfileRequest;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
     void saveUserRegister(RegistrationRequest user);
@@ -13,4 +14,5 @@ public interface UserService {
     User getUserByUsername(String username);
     UserProfile getUserProfileByUsername(String username);
     User activateAccount(Long id);
+    Optional<User> getUserById(Long userId);
 }

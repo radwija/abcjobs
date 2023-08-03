@@ -24,7 +24,7 @@
     <div th:replace="components/navbar :: navbar"></div>
     <div class="container">
         <h1>Profile page</h1>
-        <div th:if="${successMessage}" class="alert alert-danger" role="alert">
+        <div th:if="${successMessage}" class="alert alert-success" role="alert">
             <span th:text="${successMessage}" />
         </div>
         <div th:if="${errorMessage}" class="alert alert-danger" role="alert">

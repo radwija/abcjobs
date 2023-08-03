@@ -105,4 +105,9 @@ public class UserServiceImpl implements UserService {
 
         throw new UserNotFoundException("Account not found:(");
     }
+
+    @Override
+    public Optional<User> getUserById(Long userId) {
+        return userRepository.findById(userId);
+    }
 }
