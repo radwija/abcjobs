@@ -96,12 +96,19 @@
                                 <th>Title</th>
                                 <th>Content</th>
                                 <th>Owner</th>
+                                <th>Action</th>
                             </tr>
                             <tr th:each="thread: ${threadPosts}" scope="row">
                                 <td th:text="${thread.threadId}" />
                                 <td th:text="${thread.title}" />
                                 <td th:text="${thread.content}" />
                                 <td th:text="${thread.user.username}" />
+                                <!-- <td><a th:href="${thread.user.username}" class="btn btn-primary">View</a>
+                                </td> -->
+                                <td><a th:href="${'/u/' + thread.user.username + '/thread?id=' + thread.threadId}"
+                                        class="btn btn-primary">View</a>
+                                </td>
+                                <!-- <td th:text="${thread.user.username}" /> -->
                             </tr>
                         </table>
                     </div>
