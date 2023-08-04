@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         body {
+            background-color: #F5F5F5;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -56,7 +57,7 @@
         </div>
         <div class="row">
             <div class="col-md-12 col-lg-4">
-                <div class="border shadow-sm p-3 mb-5 rounded">
+                <div class="border shadow-sm p-3 mb-5 rounded bg-white">
                     <div class="top-card rounded">
                         <img src="https://www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg"
                             th:alt="${__user.username__ + '-img-profile'}" class="profile-img rounded-circle">
@@ -82,7 +83,7 @@
                     <a th:href="@{/u/__${user.username}__?tab=threads}" type="button"
                         class="btn btn-outline-primary">Threads</a>
                 </div>
-                <div class="border shadow-sm p-3 mb-5 rounded">
+                <div class="border shadow-sm p-3 mb-5 rounded bg-white">
                     <p th:if="${isInProfileTab}" th:text="${profileText}" />
                     <div th:if="${isInThreadTab}">
 
