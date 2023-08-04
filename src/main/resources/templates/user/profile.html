@@ -17,67 +17,75 @@
         .footer {
             margin-top: auto;
         }
+
+        .top-card {
+            background-image: url(https://img.freepik.com/free-vector/blue-futuristic-networking-technology_53876-100679.jpg?w=360);
+            height: 90px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-end;
+        }
+
+        .top-card img {
+            width: 90px;
+            height: 90px;
+            margin-left: 20px;
+            border-radius: 50%;
+            border: 4px solid white;
+            transform: translateY(20px);
+        }
+
+        .info {
+            margin-top: 20px;
+        }
+
+        .info h3 {
+            margin-bottom: 0;
+        }
     </style>
 </head>
 
 <body>
     <div th:replace="components/navbar :: navbar"></div>
-    <div class="container">
-        <h1>Profile page</h1>
+    <div class="container mt-5">
         <div th:if="${successMessage}" class="alert alert-success" role="alert">
             <span th:text="${successMessage}" />
         </div>
         <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
             <span th:text="${errorMessage}" />
         </div>
-        <!-- <p>Name: <span th:text="${user.name}" /></p> -->
-        <p>User ID: <span th:text="${user.userId}" /></p>
-        <p>Full name: <span th:text="${userProfile.firstName}" /> <span th:text="${userProfile.lastName}" /></p>
-        <p>Title: <span th:text="${userProfile.title}" /></p>
-        <p>City: <span th:text="${userProfile.city}" /></p>
-        <p>Country: <span th:text="${userProfile.country}" /></p>
-        <p>Username: <span th:text="${user.username}" /></p>
-        <p>Email: <span th:text="${user.email}" /></p>
-        <p>Role: <span th:text="${user.role}" /></p>
-        <p>Active: <span th:text="${user.isActive}" /></p>
+        <div class="row">
+            <div class="col-md-12 col-lg-4">
+                <div class="border shadow-sm p-3 mb-5 rounded">
+                    <div class="top-card rounded">
+                        <img src="https://www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg"
+                            th:alt="${__user.username__ + '-img-profile'}" class="profile-img rounded-circle">
+                    </div>
+                    <div class="info">
+                        <h3 th:text="${userProfile.firstName + ' ' + userProfile.lastName}" />
+                        <div th:text="${userProfile.title}" />
 
-        <div th:if="${#request.userPrincipal != null}">
-            <div th:if="${#request.userPrincipal.name == user.username || #request.isUserInRole('ROLE_ADMIN')}">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <i class="bi bi-pencil-square"></i> Update Profile
-                </button>
-
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form th:action="@{/saveUpdateUserProfile}" th:object="${userProfile}" method="POST">
-                                    <input type="hidden" th:field="*{userDetailId}" />
-                                    <input type="text" th:field="*{firstName}" placeholder="First name" required>
-                                    <input type="text" th:field="*{lastName}" placeholder="Last name" required>
-                                    <input type="text" th:field="*{title}" placeholder="Title" required>
-                                    <input type="text" th:field="*{city}" placeholder="City" required>
-                                    <input type="text" th:field="*{country}" placeholder="Country" required>
-                                    <input type="submit" class="btn btn-primary" value="Save changes">
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                            </div>
+                        <div class="my-2 d-grid gap-1">
+                            <div><i class="bi bi-buildings-fill"></i> City: <span th:text="${userProfile.city}" /></div>
+                            <div><i class="bi bi-globe2"></i> Country: <span th:text="${userProfile.country}" /></div>
+                            <div><i class="bi bi-envelope-at-fill"></i> Email: <span th:text="${user.email}" /></div>
                         </div>
+                        <!-- Update Profile Modal imported from components directory -->
+                        <div th:replace="components/userInfo :: userInfo"></div>
                     </div>
                 </div>
             </div>
+            <div class="col-md-12 col-lg-8">
+                <div class="mb-3">
+                    <a th:href="@{/u/__${user.username}__?tab=profile}" type="button"
+                        class="btn btn-outline-primary">Profile</a>
+                    <a th:href="@{/u/__${user.username}__?tab=threads}" type="button"
+                        class="btn btn-outline-primary">Threads</a>
+                </div>
+                <div class="border shadow-sm p-3 mb-5 rounded"></div>
+            </div>
         </div>
+
     </div>
     <div th:replace="components/footer :: footer"></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
