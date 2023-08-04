@@ -1,14 +1,13 @@
 package com.lithan.abcjobs.controller;
 
+import com.lithan.abcjobs.entity.ThreadPost;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
-import com.lithan.abcjobs.exception.CredentialAlreadyTakenException;
 import com.lithan.abcjobs.exception.UserNotFoundException;
-import com.lithan.abcjobs.repository.UserProfileRepository;
-import com.lithan.abcjobs.request.RegistrationRequest;
-import com.lithan.abcjobs.request.UpdateUserProfileRequest;
+import com.lithan.abcjobs.request.ThreadPostRequest;
 import com.lithan.abcjobs.service.UserProfileService;
 import com.lithan.abcjobs.service.UserService;
+import com.lithan.abcjobs.service.impl.ThreadPostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -28,7 +28,7 @@ public class UserController {
     private UserProfileService userProfileService;
 
     @Autowired
-    UserProfileRepository userProfileRepository;
+    private ThreadPostServiceImpl threadPostService;
 
     @GetMapping({"/u", "/u/"})
     public String peopleView() {
@@ -36,22 +36,32 @@ public class UserController {
     }
 
     @GetMapping("/u/{username}")
-    public String profileView(@PathVariable String username, Model model, @RequestParam(value = "tab",required = false) String tab ) {
+    public ModelAndView profileView(@PathVariable String username, Model model, @RequestParam(value = "tab", required = false) String tab, Principal principal) {
         try {
+            ModelAndView profilePage = new ModelAndView("user/profile");
+
             User user = userService.getUserByUsername(username);
             UserProfile userProfile = userService.getUserProfileByUsername(username);
-            UpdateUserProfileRequest updateUserProfileRequest = new UpdateUserProfileRequest();
+
             if (Objects.equals(tab, "profile") || tab == null) {
                 model.addAttribute("profileText", "You're in profile tab");
             } else if (Objects.equals(tab, "threads")) {
-                model.addAttribute("threadText", "You're in thread tab");
+                // Used for creating new thread
+                ThreadPostRequest newThreadPost = new ThreadPostRequest();
+                profilePage.addObject("newThreadPost", newThreadPost);
+
+                // Used for retrieving threads that belong to user
+                List<ThreadPost> threadPosts = threadPostService.getThreadPostsByUserId(user);
+                model.addAttribute("threadPosts", threadPosts);
             }
+
+
             model.addAttribute("user", user);
             model.addAttribute("userProfile", userProfile);
-            return "user/profile";
+            return new ModelAndView("user/profile");
         } catch (UserNotFoundException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "exception/userNotFound";
+            return new ModelAndView("exception/userNotFound");
         }
     }
 

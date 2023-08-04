@@ -1,6 +1,8 @@
 package com.lithan.abcjobs.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -26,6 +28,9 @@ public class User {
     private String role;
 
     private Boolean isActive;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<ThreadPost> threadPosts = new ArrayList<>();
 
     public Long getUserId() {
         return userId;
@@ -81,5 +86,13 @@ public class User {
 
     public void setActive(Boolean active) {
         isActive = active;
+    }
+
+    public List<ThreadPost> getThreadPosts() {
+        return threadPosts;
+    }
+
+    public void setThreadPosts(List<ThreadPost> threadPost) {
+        this.threadPosts = threadPost;
     }
 }
