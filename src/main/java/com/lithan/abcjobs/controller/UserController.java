@@ -51,7 +51,7 @@ public class UserController {
                 model.addAttribute("isInThreadTab", true);
                 // Used for retrieving threads that belong to user
                 List<ThreadPost> threadPosts = threadPostService.getThreadPostsByUserId(user);
-                threadPosts.get(1);
+                
                 model.addAttribute("threadPosts", threadPosts);
             }
 
