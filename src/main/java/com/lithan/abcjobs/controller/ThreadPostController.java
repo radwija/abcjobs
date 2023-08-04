@@ -26,15 +26,18 @@ public class ThreadPostController {
     public ModelAndView threadDetailView(@PathVariable("username") String username, @RequestParam("id") Long id, Model model) {
         try {
             ThreadResponse threadResponse = threadService.getThreadByUsernameAndThreadId(username, id);
-            if (threadResponse.getThreadPost() == null) {
-                return new ModelAndView("redirect:/u/" + username);
-            }
 
             model.addAttribute("thread", threadResponse.getThreadPost());
             return new ModelAndView("thread/threadDetail");
         } catch (ThreadPostNotFoundException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return new ModelAndView("redirect:/threads");
+            // TODO: model.addAttribute("threads", threadService.getAllThreadPosts());
+            return new ModelAndView("exception/threadNotFound");
         }
+    }
+
+    @GetMapping("/threads")
+    public ModelAndView allThreadsView() {
+        return new ModelAndView("thread/threads");
     }
 }

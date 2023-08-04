@@ -43,7 +43,7 @@ public class ThreadPostServiceImpl implements ThreadService {
             throw  new UserProfileNotFoundException("User of this thread not found");
         }
         if (threadPost == null) {
-            throw new ThreadPostNotFoundException("Thread not found with ID: " + threadId);
+            throw new ThreadPostNotFoundException("Thread not found. Kindly search for another thread.");
         }
 
         ThreadResponse threadResponse = new ThreadResponse();
