@@ -14,7 +14,7 @@
 <body>
   <div th:replace="components/navbar :: navbar"></div>
 
-  <div class="container mt-5">
+  <div class="container mt-container-custom">
     <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
       <span th:text="${errorMessage}" />
     </div>
