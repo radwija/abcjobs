@@ -1,0 +1,35 @@
+body {
+  background-color: #F5F5F5 !important;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer {
+  margin-top: auto;
+}
+
+.top-card {
+  background-image: url(https://img.freepik.com/free-vector/blue-futuristic-networking-technology_53876-100679.jpg?w=360);
+  height: 90px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.top-card img {
+  width: 90px;
+  height: 90px;
+  margin-left: 20px;
+  border-radius: 50%;
+  border: 4px solid white;
+  transform: translateY(20px);
+}
+
+.info {
+  margin-top: 20px;
+}
+
+.info h3 {
+  margin-bottom: 0;
+}
