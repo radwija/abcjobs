@@ -12,14 +12,12 @@ import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.Objects;
 
 @Controller
 public class UserController {
@@ -38,12 +36,16 @@ public class UserController {
     }
 
     @GetMapping("/u/{username}")
-    public String profileView(@PathVariable String username, Model model) {
+    public String profileView(@PathVariable String username, Model model, @RequestParam(value = "tab",required = false) String tab ) {
         try {
             User user = userService.getUserByUsername(username);
             UserProfile userProfile = userService.getUserProfileByUsername(username);
             UpdateUserProfileRequest updateUserProfileRequest = new UpdateUserProfileRequest();
-
+            if (Objects.equals(tab, "profile") || tab == null) {
+                model.addAttribute("profileText", "You're in profile tab");
+            } else if (Objects.equals(tab, "threads")) {
+                model.addAttribute("threadText", "You're in thread tab");
+            }
             model.addAttribute("user", user);
             model.addAttribute("userProfile", userProfile);
             return "user/profile";

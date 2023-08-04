@@ -82,7 +82,10 @@
                     <a th:href="@{/u/__${user.username}__?tab=threads}" type="button"
                         class="btn btn-outline-primary">Threads</a>
                 </div>
-                <div class="border shadow-sm p-3 mb-5 rounded"></div>
+                <div class="border shadow-sm p-3 mb-5 rounded">
+                    <p th:if="${profileText}" th:text="${profileText}" />
+                    <p th:if="${threadText}" th:text="${threadText}" />
+                </div>
             </div>
         </div>
 
