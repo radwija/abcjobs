@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thread Detail • ABC Jobs</title>
+  <title th:text="${thread.title + ' • ABC Jobs'}">Thread Detail • ABC Jobs</title>
   <link th:href="@{/css/main.css}" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
@@ -12,10 +12,20 @@
 </head>
 
 <body>
-  <h1>Title <span th:text="${thread.title}" /></h1>
-  <span th:text="${thread.user.username}" />
-  <h3>Content:</h3>
-  <p th:text="${thread.title}" />
+  <div th:replace="components/navbar :: navbar"></div>
+
+  <div class="container mt-container-custom">
+    <h1>Title <span th:text="${thread.title}" /></h1>
+    <span th:text="${thread.user.username}" />
+    <h3>Content:</h3>
+    <p th:text="${thread.content}" />
+  </div>
+
+  <div th:replace="components/footer :: footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>
