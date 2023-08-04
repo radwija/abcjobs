@@ -1,6 +1,7 @@
 package com.lithan.abcjobs.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class ThreadPost {
@@ -16,6 +17,34 @@ public class ThreadPost {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    private Date createdAt;
+
+    @PrePersist
+    private void onCreate() {
+        createdAt = new Date();
+    }
+
+    @Transient
+    private String formattedCreatedAt;
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getFormattedCreatedAt() {
+        return formattedCreatedAt;
+    }
+
+    public void setFormattedCreatedAt(String formattedCreatedAt) {
+        this.formattedCreatedAt = formattedCreatedAt;
+    }
 
     public Long getThreadId() {
         return threadId;

@@ -16,6 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,7 +52,7 @@ public class UserController {
                 model.addAttribute("isInThreadTab", true);
                 // Used for retrieving threads that belong to user
                 List<ThreadPost> threadPosts = threadPostService.getThreadPostsByUserId(user);
-                
+                threadPosts.forEach(thread -> thread.setFormattedCreatedAt(formatDate(thread.getCreatedAt())));
                 model.addAttribute("threadPosts", threadPosts);
             }
 
@@ -62,6 +64,11 @@ public class UserController {
             model.addAttribute("errorMessage", e.getMessage());
             return new ModelAndView("exception/userNotFound");
         }
+    }
+
+    private String formatDate(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
+        return dateFormat.format(date);
     }
 
     @PostMapping("/saveUpdateUserProfile")
