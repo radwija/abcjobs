@@ -23,8 +23,11 @@ public class ThreadPostController {
     ThreadService threadService;
 
     @GetMapping("/u/{username}/thread")
-    public ModelAndView threadDetailView(@PathVariable("username") String username, @RequestParam("id") Long id, Model model) {
+    public ModelAndView threadDetailView(@PathVariable("username") String username, @RequestParam(value = "id", required = false) Long id, Model model) {
         try {
+            if (id == null) {
+                return new ModelAndView("redirect:/u/" + username + "?tab=threads");
+            }
             ThreadResponse threadResponse = threadService.getThreadByUsernameAndThreadId(username, id);
 
             model.addAttribute("thread", threadResponse.getThreadPost());
