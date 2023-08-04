@@ -83,8 +83,28 @@
                         class="btn btn-outline-primary">Threads</a>
                 </div>
                 <div class="border shadow-sm p-3 mb-5 rounded">
-                    <p th:if="${profileText}" th:text="${profileText}" />
-                    <p th:if="${threadText}" th:text="${threadText}" />
+                    <p th:if="${isInProfileTab}" th:text="${profileText}" />
+                    <div th:if="${isInThreadTab}">
+
+                        <a th:if="${#request.userPrincipal != null}" th:href="@{/create-thread}"
+                            class="btn btn-primary">
+                            + Post thread
+                        </a>
+                        <table>
+                            <tr>
+                                <th>Thread ID</th>
+                                <th>Title</th>
+                                <th>Content</th>
+                                <th>Owner</th>
+                            </tr>
+                            <tr th:each="thread: ${threadPosts}" scope="row">
+                                <td th:text="${thread.threadId}" />
+                                <td th:text="${thread.title}" />
+                                <td th:text="${thread.content}" />
+                                <!-- <td th:text="${thread.user.username}" /> -->
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

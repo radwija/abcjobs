@@ -9,6 +9,7 @@ import com.lithan.abcjobs.service.UserProfileService;
 import com.lithan.abcjobs.service.UserService;
 import com.lithan.abcjobs.service.impl.ThreadPostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,14 +45,13 @@ public class UserController {
             UserProfile userProfile = userService.getUserProfileByUsername(username);
 
             if (Objects.equals(tab, "profile") || tab == null) {
+                model.addAttribute("isInProfileTab", true);
                 model.addAttribute("profileText", "You're in profile tab");
             } else if (Objects.equals(tab, "threads")) {
-                // Used for creating new thread
-                ThreadPostRequest newThreadPost = new ThreadPostRequest();
-                profilePage.addObject("newThreadPost", newThreadPost);
-
+                model.addAttribute("isInThreadTab", true);
                 // Used for retrieving threads that belong to user
                 List<ThreadPost> threadPosts = threadPostService.getThreadPostsByUserId(user);
+                threadPosts.get(1);
                 model.addAttribute("threadPosts", threadPosts);
             }
 
@@ -77,4 +77,21 @@ public class UserController {
 
     }
 
+    @GetMapping("/create-thread")
+    public ModelAndView createThreadView() {
+        ModelAndView createThreadPage = new ModelAndView("thread/createThread");
+
+        // Used for creating new thread
+        ThreadPostRequest newThreadPost = new ThreadPostRequest();
+        createThreadPage.addObject("newThreadPost", newThreadPost);
+
+        return createThreadPage;
+    }
+
+    @PostMapping("/saveNewThread")
+    public ModelAndView saveNewThread(@ModelAttribute("userProfile") ThreadPostRequest newThreadPost, Principal principal) {
+        String username = principal.getName();
+        threadPostService.saveThread(newThreadPost, username);
+        return new ModelAndView("redirect:/u/" + username + "?tab=threads");
+    }
 }

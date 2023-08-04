@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create New Thread • ABC Jobs</title>
+</head>
+
+<body>
+  <form th:action="@{/saveNewThread}" th:object="${newThreadPost}" method="post">
+    <input type="text" th:field="*{title}" placeholder="Title">
+    <textarea class="form-control" id="content" th:field="*{content}" required></textarea>
+    <input type="submit" value="Create new thread">
+  </form>
+</body>
+
+</html>

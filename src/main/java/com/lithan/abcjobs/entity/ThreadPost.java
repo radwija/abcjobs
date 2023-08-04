@@ -40,4 +40,12 @@ public class ThreadPost {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
