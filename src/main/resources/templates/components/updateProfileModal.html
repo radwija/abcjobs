@@ -10,7 +10,7 @@
 
 <body>
   <!-- Update Profile Modal -->
-  <div th:fragment="userInfo" th:if="${#request.userPrincipal != null}">
+  <div th:fragment="updateProfileModal" th:if="${#request.userPrincipal != null}">
     <div th:if="${#request.userPrincipal.name == user.username || #request.isUserInRole('ROLE_ADMIN')}">
       <!-- Button trigger modal -->
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
