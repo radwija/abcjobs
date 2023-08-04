@@ -3,13 +3,12 @@ package com.lithan.abcjobs.controller;
 import com.lithan.abcjobs.entity.ThreadPost;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
-import com.lithan.abcjobs.exception.UserNotFoundException;
+import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.request.ThreadPostRequest;
 import com.lithan.abcjobs.service.UserProfileService;
 import com.lithan.abcjobs.service.UserService;
 import com.lithan.abcjobs.service.impl.ThreadPostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +58,7 @@ public class UserController {
             model.addAttribute("user", user);
             model.addAttribute("userProfile", userProfile);
             return new ModelAndView("user/profile");
-        } catch (UserNotFoundException e) {
+        } catch (AccountNotFoundException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return new ModelAndView("exception/userNotFound");
         }
@@ -74,7 +73,6 @@ public class UserController {
         userProfileService.saveUpdateUserProfile(userProfile);
         redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully!");
         return new ModelAndView("redirect:/u/" + profileUsername);
-
     }
 
     @GetMapping("/create-thread")
@@ -91,7 +89,10 @@ public class UserController {
     @PostMapping("/saveNewThread")
     public ModelAndView saveNewThread(@ModelAttribute("userProfile") ThreadPostRequest newThreadPost, Principal principal) {
         String username = principal.getName();
-        threadPostService.saveThread(newThreadPost, username);
+        ThreadPost threadPost = threadPostService.saveThread(newThreadPost, username);
+
+        // Getting ID for redirecting to the thread
+        System.out.println("Thread ID: " + threadPost.getThreadId());
         return new ModelAndView("redirect:/u/" + username + "?tab=threads");
     }
 }

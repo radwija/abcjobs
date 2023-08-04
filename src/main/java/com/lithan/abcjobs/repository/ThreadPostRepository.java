@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface ThreadPostRepository extends JpaRepository<ThreadPost, Long> {
     List<ThreadPost> getThreadPostsByUser(User user);
+    ThreadPost getThreadPostByThreadId(Long threadId);
 }

@@ -1,9 +1,8 @@
 package com.lithan.abcjobs.controller;
 
-import com.lithan.abcjobs.constraint.ERole;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.exception.CredentialAlreadyTakenException;
-import com.lithan.abcjobs.exception.UserNotFoundException;
+import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.request.RegistrationRequest;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.Objects;
-import java.util.Optional;
 
 @Controller
 public class AuthController {
@@ -92,7 +90,7 @@ public class AuthController {
             User activatedUser = userService.activateAccount(id);
             model.addAttribute("activatedEmail", activatedUser.getEmail());
             return new ModelAndView("auth/registration/registerConfirmation");
-        } catch (UserNotFoundException e) {
+        } catch (AccountNotFoundException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return new ModelAndView("exception/userActivationNotFound");
         }

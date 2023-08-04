@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thread Detail • ABC Jobs</title>
+</head>
+
+<body>
+  <h1>Title <span th:text="${thread.title}" /></h1>
+  <span th:text="${thread.user.username}" />
+  <h3>Content:</h3>
+  <p th:text="${thread.title}" />
+</body>
+
+</html>

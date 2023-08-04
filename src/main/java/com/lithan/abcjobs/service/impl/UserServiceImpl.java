@@ -4,19 +4,17 @@ import com.lithan.abcjobs.constraint.ERole;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.CredentialAlreadyTakenException;
-import com.lithan.abcjobs.exception.UserNotFoundException;
+import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.exception.UserProfileNotFoundException;
 import com.lithan.abcjobs.repository.UserProfileRepository;
 import com.lithan.abcjobs.repository.UserRepository;
 import com.lithan.abcjobs.request.RegistrationRequest;
-import com.lithan.abcjobs.request.UpdateUserProfileRequest;
 import com.lithan.abcjobs.service.EmailSenderService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,7 +76,7 @@ public class UserServiceImpl implements UserService {
     public User getUserByUsername(String username) {
         User user = userRepository.getUserByUsername(username);
         if (user == null) {
-            throw new UserNotFoundException("User not found with username: " + username);
+            throw new AccountNotFoundException("User not found with username: " + username);
         }
         return user;
     }
@@ -103,7 +101,7 @@ public class UserServiceImpl implements UserService {
             return activatedUser;
         }
 
-        throw new UserNotFoundException("Account not found:(");
+        throw new AccountNotFoundException("Account not found:(");
     }
 
     @Override
