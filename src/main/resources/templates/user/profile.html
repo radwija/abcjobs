@@ -21,7 +21,7 @@
         </div>
         <div class="row">
             <div class="col-md-12 col-lg-4">
-                <div class="border shadow-sm p-3 mb-5 rounded bg-white">
+                <div class="border shadow-sm p-3 mb-5 rounded bg-white sticky-top">
                     <div class="top-card rounded">
                         <img src="https://www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg"
                             th:alt="${__user.username__ + '-img-profile'}" class="profile-img rounded-circle">
@@ -55,27 +55,26 @@
                             class="btn btn-primary">
                             + Post thread
                         </a>
-                        <table>
-                            <tr>
-                                <th>Thread ID</th>
-                                <th>Title</th>
-                                <th>Content</th>
-                                <th>Owner</th>
-                                <th>Action</th>
-                            </tr>
-                            <tr th:each="thread: ${threadPosts}" scope="row">
-                                <td th:text="${thread.threadId}" />
-                                <td th:text="${thread.title}" />
-                                <td th:text="${thread.content}" />
-                                <td th:text="${thread.user.username}" />
-                                <!-- <td><a th:href="${thread.user.username}" class="btn btn-primary">View</a>
-                                </td> -->
-                                <td><a th:href="${'/u/' + thread.user.username + '/thread?id=' + thread.threadId}"
-                                        class="btn btn-primary">View</a>
-                                </td>
-                                <!-- <td th:text="${thread.user.username}" /> -->
-                            </tr>
-                        </table>
+                        <div th:each="thread: ${threadPosts}" class="mt-3">
+                            <div class="bg-white border rounded p-3">
+                                <div class="thread-card d-flex">
+                                    <img src="https://www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg"
+                                        th:alt="${__user.username__ + '-img-profile'}"
+                                        class="profile-img rounded-circle">
+                                    <div class="thread-info">
+                                        <a th:href="@{__${thread.user.username}__}"
+                                            class="text-decoration-none fw-bold"><span
+                                                th:text="${thread.user.userProfile.firstName + ' ' + thread.user.userProfile.lastName}" /></a>
+                                        <p>Date DD MMMM YYYY</p>
+                                    </div>
+                                </div>
+                                <a th:href="${'/u/' + thread.user.username + '/thread?id=' + thread.threadId}"
+                                    class="text-decoration-none">
+                                    <h3 th:text="${thread.title}" />
+                                </a>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
