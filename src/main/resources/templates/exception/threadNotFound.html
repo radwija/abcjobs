@@ -16,9 +16,7 @@
   <div th:replace="components/navbar :: navbar"></div>
 
   <div class="container my-container-custom">
-    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
-      <span th:text="${errorMessage}" />
-    </div>
+    <div th:replace="components/message :: responseMessages"></div>
   </div>
   <!-- TODO: add thread search bar here -->
   <div th:replace="components/footer :: footer"></div>

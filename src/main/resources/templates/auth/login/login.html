@@ -14,9 +14,7 @@
 <body>
     <div th:replace="components/navbar :: navbar"></div>
     <h1>Login Page</h1>
-    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
-        <span th:text="${errorMessage}" />
-    </div>
+    <div th:replace="components/message :: responseMessages"></div>
     <form th:action="@{/login}" method="POST">
         <input type="text" name="username" placeholder="Username">
         <input type="password" name="password" placeholder="Password">
