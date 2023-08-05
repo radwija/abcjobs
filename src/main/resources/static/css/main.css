@@ -60,7 +60,7 @@ body {
 /* Thread Detail Page */
 @media (min-width: 768px) {
   .profile-and-comment {
-    position: fixed;
+    /* position: fixed; */
   }
 }
 

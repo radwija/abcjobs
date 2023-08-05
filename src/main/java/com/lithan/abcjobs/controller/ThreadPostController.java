@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Controller
 public class ThreadPostController {
     @Autowired
@@ -37,6 +40,7 @@ public class ThreadPostController {
             threadCommentRequest.setThreadPost(currentThread);
 
             threadDetailPage.addObject("threadCommentRequest", threadCommentRequest);
+            currentThread.setFormattedCreatedAt(formatDate(currentThread.getCreatedAt()));
             model.addAttribute("thread", currentThread);
             return threadDetailPage;
         } catch (ThreadPostNotFoundException e) {
@@ -44,6 +48,11 @@ public class ThreadPostController {
             // TODO: model.addAttribute("threads", threadPostService.getAllThreadPosts());
             return new ModelAndView("exception/threadNotFound");
         }
+    }
+
+    private String formatDate(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
+        return dateFormat.format(date);
     }
 
     @GetMapping("/threads")
