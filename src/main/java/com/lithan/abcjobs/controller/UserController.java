@@ -4,6 +4,7 @@ import com.lithan.abcjobs.entity.ThreadPost;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.AccountNotFoundException;
+import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.ThreadCommentRequest;
 import com.lithan.abcjobs.payload.request.ThreadPostRequest;
 import com.lithan.abcjobs.service.ThreadCommentService;
@@ -115,5 +116,26 @@ public class UserController {
 
         threadCommentService.saveComment(threadId, threadCommentRequest, username);
         return new ModelAndView("redirect:/u/" + threadOwnerUsername + "/thread?id=" + threadId);
+    }
+
+    @GetMapping("/deleteThread")
+    public ModelAndView deleteThread(@RequestParam("threadId") Long threadId, Principal principal, RedirectAttributes redirectAttributes) {
+        String threadOwnerUsername = threadPostService.getThreadPostByThreadId(threadId).getUser().getUsername();
+        if (principal == null) {
+            return new ModelAndView("redirect:/u/" + threadOwnerUsername + "/thread?id=" + threadId);
+        }
+        try {
+            String usernameDeleter = principal.getName();
+            threadPostService.deleteThread(threadId, usernameDeleter);
+
+            redirectAttributes.addFlashAttribute("successMessage", "Thread deleted successfully!");
+            if (userService.getUserByUsername(usernameDeleter).getRole().equals("ADMIN")) {
+                redirectAttributes.addFlashAttribute("successMessage", "Thread deleted successfully! (ADMIN)");
+            }
+        } catch (RefusedActionException e) {
+            System.out.println(e);
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
+        return new ModelAndView("redirect:/u/" + threadOwnerUsername + "?tab=threads");
     }
 }

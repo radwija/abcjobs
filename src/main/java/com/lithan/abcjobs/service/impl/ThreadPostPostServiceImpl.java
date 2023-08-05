@@ -2,11 +2,13 @@ package com.lithan.abcjobs.service.impl;
 
 import com.lithan.abcjobs.entity.ThreadPost;
 import com.lithan.abcjobs.entity.User;
+import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.exception.ThreadPostNotFoundException;
 import com.lithan.abcjobs.exception.UserProfileNotFoundException;
 import com.lithan.abcjobs.repository.ThreadPostRepository;
 import com.lithan.abcjobs.payload.request.ThreadPostRequest;
 import com.lithan.abcjobs.payload.response.ThreadResponse;
+import com.lithan.abcjobs.repository.UserRepository;
 import com.lithan.abcjobs.service.ThreadPostService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ public class ThreadPostPostServiceImpl implements ThreadPostService {
     public ThreadPost getThreadPostByThreadId(Long threadId) {
         return threadPostRepository.getThreadPostByThreadId(threadId);
     }
+
     @Override
     public ThreadPost saveThread(ThreadPostRequest thread, String username) {
         User user = userService.getUserByUsername(username);
@@ -43,7 +46,7 @@ public class ThreadPostPostServiceImpl implements ThreadPostService {
         User threadOwner = userService.getUserByUsername(username);
         ThreadPost threadPost = threadPostRepository.getThreadPostByThreadId(threadId);
         if (threadOwner == null) {
-            throw  new UserProfileNotFoundException("User of this thread not found");
+            throw new UserProfileNotFoundException("User of this thread not found");
         }
         if (threadPost == null) {
             throw new ThreadPostNotFoundException("Thread not found. Kindly search for another thread.");
@@ -59,5 +62,16 @@ public class ThreadPostPostServiceImpl implements ThreadPostService {
     @Override
     public List<ThreadPost> getThreadPostsByUserId(User user) {
         return threadPostRepository.getThreadPostsByUser(user);
+    }
+
+    @Override
+    public void deleteThread(Long threadId, String usernameDeleter) {
+        String threadOwner = threadPostRepository.getThreadPostByThreadId(threadId).getUser().getUsername();
+        boolean isAdmin = userService.getUserByUsername(usernameDeleter).getRole().equals("ADMIN");
+        if (!(threadOwner.equals(usernameDeleter) || isAdmin)) {
+            throw new RefusedActionException("You're not allowed to delete the thread!");
+        }
+
+        threadPostRepository.deleteById(threadId);
     }
 }

@@ -54,7 +54,7 @@
                     <div th:if="${isInThreadTab}">
 
                         <a th:if="${#request.userPrincipal != null && #request.userPrincipal.name == user.username}"
-                            th:href="@{/create-thread}" class="btn btn-primary">
+                            th:href="@{/create-thread}" class="btn btn-primary mb-3">
                             + Post thread
                         </a>
                         <h3 th:if="${threadPosts.size() == 0}">
@@ -90,7 +90,8 @@
                                             </li>
                                             <li
                                                 th:if="${#request.userPrincipal != null && #request.userPrincipal.name == user.username || #request.isUserInRole('ROLE_ADMIN')}">
-                                                <a class="dropdown-item" href="#">Delete</a>
+                                                <a th:href="@{'/deleteThread?threadId=' + __${thread.threadId}__}"
+                                                    class="dropdown-item">Delete this thread</a>
                                             </li>
                                         </ul>
                                     </div>
