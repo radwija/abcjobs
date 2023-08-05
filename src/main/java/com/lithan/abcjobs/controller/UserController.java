@@ -7,9 +7,9 @@ import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.payload.request.ThreadCommentRequest;
 import com.lithan.abcjobs.payload.request.ThreadPostRequest;
 import com.lithan.abcjobs.service.ThreadCommentService;
+import com.lithan.abcjobs.service.ThreadPostService;
 import com.lithan.abcjobs.service.UserProfileService;
 import com.lithan.abcjobs.service.UserService;
-import com.lithan.abcjobs.service.impl.ThreadPostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +32,7 @@ public class UserController {
     private UserProfileService userProfileService;
 
     @Autowired
-    private ThreadPostServiceImpl threadPostService;
+    private ThreadPostService threadPostService;
 
     @Autowired
     private ThreadCommentService threadCommentService;

@@ -7,7 +7,7 @@ import com.lithan.abcjobs.exception.UserProfileNotFoundException;
 import com.lithan.abcjobs.repository.ThreadPostRepository;
 import com.lithan.abcjobs.payload.request.ThreadPostRequest;
 import com.lithan.abcjobs.payload.response.ThreadResponse;
-import com.lithan.abcjobs.service.ThreadService;
+import com.lithan.abcjobs.service.ThreadPostService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ThreadPostServiceImpl implements ThreadService {
+public class ThreadPostPostServiceImpl implements ThreadPostService {
     @Autowired
     private ThreadPostRepository threadPostRepository;
 

@@ -4,7 +4,7 @@ import com.lithan.abcjobs.entity.ThreadPost;
 import com.lithan.abcjobs.exception.ThreadPostNotFoundException;
 import com.lithan.abcjobs.payload.request.ThreadCommentRequest;
 import com.lithan.abcjobs.payload.response.ThreadResponse;
-import com.lithan.abcjobs.service.ThreadService;
+import com.lithan.abcjobs.service.ThreadPostService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ public class ThreadPostController {
     UserService userService;
 
     @Autowired
-    ThreadService threadService;
+    ThreadPostService threadPostService;
 
     @GetMapping("/u/{username}/thread")
     public ModelAndView threadDetailView(@PathVariable("username") String username, @RequestParam(value = "id", required = false) Long id, Model model) {
@@ -29,7 +29,7 @@ public class ThreadPostController {
             if (id == null) {
                 return new ModelAndView("redirect:/u/" + username + "?tab=threads");
             }
-            ThreadResponse threadResponse = threadService.getThreadByUsernameAndThreadId(username, id);
+            ThreadResponse threadResponse = threadPostService.getThreadByUsernameAndThreadId(username, id);
 
             ThreadPost currentThread = threadResponse.getThreadPost();
 
@@ -41,7 +41,7 @@ public class ThreadPostController {
             return threadDetailPage;
         } catch (ThreadPostNotFoundException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            // TODO: model.addAttribute("threads", threadService.getAllThreadPosts());
+            // TODO: model.addAttribute("threads", threadPostService.getAllThreadPosts());
             return new ModelAndView("exception/threadNotFound");
         }
     }

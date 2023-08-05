@@ -6,7 +6,7 @@ import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.payload.request.ThreadCommentRequest;
 import com.lithan.abcjobs.repository.ThreadCommentRepository;
 import com.lithan.abcjobs.service.ThreadCommentService;
-import com.lithan.abcjobs.service.ThreadService;
+import com.lithan.abcjobs.service.ThreadPostService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +20,12 @@ public class ThreadCommentServiceImpl implements ThreadCommentService {
     UserService userService;
 
     @Autowired
-    ThreadService threadService;
+    ThreadPostService threadPostService;
 
     @Override
     public void saveComment(Long threadId, ThreadCommentRequest threadCommentRequest, String username) {
         User user = userService.getUserByUsername(username);
-        ThreadPost threadPost = threadService.getThreadPostByThreadId(threadId);
+        ThreadPost threadPost = threadPostService.getThreadPostByThreadId(threadId);
         ThreadComment savedComment = new ThreadComment();
 
         savedComment.setUser(user);

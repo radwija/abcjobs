@@ -7,7 +7,7 @@ import com.lithan.abcjobs.payload.response.ThreadResponse;
 
 import java.util.List;
 
-public interface ThreadService {
+public interface ThreadPostService {
     ThreadPost getThreadPostByThreadId(Long threadId);
     ThreadPost saveThread(ThreadPostRequest thread, String username);
     ThreadResponse getThreadByUsernameAndThreadId(String username, Long threadId);
