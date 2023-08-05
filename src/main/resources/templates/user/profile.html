@@ -53,10 +53,13 @@
                     <p th:if="${isInProfileTab}" th:text="${profileText}" />
                     <div th:if="${isInThreadTab}">
 
-                        <a th:if="${#request.userPrincipal != null}" th:href="@{/create-thread}"
+                        <a th:if="${#request.userPrincipal.name == user.username}" th:href="@{/create-thread}"
                             class="btn btn-primary">
                             + Post thread
                         </a>
+                        <h3 th:if="${threadPosts.size() == 0}">
+                            There isn't any thread...
+                        </h3>
                         <div th:each="thread: ${threadPosts}" class="mt-3">
                             <div class="bg-white border rounded p-3">
                                 <div class="thread-card d-flex justify-content-between">
@@ -80,8 +83,14 @@
                                             <li><a class="dropdown-item"
                                                     th:href="${'/u/' + thread.user.username + '/thread?id=' + thread.threadId}">View</a>
                                             </li>
-                                            <li><a class="dropdown-item" href="#">Edit</a></li>
-                                            <li><a class="dropdown-item" href="#">Delete</a></li>
+
+                                            <li
+                                                th:if="${#request.userPrincipal.name == user.username || #request.isUserInRole('ROLE_ADMIN')}">
+                                                <a class="dropdown-item" href="#">Edit</a>
+                                            </li>
+                                            <li
+                                                th:if="${#request.userPrincipal.name == user.username || #request.isUserInRole('ROLE_ADMIN')}">
+                                                <a class="dropdown-item" href="#">Delete</a></li>
                                         </ul>
                                     </div>
 
