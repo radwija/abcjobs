@@ -86,6 +86,10 @@ body {
   background-color: #F0F2F5;
 }
 
+.comment-bulb small {
+  font-size: small;
+}
+
 .comments {
   height: 400px;
   overflow-y: auto;
