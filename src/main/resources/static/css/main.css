@@ -11,8 +11,9 @@ body {
   flex-direction: column;
 }
 
-.mt-container-custom {
+.my-container-custom {
   margin-top: 100px !important;
+  margin-bottom: 50px !important;
 }
 
 .footer {
