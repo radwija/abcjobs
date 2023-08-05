@@ -62,10 +62,9 @@
                                 <div class="thread-card d-flex justify-content-between">
                                     <div class="d-flex">
                                         <img src="https://www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg"
-                                            th:alt="${__user.username__ + '-img-profile'}"
-                                            class="profile-img rounded-circle">
+                                            th:alt="${__user.username__ + '-img-profile'}" class="rounded-circle">
                                         <div class="thread-info">
-                                            <a th:href="@{__${thread.user.username}__}"
+                                            <a th:href="@{/u/__${thread.user.username}__}"
                                                 class="text-decoration-none fw-bold"><span
                                                     th:text="${thread.user.userProfile.firstName + ' ' + thread.user.userProfile.lastName}" /></a>
                                             <p th:text="${thread.formattedCreatedAt}" />

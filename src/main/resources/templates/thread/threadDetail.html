@@ -16,17 +16,38 @@
   <div th:replace="components/navbar :: navbar"></div>
 
   <div class="container mt-container-custom">
-    <h1>Title <span th:text="${thread.title}" /></h1>
-    <span th:text="${thread.user.username}" />
-    <h3>Content:</h3>
-    <p th:text="${thread.content}" />
-
-    <form th:action="@{/saveThreadComment?threadId=__${thread.threadId}__}" th:object="${threadCommentRequest}"
-      method="post">
-      <input type="text" name="commentMessage" id="commentMessage" th:field="*{commentMessage}"
-        placeholder="Comment...">
-      <input type="submit" value="Comment">
-    </form>
+    <div class="row">
+      <div class="col-md-12 col-lg-8 mb-3">
+        <div class="bg-white border rounded p-4">
+          <div class="thread-user-profile d-flex mb-4">
+            <img src="https://www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg" alt=""
+              class="profile-img rounded-circle">
+            <div class="thread-info">
+              <a th:href="@{/u/__${thread.user.username}__}" class="text-decoration-none fw-bold"><span
+                  th:text="${thread.user.userProfile.firstName + ' ' + thread.user.userProfile.lastName}" /></a>
+              <p th:text="${thread.formattedCreatedAt}" />
+            </div>
+          </div>
+          <h1 th:text="${thread.title}" />
+          <p th:text="${thread.content}" />
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-4">
+        <div class="profile-and-comment">
+          <div class="bg-white border rounded p-4 mb-3">
+            a
+          </div>
+          <div class="bg-white border rounded p-4">
+            <form th:action="@{/saveThreadComment?threadId=__${thread.threadId}__}" th:object="${threadCommentRequest}"
+              method="post">
+              <textarea type="text" name="commentMessage" id="commentMessage" th:field="*{commentMessage}"
+                class="form-control mb-2" placeholder="Write comment..." rows="4" cols="40"></textarea>
+              <button type="submit" class="btn btn-light"><i class="bi bi-chat"></i> Comment</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div th:replace="components/footer :: footer"></div>

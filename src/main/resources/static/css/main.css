@@ -57,4 +57,17 @@ body {
   margin-right: 15px;
 }
 
-.thread-info {}
+/* Thread Detail Page */
+@media (min-width: 768px) {
+  .profile-and-comment {
+    position: fixed;
+  }
+}
+
+
+
+.thread-user-profile img {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+}
