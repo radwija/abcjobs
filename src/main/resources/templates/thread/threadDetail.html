@@ -52,7 +52,10 @@
             </div>
           </div>
           <div class="bg-white border rounded p-4">
-            <div class="comments mb-4">
+            <div th:if="${threadComments.size() == 0}" class="mb-4">
+              Be the first to comment...
+            </div>
+            <div th:if="${threadComments.size() != 0}" class="comments mb-4">
               <div class="comment mb-4" th:each="comment: ${threadComments}">
                 <a th:href="@{/u/__${thread.user.username}__}" class="text-decoration-none">
                   <div class="comment-user-profile d-flex">
