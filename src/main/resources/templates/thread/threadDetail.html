@@ -20,8 +20,10 @@
       <div class="col-md-12 col-lg-8 mb-3">
         <div class="bg-white border rounded p-4">
           <div class="thread-user-profile d-flex mb-4">
-            <img src="https://www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg" alt=""
-              class="profile-img rounded-circle">
+            <a th:href="@{/u/__${thread.user.username}__}">
+              <img src="https://www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg" alt=""
+                class="sm-profile-img rounded-circle">
+            </a>
             <div class="thread-info">
               <a th:href="@{/u/__${thread.user.username}__}" class="text-decoration-none fw-bold"><span
                   th:text="${thread.user.userProfile.firstName + ' ' + thread.user.userProfile.lastName}" /></a>
@@ -35,7 +37,19 @@
       <div class="col-md-12 col-lg-4">
         <div class="profile-and-comment">
           <div class="bg-white border rounded p-4 mb-3">
-            a
+            <div class="d-flex align-items-center">
+              <a th:href="@{/u/__${thread.user.username}__}" class="text-decoration-none">
+                <img src="https://www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg" alt=""
+                  class="sm-profile-img rounded-circle">
+                <div class="thread-info">
+                  <a th:href="@{/u/__${thread.user.username}__}" class="text-decoration-none">
+                    <div th:text="${thread.user.userProfile.firstName + ' ' + thread.user.userProfile.lastName}"
+                      class="fw-bold" />
+                    <div th:text="${thread.user.userProfile.title}" />
+                  </a>
+                </div>
+              </a>
+            </div>
           </div>
           <div class="bg-white border rounded p-4">
             <form th:action="@{/saveThreadComment?threadId=__${thread.threadId}__}" th:object="${threadCommentRequest}"

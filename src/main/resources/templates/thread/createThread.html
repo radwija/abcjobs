@@ -22,10 +22,9 @@
       </div>
       <div class="mb-3">
         <label for="content" class="form-label">Example textarea</label>
-        <textarea class="form-control" name="content" id="content" th:field="*{content}" required></textarea>
+        <textarea class="form-control" name="content" id="content" th:field="*{content}" rows="15" cols="40"
+          required></textarea>
       </div>
-      <!-- <input type="text" th:field="*{title}" placeholder="Title">
-    <textarea class="form-control" id="content" th:field="*{content}" required></textarea> -->
       <button type="submit" class="btn btn-primary"><i class="bi bi-send"></i> Post thread</button>
     </form>
   </div>
