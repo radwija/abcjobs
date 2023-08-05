@@ -2,6 +2,7 @@ package com.lithan.abcjobs.controller;
 
 import com.lithan.abcjobs.entity.ThreadComment;
 import com.lithan.abcjobs.entity.ThreadPost;
+import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.exception.ThreadPostNotFoundException;
 import com.lithan.abcjobs.payload.request.ThreadCommentRequest;
 import com.lithan.abcjobs.payload.response.ThreadResponse;
@@ -11,10 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -65,5 +69,25 @@ public class ThreadPostController {
     @GetMapping("/threads")
     public ModelAndView allThreadsView() {
         return new ModelAndView("thread/threads");
+    }
+
+    @GetMapping("/u/{username}/edit/thread")
+    public ModelAndView editTreadDetailView(@RequestParam("id") Long threadId, Principal principal, RedirectAttributes redirectAttributes, Model model) {
+        String threadOwnerUsername = threadPostService.getThreadPostByThreadId(threadId).getUser().getUsername();
+        if (principal == null) {
+            return new ModelAndView("redirect:/u/" + threadOwnerUsername + "/thread?id=" + threadId);
+        }
+        String authUsername = principal.getName();
+        boolean isAuthUser = authUsername.equals(threadOwnerUsername);
+        boolean isAdmin = userService.getUserByUsername(authUsername).getRole().equals("ADMIN");
+
+        if (!(isAuthUser || isAdmin)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "You're not allowed to edit this thread!");
+            return new ModelAndView("redirect:/u/" + threadOwnerUsername + "/thread?id=" + threadId);
+        }
+
+        ThreadPost threadPost = threadPostService.getThreadPostByThreadId(threadId);
+        model.addAttribute("threadPost", threadPost);
+        return new ModelAndView("thread/editThread");
     }
 }

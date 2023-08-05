@@ -138,4 +138,29 @@ public class UserController {
         }
         return new ModelAndView("redirect:/u/" + threadOwnerUsername + "?tab=threads");
     }
+
+    @PostMapping("/saveUpdatedThread")
+    public ModelAndView saveUpdatedThread(@ModelAttribute ThreadPost threadPost, Principal principal, RedirectAttributes redirectAttributes, Model model) {
+        Long threadId = threadPost.getThreadId();
+        String threadOwnerUsername = threadPostService.getThreadPostByThreadId(threadId).getUser().getUsername();
+        if (principal == null) {
+            return new ModelAndView("redirect:/u/" + threadOwnerUsername + "/thread?id=" + threadId);
+        }
+
+        String authUsername = principal.getName();
+        boolean isAdmin = userService.getUserByUsername(authUsername).getUsername().equals("ADMIN");
+
+        try {
+            threadPostService.saveUpdateThreadPost(threadPost, authUsername);
+            model.addAttribute("successMessage", "Thread edited successfully!");
+            if (isAdmin) {
+                redirectAttributes.addFlashAttribute("successMessage", "Thread edited successfully! (ADMIN)");
+            }
+            redirectAttributes.addFlashAttribute("successMessage", "Thread edited successfully!");
+            return new ModelAndView("redirect:/u/" + threadOwnerUsername + "/thread?id=" + threadId);
+        } catch(RefusedActionException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return new ModelAndView("redirect:/u/" + threadOwnerUsername + "/thread?id=" + threadId);
+        }
+    }
 }

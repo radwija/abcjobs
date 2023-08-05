@@ -65,11 +65,28 @@ public class ThreadPostPostServiceImpl implements ThreadPostService {
     }
 
     @Override
+    public void saveUpdateThreadPost(ThreadPost threadPost, String authUsername) {
+        ThreadPost savedThreadPost = threadPostRepository.getThreadPostByThreadId(threadPost.getThreadId());
+        User authUser = userService.getUserByUsername(authUsername);
+        boolean isThreadOwner = authUser.getUsername().equals(savedThreadPost.getUser().getUsername());
+        boolean isAdmin = authUser.getRole().equals("ADMIN");
+
+        if (!(isThreadOwner || isAdmin)) {
+            throw new RefusedActionException("You're not allowed to edit this thread!");
+        }
+
+        savedThreadPost.setTitle(threadPost.getTitle());
+        savedThreadPost.setContent(threadPost.getContent());
+
+        threadPostRepository.save(savedThreadPost);
+    }
+
+    @Override
     public void deleteThread(Long threadId, String usernameDeleter) {
         String threadOwner = threadPostRepository.getThreadPostByThreadId(threadId).getUser().getUsername();
         boolean isAdmin = userService.getUserByUsername(usernameDeleter).getRole().equals("ADMIN");
         if (!(threadOwner.equals(usernameDeleter) || isAdmin)) {
-            throw new RefusedActionException("You're not allowed to delete the thread!");
+            throw new RefusedActionException("You're not allowed to delete this thread!");
         }
 
         threadPostRepository.deleteById(threadId);

@@ -86,7 +86,8 @@
 
                                             <li
                                                 th:if="${#request.userPrincipal != null && #request.userPrincipal.name == user.username || #request.isUserInRole('ROLE_ADMIN')}">
-                                                <a class="dropdown-item" href="#">Edit</a>
+                                                <a class="dropdown-item"
+                                                    th:href="${'/u/' + thread.user.username + '/edit/thread?id=' + thread.threadId}">Edit</a>
                                             </li>
                                             <li
                                                 th:if="${#request.userPrincipal != null && #request.userPrincipal.name == user.username || #request.isUserInRole('ROLE_ADMIN')}">
