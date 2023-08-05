@@ -1,27 +1,24 @@
 package com.lithan.abcjobs.entity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
-public class ThreadPost {
+public class ThreadComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long threadId;
-
-    private String title;
+    private Long commentId;
 
     @Lob
-    private String content;
+    private String commentMessage;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "threadPost", cascade = CascadeType.ALL)
-    private List<ThreadComment> threadComments = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "thread_id")
+    private ThreadPost threadPost;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
@@ -51,28 +48,20 @@ public class ThreadPost {
         this.formattedCreatedAt = formattedCreatedAt;
     }
 
-    public Long getThreadId() {
-        return threadId;
+    public Long getCommentId() {
+        return commentId;
     }
 
-    public void setThreadId(Long threadId) {
-        this.threadId = threadId;
+    public void setCommentId(Long commentId) {
+        this.commentId = commentId;
     }
 
-    public String getTitle() {
-        return title;
+    public String getCommentMessage() {
+        return commentMessage;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
+    public void setCommentMessage(String commentMessage) {
+        this.commentMessage = commentMessage;
     }
 
     public User getUser() {
@@ -83,11 +72,11 @@ public class ThreadPost {
         this.user = user;
     }
 
-    public List<ThreadComment> getComments() {
-        return threadComments;
+    public ThreadPost getThreadPost() {
+        return threadPost;
     }
 
-    public void setComments(List<ThreadComment> threadComments) {
-        this.threadComments = threadComments;
+    public void setThreadPost(ThreadPost threadPost) {
+        this.threadPost = threadPost;
     }
 }

@@ -20,6 +20,13 @@
     <span th:text="${thread.user.username}" />
     <h3>Content:</h3>
     <p th:text="${thread.content}" />
+
+    <form th:action="@{/saveThreadComment?threadId=__${thread.threadId}__}" th:object="${threadCommentRequest}"
+      method="post">
+      <input type="text" name="commentMessage" id="commentMessage" th:field="*{commentMessage}"
+        placeholder="Comment...">
+      <input type="submit" value="Comment">
+    </form>
   </div>
 
   <div th:replace="components/footer :: footer"></div>

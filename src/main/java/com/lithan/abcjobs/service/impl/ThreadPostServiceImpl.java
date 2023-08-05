@@ -23,6 +23,10 @@ public class ThreadPostServiceImpl implements ThreadService {
     private UserService userService;
 
     @Override
+    public ThreadPost getThreadPostByThreadId(Long threadId) {
+        return threadPostRepository.getThreadPostByThreadId(threadId);
+    }
+    @Override
     public ThreadPost saveThread(ThreadPostRequest thread, String username) {
         User user = userService.getUserByUsername(username);
         ThreadPost savedThread = new ThreadPost();

@@ -4,7 +4,9 @@ import com.lithan.abcjobs.entity.ThreadPost;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.AccountNotFoundException;
+import com.lithan.abcjobs.payload.request.ThreadCommentRequest;
 import com.lithan.abcjobs.payload.request.ThreadPostRequest;
+import com.lithan.abcjobs.service.ThreadCommentService;
 import com.lithan.abcjobs.service.UserProfileService;
 import com.lithan.abcjobs.service.UserService;
 import com.lithan.abcjobs.service.impl.ThreadPostServiceImpl;
@@ -31,6 +33,9 @@ public class UserController {
 
     @Autowired
     private ThreadPostServiceImpl threadPostService;
+
+    @Autowired
+    private ThreadCommentService threadCommentService;
 
     @GetMapping({"/u", "/u/"})
     public String peopleView() {
@@ -94,12 +99,21 @@ public class UserController {
     }
 
     @PostMapping("/saveNewThread")
-    public ModelAndView saveNewThread(@ModelAttribute("userProfile") ThreadPostRequest newThreadPost, Principal principal) {
+    public ModelAndView saveNewThread(@ModelAttribute ThreadPostRequest newThreadPost, Principal principal) {
         String username = principal.getName();
         ThreadPost threadPost = threadPostService.saveThread(newThreadPost, username);
 
         // Getting ID for redirecting to the thread
         System.out.println("Thread ID: " + threadPost.getThreadId());
         return new ModelAndView("redirect:/u/" + username + "?tab=threads");
+    }
+
+    @PostMapping("/saveThreadComment")
+    public ModelAndView saveThreadComment(@RequestParam("threadId") Long threadId, @ModelAttribute ThreadCommentRequest threadCommentRequest, Principal principal) {
+        String threadOwnerUsername = threadPostService.getThreadPostByThreadId(threadId).getUser().getUsername();
+        String username = principal.getName();
+
+        threadCommentService.saveComment(threadId, threadCommentRequest, username);
+        return new ModelAndView("redirect:/u/" + threadOwnerUsername + "/thread?id=" + threadId);
     }
 }
