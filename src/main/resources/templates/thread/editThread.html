@@ -16,6 +16,10 @@
   <div th:replace="components/navbar :: navbar"></div>
 
   <div class="container my-container-custom">
+    <a th:href="@{/u/__${threadPost.user.username}__/thread?id=__${threadPost.threadId}__}"
+      th:data-confirm-delete="|Are you sure you want to revert changes?|"
+      onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false" class="btn btn-danger mb-3"><i
+        class="bi bi-x-circle"></i> Cancel</a>
     <form th:action="@{/saveUpdatedThread}" th:object="${threadPost}" method="post">
       <input type="hidden" th:field="*{threadId}" />
       <div class="mb-3">
