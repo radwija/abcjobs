@@ -1,5 +1,6 @@
 package com.lithan.abcjobs.controller;
 
+import com.lithan.abcjobs.entity.ThreadComment;
 import com.lithan.abcjobs.entity.ThreadPost;
 import com.lithan.abcjobs.exception.ThreadPostNotFoundException;
 import com.lithan.abcjobs.payload.request.ThreadCommentRequest;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class ThreadPostController {
@@ -41,6 +43,11 @@ public class ThreadPostController {
 
             threadDetailPage.addObject("threadCommentRequest", threadCommentRequest);
             currentThread.setFormattedCreatedAt(formatDate(currentThread.getCreatedAt()));
+
+            List<ThreadComment> threadComments = currentThread.getComments();
+            threadComments.forEach(threadComment -> threadComment.setFormattedCreatedAt(formatDate(threadComment.getCreatedAt())));
+
+            model.addAttribute("threadComments", threadComments);
             model.addAttribute("thread", currentThread);
             return threadDetailPage;
         } catch (ThreadPostNotFoundException e) {

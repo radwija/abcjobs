@@ -52,6 +52,23 @@
             </div>
           </div>
           <div class="bg-white border rounded p-4">
+            <div class="comments mb-4">
+              <div class="comment mb-4" th:each="comment: ${threadComments}">
+                <a th:href="@{/u/__${thread.user.username}__}" class="text-decoration-none">
+                  <div class="comment-user-profile d-flex">
+                    <img src="https://www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg" alt=""
+                      class="sm-profile-img rounded-circle">
+                    <div class="comment-bulb p-2 rounded">
+                      <a th:href="@{/u/__${thread.user.username}__}" class="text-decoration-none ">
+                        <div th:text="${comment.user.userProfile.firstName + ' ' + thread.user.userProfile.lastName}"
+                          class="fw-medium" />
+                      </a>
+                      <p th:text="${comment.commentMessage}" class="mb-0" />
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
             <form th:action="@{/saveThreadComment?threadId=__${thread.threadId}__}" th:object="${threadCommentRequest}"
               method="post">
               <textarea type="text" name="commentMessage" id="commentMessage" th:field="*{commentMessage}"
