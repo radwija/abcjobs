@@ -2,8 +2,7 @@ package com.lithan.abcjobs.service;
 
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
-import com.lithan.abcjobs.request.RegistrationRequest;
-import com.lithan.abcjobs.request.UpdateUserProfileRequest;
+import com.lithan.abcjobs.payload.request.RegistrationRequest;
 
 import java.util.List;
 import java.util.Optional;

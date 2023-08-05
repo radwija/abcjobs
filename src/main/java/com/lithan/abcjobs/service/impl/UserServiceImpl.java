@@ -8,7 +8,7 @@ import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.exception.UserProfileNotFoundException;
 import com.lithan.abcjobs.repository.UserProfileRepository;
 import com.lithan.abcjobs.repository.UserRepository;
-import com.lithan.abcjobs.request.RegistrationRequest;
+import com.lithan.abcjobs.payload.request.RegistrationRequest;
 import com.lithan.abcjobs.service.EmailSenderService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

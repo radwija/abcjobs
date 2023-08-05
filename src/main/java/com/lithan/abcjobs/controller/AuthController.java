@@ -3,7 +3,7 @@ package com.lithan.abcjobs.controller;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.exception.CredentialAlreadyTakenException;
 import com.lithan.abcjobs.exception.AccountNotFoundException;
-import com.lithan.abcjobs.request.RegistrationRequest;
+import com.lithan.abcjobs.payload.request.RegistrationRequest;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

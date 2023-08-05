@@ -1,9 +1,7 @@
 package com.lithan.abcjobs.controller;
 
-import com.lithan.abcjobs.entity.ThreadPost;
-import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.exception.ThreadPostNotFoundException;
-import com.lithan.abcjobs.response.ThreadResponse;
+import com.lithan.abcjobs.payload.response.ThreadResponse;
 import com.lithan.abcjobs.service.ThreadService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

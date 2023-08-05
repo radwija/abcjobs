@@ -4,7 +4,7 @@ import com.lithan.abcjobs.entity.ThreadPost;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.AccountNotFoundException;
-import com.lithan.abcjobs.request.ThreadPostRequest;
+import com.lithan.abcjobs.payload.request.ThreadPostRequest;
 import com.lithan.abcjobs.service.UserProfileService;
 import com.lithan.abcjobs.service.UserService;
 import com.lithan.abcjobs.service.impl.ThreadPostServiceImpl;

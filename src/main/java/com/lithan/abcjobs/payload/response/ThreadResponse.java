@@ -1,4 +1,4 @@
-package com.lithan.abcjobs.response;
+package com.lithan.abcjobs.payload.response;
 
 import com.lithan.abcjobs.entity.ThreadPost;
 import com.lithan.abcjobs.entity.User;

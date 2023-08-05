@@ -1,4 +1,4 @@
-package com.lithan.abcjobs.request;
+package com.lithan.abcjobs.payload.request;
 
 import javax.persistence.Lob;
 
