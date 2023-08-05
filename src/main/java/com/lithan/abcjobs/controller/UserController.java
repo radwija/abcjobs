@@ -50,7 +50,7 @@ public class UserController {
             User user = userService.getUserByUsername(username);
             UserProfile userProfile = userService.getUserProfileByUsername(username);
 
-            if (Objects.equals(tab, "profile") || tab == null) {
+            if (Objects.equals(tab, "profile") || Objects.equals(tab, null) || Objects.equals(tab, "")) {
                 model.addAttribute("isInProfileTab", true);
                 model.addAttribute("profileText", "You're in profile tab");
             } else if (Objects.equals(tab, "threads")) {

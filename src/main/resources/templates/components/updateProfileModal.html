@@ -28,11 +28,34 @@
             <div class="modal-body">
               <form th:action="@{/saveUpdateUserProfile}" th:object="${userProfile}" method="POST">
                 <input type="hidden" th:field="*{userDetailId}" />
-                <input type="text" th:field="*{firstName}" placeholder="First name" required>
-                <input type="text" th:field="*{lastName}" placeholder="Last name" required>
-                <input type="text" th:field="*{title}" placeholder="Title" required>
-                <input type="text" th:field="*{city}" placeholder="City" required>
-                <input type="text" th:field="*{country}" placeholder="Country" required>
+
+                <div class="mb-3">
+                  <label for="firstName" class="form-label">First name</label>
+                  <input type="text" th:field="*{firstName}" class="form-control" name="firstName"
+                    placeholder="First name" required>
+                </div>
+
+                <div class="mb-3">
+                  <label for="lastName" class="form-label">Last name</label>
+                  <input type="text" th:field="*{lastName}" class="form-control" name="lastName" placeholder="Last name"
+                    required>
+                </div>
+
+                <div class="mb-3">
+                  <label for="title" class="form-label">Title</label>
+                  <input type="text" th:field="*{title}" class="form-control" name="title" placeholder="Title" required>
+                </div>
+
+                <div class="mb-3">
+                  <label for="city" class="form-label">City</label>
+                  <input type="text" th:field="*{city}" class="form-control" name="city" placeholder="City" required>
+                </div>
+
+                <div class="mb-3">
+                  <label for="country" class="form-label">Country</label>
+                  <input type="text" th:field="*{country}" class="form-control" name="country" placeholder="Country"
+                    required>
+                </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                   <input type="submit" class="btn btn-primary" value="Save changes">
