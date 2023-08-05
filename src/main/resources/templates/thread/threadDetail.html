@@ -20,15 +20,29 @@
     <div class="row">
       <div class="col-md-12 col-lg-7 mb-3">
         <div class="bg-white border rounded p-4">
-          <div class="thread-user-profile d-flex mb-4">
-            <a th:href="@{/u/__${thread.user.username}__}">
-              <img src="https://www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg" alt=""
-                class="sm-profile-img rounded-circle">
-            </a>
-            <div class="thread-info">
-              <a th:href="@{/u/__${thread.user.username}__}" class="text-decoration-none fw-bold"><span
-                  th:text="${thread.user.userProfile.firstName + ' ' + thread.user.userProfile.lastName}" /></a>
-              <p th:text="${thread.formattedCreatedAt}" />
+          <div class="d-flex justify-content-between">
+            <div class="thread-user-profile d-flex mb-4">
+              <a th:href="@{/u/__${thread.user.username}__}">
+                <img src="https://www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg" alt=""
+                  class="sm-profile-img rounded-circle">
+              </a>
+              <div class="thread-info">
+                <a th:href="@{/u/__${thread.user.username}__}" class="text-decoration-none fw-bold"><span
+                    th:text="${thread.user.userProfile.firstName + ' ' + thread.user.userProfile.lastName}" /></a>
+                <p th:text="${thread.formattedCreatedAt}" />
+              </div>
+            </div>
+            <div class="dropdown">
+              <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item active"
+                    th:href="@{/u/__${thread.user.username}__/edit/thread?id=__${thread.threadId}__}">Edit</a>
+                </li>
+                <li><a class="dropdown-item" th:href="@{'/deleteThread?threadId=' + __${thread.threadId}__}">Delete</a>
+                </li>
+              </ul>
             </div>
           </div>
           <h1 th:text="${thread.title}" />
