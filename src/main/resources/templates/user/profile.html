@@ -57,9 +57,9 @@
                             th:href="@{/create-thread}" class="btn btn-primary mb-3">
                             + Post thread
                         </a>
-                        <h3 th:if="${threadPosts.size() == 0}">
+                        <div th:if="${threadPosts.size() == 0}">
                             There isn't any thread...
-                        </h3>
+                        </div>
                         <div th:each="thread: ${threadPosts}" class="mt-3">
                             <div class="bg-white border rounded p-3">
                                 <div class="thread-card d-flex justify-content-between">
