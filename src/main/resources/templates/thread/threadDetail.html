@@ -32,22 +32,25 @@
                 <p th:text="${thread.formattedCreatedAt}" />
               </div>
             </div>
-            <div class="dropdown">
-              <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-three-dots-vertical"></i>
-              </button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item"
-                    th:href="@{/u/__${thread.user.username}__/edit/thread?id=__${thread.threadId}__}">Edit</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" th:href="@{'/deleteThread?threadId=' + __${thread.threadId}__}"
-                    th:data-confirm-delete="|Are you sure you want to delete this thread?|"
-                    onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
-                    Delete this thread
-                  </a>
-                </li>
-              </ul>
+            <div
+              th:if="${#request.userPrincipal != null && #request.userPrincipal.name == thread.user.username || #request.isUserInRole('ROLE_ADMIN')}">
+              <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item"
+                      th:href="@{/u/__${thread.user.username}__/edit/thread?id=__${thread.threadId}__}">Edit</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" th:href="@{'/deleteThread?threadId=' + __${thread.threadId}__}"
+                      th:data-confirm-delete="|Are you sure you want to delete this thread?|"
+                      onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">
+                      Delete this thread
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
           <h1 th:text="${thread.title}" />
