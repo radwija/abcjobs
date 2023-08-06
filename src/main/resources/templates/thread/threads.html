@@ -16,13 +16,15 @@
   <div th:replace="components/navbar :: navbar"></div>
   <div class="container my-container-custom">
     <div th:replace="components/message :: responseMessages"></div>
-    <form th:action="@{/}" method="get">
+    <form th:action="@{/threads}" method="get">
       <div class="input-group">
-        <input type="text" class="form-control rounded" placeholder="Search" aria-label="Search"
+        <input type="text" class="form-control rounded" name="q" placeholder="Search" aria-label="Search"
           aria-describedby="search-addon" />
         <button type="submit" class="btn btn-outline-primary">search</button>
       </div>
     </form>
+
+    <div th:replace="components/threadCard :: threadCard"></div>
   </div>
   </div>
   <div th:replace="components/footer :: footer"></div>

@@ -91,4 +91,15 @@ public class ThreadPostPostServiceImpl implements ThreadPostService {
 
         threadPostRepository.deleteById(threadId);
     }
+
+    @Override
+    public List<ThreadPost> getAllThreadPosts() {
+        return threadPostRepository.findAll();
+    }
+
+    @Override
+    public List<ThreadPost> searchForThreadPostsByTitleAndContent(String keyword) {
+        return threadPostRepository.searchForThreadPostsByTitleAndContent(keyword);
+    }
+
 }

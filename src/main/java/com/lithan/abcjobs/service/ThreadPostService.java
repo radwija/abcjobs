@@ -14,4 +14,6 @@ public interface ThreadPostService {
     List<ThreadPost> getThreadPostsByUserId(User user);
     void saveUpdateThreadPost(ThreadPost threadPost, String authUsername);
     void deleteThread(Long threadId, String username);
+    List<ThreadPost> getAllThreadPosts();
+    List<ThreadPost> searchForThreadPostsByTitleAndContent(String keyword);
 }
