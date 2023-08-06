@@ -13,7 +13,6 @@
 
 <body>
     <div th:replace="components/navbar :: navbar"></div>
-    <div th:replace="components/message :: responseMessages"></div>
 
     <div class="container my-container-custom">
         <div class="row">
@@ -23,16 +22,17 @@
                 </div>
             </div>
             <div class="col-md-12 col-lg-6">
+                <div th:replace="components/message :: responseMessages"></div>
                 <div class="p-3 mb-5 rounded bg-white">
                     <h1>Login</h1>
                     <form th:action="@{/login}" method="POST">
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
-                            <input type="text" name="username" class="form-control" placeholder="Username">
+                            <input type="text" name="username" class="form-control" placeholder="Username" required>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Username</label>
-                            <input type="password" name="password" class="form-control" placeholder="Password">
+                            <input type="password" name="password" class="form-control" placeholder="Password" required>
                         </div>
                         <div class="d-grid">
                             <input type="submit" name="Login" value="Login" class="btn btn-primary">
