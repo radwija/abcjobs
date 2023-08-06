@@ -26,7 +26,7 @@
                     <div th:replace="components/message :: responseMessages"></div>
                     <form th:action="@{/saveUserRegister}" th:object="${registrationRequest}" method="post">
                         <div class="mb-3">
-                            <label for="firstName" class="form-label">first name</label>
+                            <label for="firstName" class="form-label">First name</label>
                             <input type="text" th:field="*{firstName}" name="firstName" class="form-control"
                                 placeholder="First name" required>
                         </div>
