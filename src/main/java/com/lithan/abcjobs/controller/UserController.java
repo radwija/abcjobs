@@ -49,7 +49,6 @@ public class UserController {
             ModelAndView profilePage = new ModelAndView("user/profile");
 
             User user = userService.getUserByUsername(username);
-            UserProfile userProfile = userService.getUserProfileByUsername(username);
 
             if (Objects.equals(tab, "profile") || Objects.equals(tab, null) || Objects.equals(tab, "")) {
                 model.addAttribute("isInProfileTab", true);
@@ -64,11 +63,10 @@ public class UserController {
 
 
             model.addAttribute("user", user);
-            model.addAttribute("userProfile", userProfile);
             return new ModelAndView("user/profile");
         } catch (AccountNotFoundException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return new ModelAndView("exception/userNotFound");
+            return new ModelAndView("people/people");
         }
     }
 
@@ -163,5 +161,26 @@ public class UserController {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return new ModelAndView("redirect:/u/" + threadOwnerUsername + "/thread?id=" + threadId);
         }
+    }
+
+    @GetMapping("/people")
+    public ModelAndView viewAllThreadsView(@RequestParam(value = "q", required = false) String keyword, Model model) {
+        List<User> users = userService.getAllUsers();
+        if (users.size() == 0) {
+            model.addAttribute("noResultMessage", "There isn't any thread");
+        }
+        if (keyword != null) {
+            users = userService.searchForUsers(keyword);
+        }
+
+        for (User user : users) {
+            System.out.println(user.getUsername());
+        }
+        System.out.println();
+        if (users.size() == 0 && keyword != null) {
+            model.addAttribute("noResultMessage", "No search result for: " + keyword);
+        }
+        model.addAttribute("users", users);
+        return new ModelAndView("people/people");
     }
 }

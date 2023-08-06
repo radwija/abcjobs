@@ -14,4 +14,5 @@ public interface UserService {
     UserProfile getUserProfileByUsername(String username);
     User activateAccount(Long id);
     Optional<User> getUserById(Long userId);
+    List<User> searchForUsers(String keyword);
 }

@@ -108,4 +108,9 @@ public class UserServiceImpl implements UserService {
     public Optional<User> getUserById(Long userId) {
         return userRepository.findById(userId);
     }
+
+    @Override
+    public List<User> searchForUsers(String keyword) {
+        return userRepository.searchForUsers(keyword);
+    }
 }

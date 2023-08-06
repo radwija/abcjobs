@@ -24,12 +24,14 @@
                             th:alt="${__user.username__ + '-img-profile'}" class="profile-img rounded-circle">
                     </div>
                     <div class="info">
-                        <h3 th:text="${userProfile.firstName + ' ' + userProfile.lastName}" />
-                        <div th:text="${userProfile.title}" />
+                        <h3 th:text="${user.userProfile.firstName + ' ' + user.userProfile.lastName}" />
+                        <div th:text="${user.userProfile.title}" />
 
                         <div class="my-2 d-grid gap-1">
-                            <div><i class="bi bi-buildings-fill"></i> City: <span th:text="${userProfile.city}" /></div>
-                            <div><i class="bi bi-globe2"></i> Country: <span th:text="${userProfile.country}" /></div>
+                            <div><i class="bi bi-buildings-fill"></i> City: <span th:text="${user.userProfile.city}" />
+                            </div>
+                            <div><i class="bi bi-globe2"></i> Country: <span th:text="${user.userProfile.country}" />
+                            </div>
                             <div><i class="bi bi-envelope-at-fill"></i> Email: <span th:text="${user.email}" /></div>
                         </div>
                         <!-- Update Profile Modal imported from components directory -->
