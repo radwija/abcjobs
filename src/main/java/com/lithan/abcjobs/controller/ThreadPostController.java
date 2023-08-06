@@ -55,7 +55,6 @@ public class ThreadPostController {
             return threadDetailPage;
         } catch (ThreadPostNotFoundException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            // TODO: model.addAttribute("threads", threadPostService.getAllThreadPosts());
             return new ModelAndView("thread/threads");
         }
     }
@@ -67,12 +66,15 @@ public class ThreadPostController {
 
     @GetMapping("/threads")
     public ModelAndView viewAllThreadsView(@RequestParam(value = "q", required = false) String keyword, Model model) {
-        List<ThreadPost> searchedThread = threadPostService.getAllThreadPosts();;
+        List<ThreadPost> searchedThread = threadPostService.getAllThreadPosts();
+        if (searchedThread.size() == 0) {
+            model.addAttribute("noResultMessage", "There isn't any thread");
+        }
         if (keyword != null) {
             searchedThread = threadPostService.searchForThreadPostsByTitleAndContent(keyword);
         }
         searchedThread.forEach(thread -> thread.setFormattedCreatedAt(formatDate(thread.getCreatedAt())));
-        if (searchedThread.size() == 0) {
+        if (searchedThread.size() == 0 && keyword != null) {
             model.addAttribute("noResultMessage", "No search result for: " + keyword);
         }
         model.addAttribute("threadPosts", searchedThread);
