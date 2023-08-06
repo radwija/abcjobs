@@ -56,7 +56,7 @@ public class ThreadPostController {
         } catch (ThreadPostNotFoundException e) {
             model.addAttribute("errorMessage", e.getMessage());
             // TODO: model.addAttribute("threads", threadPostService.getAllThreadPosts());
-            return new ModelAndView("exception/threadNotFound");
+            return new ModelAndView("thread/threads");
         }
     }
 
