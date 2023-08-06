@@ -67,13 +67,14 @@ public class ThreadPostController {
 
     @GetMapping("/threads")
     public ModelAndView viewAllThreadsView(@RequestParam(value = "q", required = false) String keyword, Model model) {
-        List<ThreadPost> searchedThread = new ArrayList<>();
-        if (keyword == null) {
-            threadPostService.getAllThreadPosts();
+        List<ThreadPost> searchedThread = threadPostService.getAllThreadPosts();;
+        if (keyword != null) {
+            searchedThread = threadPostService.searchForThreadPostsByTitleAndContent(keyword);
         }
-        searchedThread = threadPostService.searchForThreadPostsByTitleAndContent(keyword);
-        System.out.println(searchedThread.size());
         searchedThread.forEach(thread -> thread.setFormattedCreatedAt(formatDate(thread.getCreatedAt())));
+        if (searchedThread.size() == 0) {
+            model.addAttribute("noResultMessage", "No search result for: " + keyword);
+        }
         model.addAttribute("threadPosts", searchedThread);
         return new ModelAndView("thread/threads");
     }
