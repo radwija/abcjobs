@@ -14,6 +14,7 @@ public class ThreadPost {
     private String title;
 
     @Lob
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @ManyToOne
