@@ -89,7 +89,7 @@
                         <div th:text="${comment.user.userProfile.firstName + ' ' + thread.user.userProfile.lastName}"
                           class="fw-medium" />
                       </a>
-                      <p th:text="${comment.commentMessage}" class="mb-0" />
+                      <p th:text="${comment.commentMessage}" class="mb-0" style="white-space: pre-line" />
                       <small th:text="${comment.formattedCreatedAt}" class="fw-medium" />
                     </div>
                   </div>
