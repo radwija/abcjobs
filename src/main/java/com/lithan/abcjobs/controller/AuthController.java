@@ -107,7 +107,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ModelAndView loginViewResponse(Principal principal,RedirectAttributes redirectAttributes, @RequestParam String error) {
+    public ModelAndView loginViewResponse(Principal principal, RedirectAttributes redirectAttributes, @RequestParam String error) {
         if (principal == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "Incorrect credential or account not activated");
             return new ModelAndView("redirect:/login");
