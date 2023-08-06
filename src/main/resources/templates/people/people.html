@@ -23,32 +23,34 @@
         <button type="submit" class="btn btn-outline-primary">search</button>
       </div>
     </form>
-    <table class="table">
-      <tr>
-        <th>ID</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>First name</th>
-        <th>Last name</th>
-        <th>Title</th>
-        <th>City</th>
-        <th>Country</th>
-        <th>Action</th>
-      </tr>
-      <tr th:each="user: ${users}" scope="row">
-        <td th:text="${user.userId}" />
-        <td th:text="${user.username}" />
-        <td th:text="${user.email}" />
-        <td th:text="${user.userProfile.firstName}" />
-        <td th:text="${user.userProfile.lastName}" />
-        <td th:text="${user.userProfile.title}" />
-        <td th:text="${user.userProfile.city}" />
-        <td th:text="${user.userProfile.Country}" />
-        <td>
-          <a th:href="@{/u/__${user.username}__}" class="btn btn-primary">View</a>
-        </td>
-      </tr>
-    </table>
+    <div class="table-responsive">
+      <table class="table">
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>First name</th>
+          <th>Last name</th>
+          <th>Title</th>
+          <th>City</th>
+          <th>Country</th>
+          <th>Action</th>
+        </tr>
+        <tr th:each="user: ${users}" scope="row">
+          <td th:text="${user.userId}" />
+          <td th:text="${user.username}" />
+          <td th:text="${user.email}" />
+          <td th:text="${user.userProfile.firstName}" />
+          <td th:text="${user.userProfile.lastName}" />
+          <td th:text="${user.userProfile.title}" />
+          <td th:text="${user.userProfile.city}" />
+          <td th:text="${user.userProfile.Country}" />
+          <td>
+            <a th:href="@{/u/__${user.username}__}" class="btn btn-primary">View</a>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
   <div th:replace="components/footer :: footer"></div>
 </body>
