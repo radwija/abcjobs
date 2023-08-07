@@ -82,9 +82,15 @@ public class UserController {
         if (principal == null) {
             return new ModelAndView("redirect:/login");
         }
-        String profileUsername = userService.getUserById(userProfile.getUserDetailId()).get().getUsername();
-        userProfileService.saveUpdateUserProfile(userProfile);
+        UserProfile savedUserProfile = userProfileService.saveUpdateUserProfile(userProfile);
+        String profileUsername = savedUserProfile.getUser().getUsername();
+
+        boolean isAdmin = userService.getUserByUsername(principal.getName()).equals("ADMIN");
+
         redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully!");
+        if (isAdmin) {
+            redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully! (ADMIN)");
+        }
         return new ModelAndView("redirect:/u/" + profileUsername);
     }
 

@@ -14,7 +14,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Autowired
     UserProfileRepository userProfileRepository;
     @Override
-    public void saveUpdateUserProfile(UserProfile userProfile) {
+    public UserProfile saveUpdateUserProfile(UserProfile userProfile) {
         UserProfile savedUserProfile = userProfileRepository.findById(userProfile.getUserDetailId()).get();
 
         savedUserProfile.setFirstName(userProfile.getFirstName());
@@ -24,11 +24,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         savedUserProfile.setCountry(userProfile.getCountry());
 
         userProfileRepository.save(savedUserProfile);
-    }
-
-    @Override
-    public Optional<UserProfile> getUserProfileById(Long userProfileId) {
-        return userProfileRepository.findById(userProfileId);
+        return savedUserProfile;
     }
 
     @Override

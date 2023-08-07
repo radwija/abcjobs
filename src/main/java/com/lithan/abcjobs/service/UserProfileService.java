@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserProfileService {
-    void saveUpdateUserProfile(UserProfile userProfile);
-    Optional<UserProfile> getUserProfileById(Long userProfileId);
+    UserProfile saveUpdateUserProfile(UserProfile userProfile);
     List<UserProfile> getAllUserProfiles();
 }
