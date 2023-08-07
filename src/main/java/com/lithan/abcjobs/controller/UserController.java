@@ -53,7 +53,7 @@ public class UserController {
 
             boolean isAdminVisible = user.getRole().equals("ADMIN");
             if (principal != null) {
-                isAdminVisible = !userService.getUserByUsername(principal.getName()).getRole().equals("ADMIN");
+                isAdminVisible = isAdminVisible && !userService.getUserByUsername(principal.getName()).getRole().equals("ADMIN");
             }
             if (isAdminVisible) {
                 throw new AccountNotFoundException("User not found");
