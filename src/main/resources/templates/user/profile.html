@@ -49,7 +49,8 @@
                 <div class="border shadow-sm p-3 mb-5 rounded bg-white">
                     <p th:if="${isInProfileTab}" th:text="${profileText}" />
                     <div th:if="${isInThreadTab}">
-                        <div th:if="${#request.userPrincipal != null && #request.userPrincipal.name == user.username}">
+                        <div
+                            th:if="${#request.userPrincipal != null && #request.userPrincipal.name == user.username && !(#request.isUserInRole('ROLE_ADMIN'))}">
                             <div th:replace="components/buttons :: postThreadButton"></div>
                         </div>
                         <div th:if="${threadPosts.size() == 0}">

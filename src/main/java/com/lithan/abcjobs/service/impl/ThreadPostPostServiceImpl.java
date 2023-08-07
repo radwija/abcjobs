@@ -37,6 +37,9 @@ public class ThreadPostPostServiceImpl implements ThreadPostService {
         savedThread.setContent(thread.getContent());
         savedThread.setUser(user);
 
+        if (user.getRole().equals("ADMIN")) {
+            throw new RefusedActionException("Admin user unable to create threads");
+        }
         threadPostRepository.save(savedThread);
         return savedThread;
     }

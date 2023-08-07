@@ -15,10 +15,11 @@
 <body>
   <div th:replace="components/navbar :: navbar"></div>
   <div class="container my-container-custom">
+    <div th:replace="components/message :: responseMessages"></div>
     <form th:action="@{/saveNewThread}" th:object="${newThreadPost}" method="post">
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
-        <input type="text" th:field="*{title}" class="form-control" name="title" placeholder="Title">
+        <input type="text" th:field="*{title}" class="form-control" name="title" placeholder="Title" required>
       </div>
       <div class="mb-3">
         <label for="content" class="form-label">Content</label>

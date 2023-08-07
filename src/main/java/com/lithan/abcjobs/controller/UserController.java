@@ -103,7 +103,7 @@ public class UserController {
     }
 
     @GetMapping("/create-thread")
-    public ModelAndView createThreadView() {
+    public ModelAndView createThreadView(RedirectAttributes redirectAttributes) {
         ModelAndView createThreadPage = new ModelAndView("thread/createThread");
 
         // Used for creating new thread
@@ -115,13 +115,19 @@ public class UserController {
 
     @PostMapping("/saveNewThread")
     public ModelAndView saveNewThread(@ModelAttribute ThreadPostRequest newThreadPost, Principal principal, RedirectAttributes redirectAttributes) {
-        String username = principal.getName();
-        ThreadPost threadPost = threadPostService.saveThread(newThreadPost, username);
+        try {
+            String username = principal.getName();
+            ThreadPost threadPost = threadPostService.saveThread(newThreadPost, username);
 
-        Long newThreadId = threadPost.getThreadId();
+            Long newThreadId = threadPost.getThreadId();
 
-        redirectAttributes.addFlashAttribute("successMessage", "New thread created successfully!");
-        return new ModelAndView("redirect:/u/" + username + "/thread?id=" + newThreadId);
+            redirectAttributes.addFlashAttribute("successMessage", "New thread created successfully!");
+            return new ModelAndView("redirect:/u/" + username + "/thread?id=" + newThreadId);
+        } catch (
+                RefusedActionException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return new ModelAndView("redirect:/create-thread");
+        }
     }
 
     @PostMapping("/saveThreadComment")
