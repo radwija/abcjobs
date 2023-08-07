@@ -131,12 +131,16 @@ public class UserController {
     }
 
     @PostMapping("/saveThreadComment")
-    public ModelAndView saveThreadComment(@RequestParam("threadId") Long threadId, @ModelAttribute ThreadCommentRequest threadCommentRequest, Principal principal) {
+    public ModelAndView saveThreadComment(@RequestParam("threadId") Long threadId, @ModelAttribute ThreadCommentRequest threadCommentRequest, Principal principal, RedirectAttributes redirectAttributes) {
         String threadOwnerUsername = threadPostService.getThreadPostByThreadId(threadId).getUser().getUsername();
-        String username = principal.getName();
-
-        threadCommentService.saveComment(threadId, threadCommentRequest, username);
-        return new ModelAndView("redirect:/u/" + threadOwnerUsername + "/thread?id=" + threadId);
+        try {
+            String username = principal.getName();
+            threadCommentService.saveComment(threadId, threadCommentRequest, username);
+            return new ModelAndView("redirect:/u/" + threadOwnerUsername + "/thread?id=" + threadId);
+        } catch (RefusedActionException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return new ModelAndView("redirect:/u/" + threadOwnerUsername + "/thread?id=" + threadId);
+        }
     }
 
     @GetMapping("/deleteThread")

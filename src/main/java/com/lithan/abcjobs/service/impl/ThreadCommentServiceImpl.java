@@ -3,6 +3,7 @@ package com.lithan.abcjobs.service.impl;
 import com.lithan.abcjobs.entity.ThreadComment;
 import com.lithan.abcjobs.entity.ThreadPost;
 import com.lithan.abcjobs.entity.User;
+import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.ThreadCommentRequest;
 import com.lithan.abcjobs.repository.ThreadCommentRepository;
 import com.lithan.abcjobs.service.ThreadCommentService;
@@ -25,6 +26,9 @@ public class ThreadCommentServiceImpl implements ThreadCommentService {
     @Override
     public void saveComment(Long threadId, ThreadCommentRequest threadCommentRequest, String username) {
         User user = userService.getUserByUsername(username);
+        if (user.getRole().equals("ADMIN")) {
+            throw new RefusedActionException("Admin unable to comment on any threads!");
+        }
         ThreadPost threadPost = threadPostService.getThreadPostByThreadId(threadId);
         ThreadComment savedComment = new ThreadComment();
 
