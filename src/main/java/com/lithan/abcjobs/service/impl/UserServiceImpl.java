@@ -73,10 +73,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findUserByRole(String role) {
+        return userRepository.findUserByRole(role);
+    }
+
+    @Override
     public User getUserByUsername(String username) {
         User user = userRepository.getUserByUsername(username);
         if (user == null) {
-            throw new AccountNotFoundException("User not found with username: " + username);
+            throw new AccountNotFoundException("User not found");
         }
         return user;
     }

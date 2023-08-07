@@ -20,6 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "p.city LIKE '%' || :keyword || '%' OR " +
             "p.country LIKE '%' || :keyword || '%'")
     List<User> searchForUsers(String keyword);
+    List<User> findUserByRole(String role);
 
     User getUserByUsername(String username);
 

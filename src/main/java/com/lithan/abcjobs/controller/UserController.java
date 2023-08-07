@@ -51,6 +51,14 @@ public class UserController {
             User user = userService.getUserByUsername(username);
             UserProfile userProfile = userService.getUserProfileByUsername(username);
 
+            boolean isAdminVisible = user.getRole().equals("ADMIN");
+            if (principal != null) {
+                isAdminVisible = !userService.getUserByUsername(principal.getName()).getRole().equals("ADMIN");
+            }
+            if (isAdminVisible) {
+                throw new AccountNotFoundException("User not found");
+            }
+
             if (Objects.equals(tab, "profile") || Objects.equals(tab, null) || Objects.equals(tab, "")) {
                 model.addAttribute("isInProfileTab", true);
                 model.addAttribute("profileText", "You're in profile tab");
@@ -174,6 +182,8 @@ public class UserController {
     @GetMapping("/people")
     public ModelAndView viewAllThreadsView(@RequestParam(value = "q", required = false) String keyword, Model model) {
         List<User> users = userService.getAllUsers();
+        List<User> adminUsers = userService.findUserByRole("ADMIN");
+
         if (users.size() == 0) {
             model.addAttribute("noResultMessage", "There isn't any thread");
         }
@@ -181,8 +191,8 @@ public class UserController {
             users = userService.searchForUsers(keyword);
         }
 
-        for (User user : users) {
-            System.out.println(user.getUsername());
+        for (User adminUser : adminUsers) {
+            users.remove(adminUser);
         }
         System.out.println();
         if (users.size() == 0 && keyword != null) {
