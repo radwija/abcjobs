@@ -49,6 +49,7 @@ public class UserController {
             ModelAndView profilePage = new ModelAndView("user/profile");
 
             User user = userService.getUserByUsername(username);
+            UserProfile userProfile = userService.getUserProfileByUsername(username);
 
             if (Objects.equals(tab, "profile") || Objects.equals(tab, null) || Objects.equals(tab, "")) {
                 model.addAttribute("isInProfileTab", true);
@@ -63,6 +64,7 @@ public class UserController {
 
 
             model.addAttribute("user", user);
+            model.addAttribute("userProfile", userProfile);
             return new ModelAndView("user/profile");
         } catch (AccountNotFoundException e) {
             model.addAttribute("errorMessage", e.getMessage());
