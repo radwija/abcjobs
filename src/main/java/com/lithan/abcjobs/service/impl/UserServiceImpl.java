@@ -35,10 +35,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUserRegister(RegistrationRequest registrationRequest) {
         if (userRepository.existsByUsername(registrationRequest.getUsername()) && userRepository.existsByEmail(registrationRequest.getEmail())) {
-            throw new CredentialAlreadyTakenException("Username and email already taken");
-        } else if (userRepository.existsByUsername(registrationRequest.getUsername())) {
-            throw new CredentialAlreadyTakenException("Username already taken");
-        } else if (userRepository.existsByEmail(registrationRequest.getEmail())) {
+            throw new CredentialAlreadyTakenException("Username not available and email already taken");
+        }
+        if (userRepository.existsByUsername(registrationRequest.getUsername())) {
+            throw new CredentialAlreadyTakenException("Username not available");
+        }
+        if (userRepository.existsByEmail(registrationRequest.getEmail())) {
             throw new CredentialAlreadyTakenException("Email already taken");
         }
 

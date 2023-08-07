@@ -55,10 +55,10 @@ public class AuthController {
     }
 
     @GetMapping("/register")
-    public ModelAndView registerView(Principal principal) {
+    public ModelAndView registerView(@ModelAttribute RegistrationRequest registrationRequest, Principal principal) {
         if (principal == null) {
             ModelAndView registrationPage = new ModelAndView("auth/registration/registration");
-            RegistrationRequest registrationRequest = new RegistrationRequest();
+            // @ModelAttribute RegistrationRequest registrationRequest is used because to get the object from failed /saveUserRegister
             registrationPage.addObject("registrationRequest", registrationRequest);
 
             return registrationPage;
@@ -75,8 +75,9 @@ public class AuthController {
             redirectAttributes.addFlashAttribute("emailToActivate", emailToActivate);
             return new ModelAndView("redirect:/thank-you");
         } catch (CredentialAlreadyTakenException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return new ModelAndView("auth/registration/registration");
+            redirectAttributes.addFlashAttribute("registrationRequest", registrationRequest);
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return new ModelAndView("redirect:/register");
         }
     }
 
