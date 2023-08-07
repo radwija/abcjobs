@@ -23,6 +23,7 @@
         <button type="submit" class="btn btn-outline-primary">search</button>
       </div>
     </form>
+    <div th:replace="components/buttons :: postThreadButton"></div>
     <h3 th:if="${noResultMessage}" th:text="${noResultMessage}" />
     <div th:replace="components/threadCard :: threadCard"></div>
   </div>
