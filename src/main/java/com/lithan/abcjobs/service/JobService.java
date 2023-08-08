@@ -9,5 +9,5 @@ public interface JobService {
     Job findJobByJobId(Long jobId);
     Job saveJob(JobRequest jobRequest, String postByUsername);
     List<Job> getAllJobs();
-//    List<Job> searchForJobs(String keyword);
+    List<Job> searchForJobs(String keyword);
 }

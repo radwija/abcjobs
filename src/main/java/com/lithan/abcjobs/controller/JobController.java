@@ -21,8 +21,15 @@ public class JobController {
     @GetMapping("/jobs")
     public ModelAndView jobListView(@RequestParam(value = "q", required = false) String keyword , @ModelAttribute ApplyJobRequest applyJobRequest, Model model) {
         ModelAndView jobListPage = new ModelAndView("job/jobs");
-        List<Job> jobs = jobService.getAllJobs();
-        model.addAttribute("jobs", jobs);
+        List<Job> searchedJobs = jobService.getAllJobs();
+
+        if (searchedJobs.size() == 0) {
+            model.addAttribute("noResultMessage", "There isn't any jobs");
+        }
+        if (keyword != null) {
+            searchedJobs = jobService.searchForJobs(keyword);
+        }
+        model.addAttribute("jobs", searchedJobs);
         return jobListPage;
     }
 

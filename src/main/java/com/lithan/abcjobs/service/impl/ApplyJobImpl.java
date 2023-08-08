@@ -28,9 +28,9 @@ public class ApplyJobImpl implements ApplyJobService {
     public ApplyJob saveAppliedJob(Long jobId, ApplyJobRequest applyJobRequest, String username) {
         ApplyJob applyJob = new ApplyJob();
         User appliedBy =  userService.getUserByUsername(username);
-        if (appliedBy.getRole().equals("ADMIN")) {
-            throw new RefusedActionException("Admin unable to apply for any jobs!");
-        }
+//        if (appliedBy.getRole().equals("ADMIN")) {
+//            throw new RefusedActionException("Admin unable to apply for any jobs!");
+//        }
         Job appliedJob = jobService.findJobByJobId(jobId);
 
         applyJob.setQualificationUrl(applyJobRequest.getQualificationUrl());
