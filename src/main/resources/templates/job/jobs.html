@@ -31,6 +31,7 @@
         <th>Company Name</th>
         <th>Job Level</th>
         <th>Job Time</th>
+        <th>Action</th>
       </tr>
       <tr th:each="job: ${jobs}" scope="row">
         <td>[[${job.jobId}]]</td>
@@ -38,6 +39,7 @@
         <td>[[${job.companyName}]]</td>
         <td>[[${job.jobLevel}]]</td>
         <td>[[${job.jobTime}]]</td>
+        <td><a th:href="@{/job?detail=__${job.jobId}__}" class="btn btn-primary">View</a></td>
       </tr>
     </table>
   </div>

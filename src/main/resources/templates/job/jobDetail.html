@@ -17,7 +17,12 @@
 <body>
   <div th:replace="components/navbar :: navbar"></div>
   <div class="container my-container-custom">
-
+    <div th:replace="components/message :: responseMessages"></div>
+    <h4>[[${detailedJob.jobId}]]</h4>
+    <h1>[[${detailedJob.jobName}]]</h1>
+    <h2>[[${detailedJob.companyName}]]</h2>
+    <p>[[${detailedJob.jobLevel}]]</p>
+    <p>[[${detailedJob.jobTime}]]</p>
   </div>
   <div th:replace="components/footer :: footer"></div>
 

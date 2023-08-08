@@ -1,6 +1,7 @@
 package com.lithan.abcjobs.controller;
 
 import com.lithan.abcjobs.entity.Job;
+import com.lithan.abcjobs.exception.JobNotFoundException;
 import com.lithan.abcjobs.payload.request.ApplyJobRequest;
 import com.lithan.abcjobs.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class JobController {
     private JobService jobService;
 
     @GetMapping("/jobs")
-    public ModelAndView jobListView(@RequestParam(value = "q", required = false) String keyword , @ModelAttribute ApplyJobRequest applyJobRequest, Model model) {
+    public ModelAndView jobListView(@RequestParam(value = "q", required = false) String keyword, @ModelAttribute ApplyJobRequest applyJobRequest, Model model) {
         ModelAndView jobListPage = new ModelAndView("job/jobs");
         List<Job> searchedJobs = jobService.getAllJobs();
 
@@ -34,13 +36,18 @@ public class JobController {
     }
 
     @GetMapping("/job")
-    public ModelAndView jobDetailView(@RequestParam(value = "id", required = false) Long jobId , @ModelAttribute ApplyJobRequest applyJobRequest, Model model) {
-        ModelAndView jobDetailPage = new ModelAndView("job/jobDetail");
-        if (jobId == null) {
+    public ModelAndView jobDetailView(@RequestParam(value = "detail", required = false) Long jobId, @ModelAttribute ApplyJobRequest applyJobRequest, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            ModelAndView jobDetailPage = new ModelAndView("job/jobDetail");
+            if (jobId == null) {
+                return new ModelAndView("redirect:/jobs");
+            }
+            Job detailedJob = jobService.findJobByJobId(jobId);
+            model.addAttribute("detailedJob", detailedJob);
+            return jobDetailPage;
+        } catch (JobNotFoundException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return new ModelAndView("redirect:/jobs");
         }
-        Job detailedJob = jobService.findJobByJobId(jobId);
-        model.addAttribute("detailedJob", detailedJob);
-        return jobDetailPage;
     }
 }

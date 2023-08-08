@@ -4,6 +4,7 @@ import com.lithan.abcjobs.constraint.EJobLevel;
 import com.lithan.abcjobs.constraint.EJobTime;
 import com.lithan.abcjobs.entity.Job;
 import com.lithan.abcjobs.entity.User;
+import com.lithan.abcjobs.exception.JobNotFoundException;
 import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.JobRequest;
 import com.lithan.abcjobs.repository.JobRepository;
@@ -23,6 +24,10 @@ public class JobServiceImpl implements JobService {
     private UserService userService;
 
     public Job findJobByJobId(Long jobId) {
+        Job job = jobRepository.findJobByJobId(jobId);
+        if (job == null) {
+            throw new JobNotFoundException("Job not found");
+        }
         return jobRepository.findJobByJobId(jobId);
     }
 
