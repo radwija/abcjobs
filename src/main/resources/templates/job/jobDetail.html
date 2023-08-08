@@ -23,6 +23,19 @@
     <h2>[[${detailedJob.companyName}]]</h2>
     <p>[[${detailedJob.jobLevel}]]</p>
     <p>[[${detailedJob.jobTime}]]</p>
+
+    <div th:if="${#request.userPrincipal != null}">
+      <form th:action="@{/applyJob?detail=__${detailedJob.jobId}__}" th:object="${applyJobRequest}" method="POST">
+        <div class="mb-3">
+          <label for="qualificationUrl" class="form-label">Your portfolio</label>
+          <input type="text" th:field="*{qualificationUrl}" name="qualificationUrl" class="form-control"
+            placeholder="Your portfolio URL" required>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Apply</button>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
   <div th:replace="components/footer :: footer"></div>
 

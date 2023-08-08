@@ -8,10 +8,7 @@ import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.ApplyJobRequest;
 import com.lithan.abcjobs.payload.request.ThreadCommentRequest;
 import com.lithan.abcjobs.payload.request.ThreadPostRequest;
-import com.lithan.abcjobs.service.ThreadCommentService;
-import com.lithan.abcjobs.service.ThreadPostService;
-import com.lithan.abcjobs.service.UserProfileService;
-import com.lithan.abcjobs.service.UserService;
+import com.lithan.abcjobs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +35,9 @@ public class UserController {
 
     @Autowired
     private ThreadCommentService threadCommentService;
+
+    @Autowired
+    private ApplyJobService applyJobService;
 
     @GetMapping({"/u", "/u/"})
     public String peopleView() {
@@ -212,10 +212,17 @@ public class UserController {
         model.addAttribute("users", users);
         return new ModelAndView("people/people");
     }
+
     @PostMapping("/applyJob")
-    public ModelAndView applyJob(@RequestParam("id") Long jobId ,@ModelAttribute ApplyJobRequest applyJobRequest) {
-        ModelAndView applyJobPage = new ModelAndView("job/applyJob");
-        applyJobPage.addObject("applyJobRequest", applyJobRequest);
-        return applyJobPage;
+    public ModelAndView applyJob(@RequestParam("detail") Long jobId, Principal principal, @ModelAttribute ApplyJobRequest applyJobRequest, RedirectAttributes redirectAttributes) {
+        try {
+            String appliedByUsername = principal.getName();
+            applyJobService.saveAppliedJob(jobId, applyJobRequest, appliedByUsername);
+            redirectAttributes.addFlashAttribute("successMessage", "Job applied successfully!");
+            return new ModelAndView("redirect:/job/applied");
+        } catch (RefusedActionException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return new ModelAndView("redirect:/job?detail=" + jobId);
+        }
     }
 }

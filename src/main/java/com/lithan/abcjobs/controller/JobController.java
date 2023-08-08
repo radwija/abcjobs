@@ -3,6 +3,8 @@ package com.lithan.abcjobs.controller;
 import com.lithan.abcjobs.entity.Job;
 import com.lithan.abcjobs.exception.JobNotFoundException;
 import com.lithan.abcjobs.payload.request.ApplyJobRequest;
+import com.lithan.abcjobs.payload.request.JobRequest;
+import com.lithan.abcjobs.service.ApplyJobService;
 import com.lithan.abcjobs.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,6 +45,7 @@ public class JobController {
                 return new ModelAndView("redirect:/jobs");
             }
             Job detailedJob = jobService.findJobByJobId(jobId);
+            jobDetailPage.addObject("applyJobRequest", applyJobRequest);
             model.addAttribute("detailedJob", detailedJob);
             return jobDetailPage;
         } catch (JobNotFoundException e) {
