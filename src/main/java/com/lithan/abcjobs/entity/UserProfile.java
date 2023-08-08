@@ -18,6 +18,10 @@ public class UserProfile {
     private String city;
     private String country;
 
+    @OneToOne
+    @JoinColumn(name = "job_id")
+    private Job job;
+
     public Long getUserDetailId() {
         return userDetailId;
     }
@@ -72,5 +76,13 @@ public class UserProfile {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public Job getJob() {
+        return job;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
     }
 }

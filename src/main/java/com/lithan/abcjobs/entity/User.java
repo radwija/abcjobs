@@ -3,6 +3,7 @@ package com.lithan.abcjobs.entity;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 @Entity
@@ -34,6 +35,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ThreadComment> threadComments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Job> jobs = new ArrayList<>();
 
     public Long getUserId() {
         return userId;
