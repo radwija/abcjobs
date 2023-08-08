@@ -5,6 +5,7 @@ import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.exception.RefusedActionException;
+import com.lithan.abcjobs.payload.request.ApplyJobRequest;
 import com.lithan.abcjobs.payload.request.ThreadCommentRequest;
 import com.lithan.abcjobs.payload.request.ThreadPostRequest;
 import com.lithan.abcjobs.service.ThreadCommentService;
@@ -210,5 +211,11 @@ public class UserController {
         }
         model.addAttribute("users", users);
         return new ModelAndView("people/people");
+    }
+    @PostMapping("/applyJob")
+    public ModelAndView applyJob(@RequestParam("id") Long jobId ,@ModelAttribute ApplyJobRequest applyJobRequest) {
+        ModelAndView applyJobPage = new ModelAndView("job/applyJob");
+        applyJobPage.addObject("applyJobRequest", applyJobRequest);
+        return applyJobPage;
     }
 }

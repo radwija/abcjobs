@@ -12,6 +12,8 @@ import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class JobServiceImpl implements JobService {
     @Autowired
@@ -19,6 +21,10 @@ public class JobServiceImpl implements JobService {
 
     @Autowired
     private UserService userService;
+
+    public Job findJobByJobId(Long jobId) {
+        return jobRepository.findJobByJobId(jobId);
+    }
 
     @Override
     public Job saveJob(JobRequest jobRequest, String postByUsername) {
@@ -47,5 +53,10 @@ public class JobServiceImpl implements JobService {
         newJob.setJobDescription(jobRequest.getJobDescription());
 
         return jobRepository.save(newJob);
+    }
+
+    @Override
+    public List<Job> getAllJobs() {
+        return jobRepository.findAll();
     }
 }

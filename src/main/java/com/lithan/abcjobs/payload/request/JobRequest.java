@@ -11,6 +11,7 @@ public class JobRequest {
     @Lob
     private String jobDescription;
     private String companyName;
+    private String companyLogoUrl;
 
     public String getJobName() {
         return jobName;
@@ -50,5 +51,13 @@ public class JobRequest {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getCompanyLogoUrl() {
+        return companyLogoUrl;
+    }
+
+    public void setCompanyLogoUrl(String companyLogoUrl) {
+        this.companyLogoUrl = companyLogoUrl;
     }
 }
