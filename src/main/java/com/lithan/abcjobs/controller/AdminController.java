@@ -41,7 +41,7 @@ public class AdminController {
         return new ModelAndView("admin/admin");
     }
 
-    @GetMapping("/post-job")
+    @GetMapping("/jobs/post-job")
     public ModelAndView postJobAdminView(@ModelAttribute JobRequest jobRequest, Model model, RedirectAttributes redirectAttributes) {
         ModelAndView postJobAdminPage = new ModelAndView("admin/postJob");
         postJobAdminPage.addObject("jobRequest", jobRequest);
