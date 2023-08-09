@@ -105,5 +105,13 @@ body {
 
 /* Sidebar */
 .sidebar {
-  height: 500px;
+  /* height: 500px; */
+}
+
+.sidebar ul {
+  padding-left: 0 !important;
+}
+
+.sidebar ul li {
+  list-style: none;
 }

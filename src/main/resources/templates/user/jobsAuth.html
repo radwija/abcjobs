@@ -19,8 +19,12 @@
     th:class="${#request.userPrincipal != null} ? 'my-jobs-container-custom container-fluid my-container-custom' : 'container-fluid my-container-custom'">
     <div class="row">
       <div class="d-none d-md-none d-lg-block col col-lg-2">
-        <div class="sidebar border shadow-sm p-3 mb-5 rounded bg-white">
-          a
+        <div class="sidebar p-3 mb-5 rounded">
+          <ul class="d-grid gap-2">
+            <li><a th:href="@{/jobs}" class="btn btn-outline-primary">Jobs</a></li>
+            <li><a th:href="@{/jobs/applied}" class="btn btn-outline-primary">Applied Jobs</a></li>
+            <li><a th:href="@{/jobs/my-job}" class="btn btn-outline-primary">My Job</a></li>
+          </ul>
         </div>
       </div>
       <div class="col-md-12 col-lg-10">
