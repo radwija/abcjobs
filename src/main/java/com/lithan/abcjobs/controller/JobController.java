@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -23,8 +24,11 @@ public class JobController {
     private JobService jobService;
 
     @GetMapping("/jobs")
-    public ModelAndView jobListView(@RequestParam(value = "q", required = false) String keyword, @ModelAttribute ApplyJobRequest applyJobRequest, Model model) {
+    public ModelAndView jobListView(@RequestParam(value = "q", required = false) String keyword, @ModelAttribute ApplyJobRequest applyJobRequest, Principal principal, Model model) {
         ModelAndView jobListPage = new ModelAndView("job/jobs");
+        if (principal != null) {
+            jobListPage = new ModelAndView("user/jobsAuth");
+        }
         List<Job> searchedJobs = jobService.getAllJobs();
 
         if (searchedJobs.size() == 0) {

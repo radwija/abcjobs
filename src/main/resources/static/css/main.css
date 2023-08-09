@@ -16,6 +16,13 @@ body {
   margin-bottom: 50px !important;
 }
 
+@media (max-width: 768px) {
+  .my-jobs-container-custom {
+    margin-top: 130px !important;
+    margin-bottom: 50px !important;
+  }
+}
+
 .footer {
   margin-top: auto;
 }
@@ -94,4 +101,9 @@ body {
 .comments {
   height: 400px;
   overflow-y: auto;
+}
+
+/* Sidebar */
+.sidebar {
+  height: 500px;
 }
