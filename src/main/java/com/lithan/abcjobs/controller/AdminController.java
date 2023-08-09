@@ -42,10 +42,19 @@ public class AdminController {
     @GetMapping({"", "/", "/dashboard"})
     public ModelAndView mantap(Model model) {
         List<User> users = userService.getAllUsers();
-        List<UserProfile> userProfiles = userProfileService.getAllUserProfiles();
+        List<Job> jobs = jobService.getAllJobs();
+        List<ApplyJob> jobApplications = applyJobService.getAllAppliedJobs();
+        List<ApplyJob> pendingJobApplications = applyJobService.findAppliedJobByStatus(EApplyJobStatus.PENDING.toString());
+        List<ApplyJob> acceptedJobApplications = applyJobService.findAppliedJobByStatus(EApplyJobStatus.PENDING.toString());
+        List<ApplyJob> declinedJobApplications = applyJobService.findAppliedJobByStatus(EApplyJobStatus.DECLINED.toString());
 
-        model.addAttribute("users", users);
-        model.addAttribute("userProfiles", userProfiles);
+
+        model.addAttribute("isInDashboard", true);
+        model.addAttribute("userNumber", users.size());
+        model.addAttribute("jobNumber", jobs.size());
+        model.addAttribute("pendingNumber", pendingJobApplications.size());
+        model.addAttribute("acceptedNumber", acceptedJobApplications.size());
+        model.addAttribute("declinedNumber", declinedJobApplications.size());
         return new ModelAndView("admin/admin");
     }
 
@@ -145,18 +154,19 @@ public class AdminController {
     public ModelAndView acceptJobApplication(@RequestParam("applyJobId") Long applyJobId, Principal principal, RedirectAttributes redirectAttributes) {
         try {
             JobApplicationResponse response = applyJobService.acceptJobApplication(applyJobId);
-            redirectAttributes.addFlashAttribute("successMessage", response.getMessage() );
+            redirectAttributes.addFlashAttribute("successMessage", response.getMessage());
             return new ModelAndView("redirect:/admin/jobs/manage-applicant?tab=pending");
         } catch (JobApplicationNotFoundException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return new ModelAndView("redirect:/admin/jobs/manage-applicant?tab=pending");
         }
     }
+
     @GetMapping("/declineJobApplication")
     public ModelAndView declineJobApplication(@RequestParam("applyJobId") Long applyJobId, Principal principal, RedirectAttributes redirectAttributes) {
         try {
             JobApplicationResponse response = applyJobService.declineJobApplication(applyJobId);
-            redirectAttributes.addFlashAttribute("successMessage", response.getMessage() );
+            redirectAttributes.addFlashAttribute("successMessage", response.getMessage());
             return new ModelAndView("redirect:/admin/jobs/manage-applicant?tab=pending");
         } catch (JobApplicationNotFoundException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());

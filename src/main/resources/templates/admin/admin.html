@@ -37,6 +37,51 @@
 			<div class="col-md-12 col-lg-10">
 				<div class="">
 					<div th:replace="components/message :: responseMessages"></div>
+					<div th:if="${isInDashboard}">
+						<h1>Summary</h1>
+						<div class="row gap">
+							<div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3">
+								<div class="recap-card bg-primary text-center rounded border p-5">
+									<a th:href="@{/admin/user-management}">
+										<h3>Users</h3>
+										<h1>[[${userNumber}]]</h1>
+									</a>
+								</div>
+							</div>
+							<div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3">
+								<div class="recap-card bg-info text-center rounded border p-5">
+									<a th:href="@{/admin/jobs}">
+										<h3>Jobs</h3>
+										<h1>[[${jobNumber}]]</h1>
+									</a>
+								</div>
+							</div>
+							<div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3">
+								<div class="recap-card bg-warning text-center rounded border p-5">
+									<a th:href="@{/admin/jobs/manage-applicant?tab=pending}">
+										<h3>Pending Job Applications</h3>
+										<h1>[[${pendingNumber}]]</h1>
+									</a>
+								</div>
+							</div>
+							<div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3">
+								<div class="recap-card bg-success text-center rounded border p-5">
+									<a th:href="@{/admin/jobs/manage-applicant?tab=accepted}">
+										<h3>Accepted Job Applications</h3>
+										<h1>[[${acceptedNumber}]]</h1>
+									</a>
+								</div>
+							</div>
+							<div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3">
+								<div class="recap-card bg-danger text-center rounded border p-5">
+									<a th:href="@{/admin/jobs/manage-applicant?tab=declined}">
+										<h3>Declined Job Applications</h3>
+										<h1>[[${declinedNumber}]]</h1>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
 					<div th:if="${isInUserManagement}">
 						<div th:replace="admin/section/data :: userTable"></div>
 					</div>
