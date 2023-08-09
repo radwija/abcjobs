@@ -4,15 +4,13 @@ import com.lithan.abcjobs.constraint.EApplyJobStatus;
 import com.lithan.abcjobs.entity.ApplyJob;
 import com.lithan.abcjobs.entity.Job;
 import com.lithan.abcjobs.entity.User;
+import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.JobApplicationNotFoundException;
 import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.ApplyJobRequest;
 import com.lithan.abcjobs.payload.response.JobApplicationResponse;
 import com.lithan.abcjobs.repository.ApplyJobRepository;
-import com.lithan.abcjobs.service.ApplyJobService;
-import com.lithan.abcjobs.service.EmailSenderService;
-import com.lithan.abcjobs.service.JobService;
-import com.lithan.abcjobs.service.UserService;
+import com.lithan.abcjobs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +30,9 @@ public class ApplyJobServiceImpl implements ApplyJobService {
 
     @Autowired
     private EmailSenderService emailSenderService;
+
+    @Autowired
+    private UserProfileService userProfileService;
 
     @Override
     public ApplyJob saveAppliedJob(Long jobId, ApplyJobRequest applyJobRequest, String username) {
@@ -69,14 +70,19 @@ public class ApplyJobServiceImpl implements ApplyJobService {
     public JobApplicationResponse acceptJobApplication(Long applyJobId) {
         JobApplicationResponse response = new JobApplicationResponse();
         ApplyJob acceptedJobApplication = applyJobRepository.findJobApplicationByApplyJobId(applyJobId);
-        if (applyJobId == null) {
+
+        if (acceptedJobApplication == null) {
             throw new JobApplicationNotFoundException("Job application not found!");
         }
+        User applicant = acceptedJobApplication.getAppliedBy();
+        UserProfile userProfile = applicant.getUserProfile();
+        Job job = acceptedJobApplication.getAppliedJob();
 
         acceptedJobApplication.setStatus(EApplyJobStatus.ACCEPTED.toString());
+        userProfile.setJob(job);
+        userProfileService.saveUpdateUserProfile(userProfile);
         applyJobRepository.save(acceptedJobApplication);
 
-        User applicant = acceptedJobApplication.getAppliedBy();
         String applicantFullname = applicant.getUserProfile().getFirstName() + " " + applicant.getUserProfile().getLastName();
         String jobName = acceptedJobApplication.getAppliedJob().getJobName();
         String companyName = acceptedJobApplication.getAppliedJob().getCompanyName();
