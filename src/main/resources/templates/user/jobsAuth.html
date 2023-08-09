@@ -18,12 +18,12 @@
   <div
     th:class="${#request.userPrincipal != null} ? 'my-jobs-container-custom container-fluid my-container-custom' : 'container-fluid my-container-custom'">
     <div class="row">
-      <div class="d-none d-sm-none d-md-block col-md-3 col-lg-3">
+      <div class="d-none d-md-none d-lg-block col col-lg-2">
         <div class="sidebar border shadow-sm p-3 mb-5 rounded bg-white">
           a
         </div>
       </div>
-      <div class="col-md-9 col-lg-9">
+      <div class="col-md-12 col-lg-10">
         <div class="table-responsive">
           <div th:replace="job/jobs :: jobsAndSearchBar"></div>
         </div>

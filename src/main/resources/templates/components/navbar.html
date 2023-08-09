@@ -62,7 +62,7 @@
             </div>
         </nav>
         <div th:if="${#request.userPrincipal != null && !#request.isUserInRole('ROLE_ADMIN') && #httpServletRequest.requestURI.contains('/job')}"
-            class="bg-light border d-sm-block d-md-none">
+            class="bg-light border d-md-block d-lg-none">
             <div class="container m-2">
                 <div class="d-flex gap-2">
                     <a th:href="@{/jobs}" class="btn btn-outline-primary">Jobs</a>
