@@ -87,11 +87,11 @@
 						</div>
 						<div th:if="${isInAcceptedTab}">
 							<h2 class="mb-4">Accepted Applicants</h2>
-
+							<div th:replace="admin/section/data :: acceptedApplicants"></div>
 						</div>
 						<div th:if="${isInDeclinedTab}">
 							<h2 class="mb-4">Declined Applicants</h2>
-
+							<div th:replace="admin/section/data :: declinedApplicants"></div>
 						</div>
 					</div>
 				</div>
