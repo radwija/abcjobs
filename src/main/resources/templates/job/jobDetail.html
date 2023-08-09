@@ -16,7 +16,8 @@
 
 <body>
   <div th:replace="components/navbar :: navbar"></div>
-  <div class="container my-container-custom">
+  <div
+    th:class="${#request.userPrincipal != null && !#request.isUserInRole('ROLE_ADMIN')} ? 'my-jobs-container-custom container my-container-custom' : 'container my-container-custom'">
     <div th:replace="components/message :: responseMessages"></div>
     <h4>[[${detailedJob.jobId}]]</h4>
     <h1>[[${detailedJob.jobName}]]</h1>
