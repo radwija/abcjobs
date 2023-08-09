@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
 
-        emailSenderService.sendActivationLink(user.getEmail(),
+        emailSenderService.sendMail(user.getEmail(),
                 "Account Activation | ABC Jobs Portal",
                 "Thanks for registering in ABC Jobs Portal. Here is you activation URL to get started your journey in ABC Jobs Portal!" +
                         "\n" +

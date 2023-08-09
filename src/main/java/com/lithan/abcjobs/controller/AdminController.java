@@ -5,8 +5,10 @@ import com.lithan.abcjobs.entity.ApplyJob;
 import com.lithan.abcjobs.entity.Job;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
+import com.lithan.abcjobs.exception.JobApplicationNotFoundException;
 import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.JobRequest;
+import com.lithan.abcjobs.payload.response.JobApplicationResponse;
 import com.lithan.abcjobs.service.ApplyJobService;
 import com.lithan.abcjobs.service.JobService;
 import com.lithan.abcjobs.service.UserProfileService;
@@ -136,6 +138,18 @@ public class AdminController {
         } catch (RefusedActionException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return new ModelAndView("redirect:/admin/jobs");
+        }
+    }
+
+    @GetMapping("/acceptJobApplication")
+    public ModelAndView acceptJobApplication(@RequestParam("applyJobId") Long applyJobId, Principal principal, RedirectAttributes redirectAttributes) {
+        try {
+            JobApplicationResponse response = applyJobService.acceptJobApplication(applyJobId);
+            redirectAttributes.addFlashAttribute("successMessage", response.getMessage() );
+            return new ModelAndView("redirect:/admin/jobs/manage-applicant?tab=pending");
+        } catch (JobApplicationNotFoundException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return new ModelAndView("redirect:/admin/jobs/manage-applicant?tab=pending");
         }
     }
 }

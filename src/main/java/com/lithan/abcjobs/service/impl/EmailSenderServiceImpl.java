@@ -14,7 +14,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     JavaMailSender javaMailSender;
 
     @Override
-    public void sendActivationLink(String to, String subject, String text) {
+    public void sendMail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("abcjobsportal@lithan.com");
         message.setTo(to);

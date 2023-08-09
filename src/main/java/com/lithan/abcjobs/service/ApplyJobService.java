@@ -2,6 +2,7 @@ package com.lithan.abcjobs.service;
 
 import com.lithan.abcjobs.entity.ApplyJob;
 import com.lithan.abcjobs.payload.request.ApplyJobRequest;
+import com.lithan.abcjobs.payload.response.JobApplicationResponse;
 
 import java.util.List;
 
@@ -10,4 +11,5 @@ public interface ApplyJobService {
     void deleteApplyJobByAppliedJobId(Long jobId);
     List<ApplyJob> getAllAppliedJobs();
     List<ApplyJob> findAppliedJobByStatus(String status);
+    JobApplicationResponse acceptJobApplication(Long applyJobId);
 }

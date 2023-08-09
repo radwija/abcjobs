@@ -6,5 +6,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public interface EmailSenderService {
-    void sendActivationLink(String to, String subject, String body);
+    void sendMail(String to, String subject, String body);
 }

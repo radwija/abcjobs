@@ -92,8 +92,14 @@
             <a th:href="@{/u/__${applicant.appliedBy.username}__}" class="btn btn-primary"><i
                 class="bi bi-eye-fill"></i> Profile</a>
             <a href="" class="btn btn-warning"><i class="bi bi-file-earmark-fill"></i> Qualification</a>
-            <a href="" class="btn btn-success"><i class="bi bi-check-circle-fill"></i> Accept</a>
-            <a href="" class="btn btn-danger"><i class="bi bi-x-octagon-fill"></i> Decline</a>
+            <a th:href="@{/admin/acceptJobApplication?applyJobId=__${applicant.applyJobId}__}" class="btn btn-success"
+              th:data-confirm-delete="|Are you sure you want to accept this job application ID: __${applicant.applyJobId}__?|"
+              onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false"><i
+                class="bi bi-check-circle-fill"></i> Accept</a>
+            <a th:href="@{/admin/declineJobApplication?applyJobId=__${applicant.applyJobId}__}" class="btn btn-danger"
+              th:data-confirm-delete="|Are you sure you want to decline this job application ID: __${applicant.applyJobId}__?|"
+              onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false"><i
+                class="bi bi-x-octagon-fill"></i> Decline</a>
           </td>
         </tr>
       </table>
