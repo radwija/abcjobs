@@ -6,6 +6,7 @@ import com.lithan.abcjobs.payload.request.ApplyJobRequest;
 import com.lithan.abcjobs.payload.request.JobRequest;
 import com.lithan.abcjobs.service.ApplyJobService;
 import com.lithan.abcjobs.service.JobService;
+import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,10 +24,16 @@ public class JobController {
     @Autowired
     private JobService jobService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/jobs")
     public ModelAndView jobListView(@RequestParam(value = "q", required = false) String keyword, @ModelAttribute ApplyJobRequest applyJobRequest, Principal principal, Model model) {
         ModelAndView jobListPage = new ModelAndView("job/jobs");
         if (principal != null) {
+            if (userService.getUserByUsername(principal.getName()).getRole().equals("ADMIN")) {
+                return new ModelAndView("redirect:/admin/jobs");
+            }
             jobListPage = new ModelAndView("user/jobsAuth");
         }
         List<Job> searchedJobs = jobService.getAllJobs();
