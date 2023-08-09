@@ -14,6 +14,7 @@
           <th>Full Name</th>
           <th>Username</th>
           <th>Email</th>
+          <th>Role</th>
           <th>Action</th>
         </tr>
         <tr th:each="user: ${users}" scope="row">
@@ -21,7 +22,8 @@
           <td th:text="${user.userProfile.firstName + ' ' + user.userProfile.lastName}" />
           <td th:text="${user.username}" />
           <td th:text="${user.email}" />
-          <td>
+          <td th:text="${user.role}" />
+          <td class="d-flex gap-3">
             <a th:href="@{/u/__${user.username}__}" class="btn btn-primary"><i class="bi bi-eye-fill"></i> View</a>
             <a th:if="${user.role != 'ADMIN'}" th:href="@{#}" class="btn btn-danger"><i class="bi bi-trash3-fill"></i>
               Delete</a>
