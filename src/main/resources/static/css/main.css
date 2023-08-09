@@ -115,3 +115,20 @@ body {
 .sidebar ul li {
   list-style: none;
 }
+
+
+.sidebar-link li {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: white;
+  transition: background-color 0.3s;
+}
+
+.sidebar-link li a {
+  text-decoration: none;
+  color: black;
+}
+
+.sidebar-link li:hover {
+  background-color: rgb(229, 229, 229);
+}

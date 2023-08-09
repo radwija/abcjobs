@@ -18,13 +18,19 @@
 		th:class="${#request.userPrincipal != null} ? 'my-jobs-container-custom container-fluid my-container-custom' : 'container-fluid my-container-custom'">
 		<div class="row">
 			<div class="d-none d-md-none d-lg-block col col-lg-2">
-				<div class="sidebar bg-white shadow-sm p-3 mb-5 rounded">
-					<ul class="d-grid gap-2">
-						<li><a th:href="@{/admin}" class="btn btn-outline-primary">Dashboard</a></li>
-						<li><a th:href="@{/admin/user-management}" class="btn btn-outline-primary">User Management</a></li>
-						<li><a th:href="@{/admin/jobs}" class="btn btn-outline-primary">Jobs</a></li>
-						<li><a th:href="@{/admin/jobs/applied}" class="btn btn-outline-primary">Manage Applicant</a></li>
+				<div class="sidebar d-flex flex-column justify-content-between bg-white shadow-sm p-3 mb-5 rounded">
+					<ul class="sidebar-link d-grid gap-2">
+						<li><a th:href="@{/admin}" class="">Dashboard</a></li>
+						<li><a th:href="@{/admin/user-management}" class="">User Management</a></li>
+						<li><a th:href="@{/admin/jobs}" class="">Jobs</a></li>
+						<li><a th:href="@{/admin/jobs/manage-applicant}" class="">Manage Applicant</a></li>
 					</ul>
+					<div th:if="${#request.userPrincipal != null}" class="nav-item">
+						<form th:action="@{/logout}" method="post">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<input type="submit" name="Logout" value="Logout" class="btn btn-danger w-100"></input>
+						</form>
+					</div>
 				</div>
 			</div>
 			<div class="col-md-12 col-lg-10">
@@ -33,6 +39,7 @@
 						<div th:replace="admin/section/data :: userTable"></div>
 					</div>
 					<div th:if="${isInJobs}">
+						<a th:href="@{/admin/jobs/post-job}" class="btn btn-primary mb-3">+ Post job</a>
 						<div th:replace="admin/section/data :: jobs"></div>
 					</div>
 				</div>
