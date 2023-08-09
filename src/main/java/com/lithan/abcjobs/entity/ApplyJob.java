@@ -12,7 +12,7 @@ public class ApplyJob {
     @JoinColumn(name = "applied_by")
     private User appliedBy;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "applied_job")
     private Job appliedJob;
 

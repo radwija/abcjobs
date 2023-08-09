@@ -5,11 +5,11 @@ import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.JobRequest;
+import com.lithan.abcjobs.service.ApplyJobService;
 import com.lithan.abcjobs.service.JobService;
 import com.lithan.abcjobs.service.UserProfileService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +30,9 @@ public class AdminController {
 
     @Autowired
     private JobService jobService;
+
+    @Autowired
+    private ApplyJobService applyJobService;
 
     @GetMapping({"", "/", "/dashboard"})
     public ModelAndView mantap(Model model) {
@@ -101,7 +104,9 @@ public class AdminController {
     public ModelAndView deleteJob(@RequestParam("jobId") Long jobId, Principal principal, RedirectAttributes redirectAttributes, Model model) {
         try {
             String username = principal.getName();
+            applyJobService.deleteApplyJobByAppliedJobId(jobId);
             jobService.deleteJob(jobId, username);
+
             redirectAttributes.addFlashAttribute("successMessage", "Job deleted successfully!");
             return new ModelAndView("redirect:/admin/jobs");
         } catch (RefusedActionException e) {

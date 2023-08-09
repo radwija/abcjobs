@@ -8,6 +8,7 @@ import com.lithan.abcjobs.exception.JobNotFoundException;
 import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.JobRequest;
 import com.lithan.abcjobs.repository.JobRepository;
+import com.lithan.abcjobs.service.ApplyJobService;
 import com.lithan.abcjobs.service.JobService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -27,7 +27,7 @@ public class ApplyJobImpl implements ApplyJobService {
     @Override
     public ApplyJob saveAppliedJob(Long jobId, ApplyJobRequest applyJobRequest, String username) {
         ApplyJob applyJob = new ApplyJob();
-        User appliedBy =  userService.getUserByUsername(username);
+        User appliedBy = userService.getUserByUsername(username);
         if (appliedBy.getRole().equals("ADMIN")) {
             throw new RefusedActionException("Admin unable to apply for any jobs!");
         }
@@ -38,5 +38,10 @@ public class ApplyJobImpl implements ApplyJobService {
         applyJob.setAppliedJob(appliedJob);
 
         return applyJobRepository.save(applyJob);
+    }
+
+    @Override
+    public void deleteApplyJobByAppliedJobId(Long jobId) {
+        applyJobRepository.deleteByAppliedJobByJobId(jobId);
     }
 }
