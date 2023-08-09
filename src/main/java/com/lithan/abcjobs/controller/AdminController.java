@@ -152,4 +152,15 @@ public class AdminController {
             return new ModelAndView("redirect:/admin/jobs/manage-applicant?tab=pending");
         }
     }
+    @GetMapping("/declineJobApplication")
+    public ModelAndView declineJobApplication(@RequestParam("applyJobId") Long applyJobId, Principal principal, RedirectAttributes redirectAttributes) {
+        try {
+            JobApplicationResponse response = applyJobService.declineJobApplication(applyJobId);
+            redirectAttributes.addFlashAttribute("successMessage", response.getMessage() );
+            return new ModelAndView("redirect:/admin/jobs/manage-applicant?tab=pending");
+        } catch (JobApplicationNotFoundException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return new ModelAndView("redirect:/admin/jobs/manage-applicant?tab=pending");
+        }
+    }
 }

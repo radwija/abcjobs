@@ -12,4 +12,5 @@ public interface ApplyJobService {
     List<ApplyJob> getAllAppliedJobs();
     List<ApplyJob> findAppliedJobByStatus(String status);
     JobApplicationResponse acceptJobApplication(Long applyJobId);
+    JobApplicationResponse declineJobApplication(Long applyJobId);
 }

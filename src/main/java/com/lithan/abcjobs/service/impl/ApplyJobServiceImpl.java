@@ -89,12 +89,47 @@ public class ApplyJobServiceImpl implements ApplyJobService {
         String jobLevel = acceptedJobApplication.getAppliedJob().getJobLevel();
         String jobTime = acceptedJobApplication.getAppliedJob().getJobTime();
 
-        String message = "Job application from " + applicantFullname + " in applying for job ID: " + applyJobId + ", name: " + jobName + ", company: " + companyName + ".";
+        String message = "ACCEPTED: Job application from " + applicantFullname + " in applying for job ID: " + applyJobId + ", name: " + jobName + ", company: " + companyName + ".";
         response.setApplyJob(acceptedJobApplication);
         response.setMessage(message);
         emailSenderService.sendMail(applicant.getEmail(),
                 "Accepted Job Application | ABC Jobs Portal",
                 "Congratulations, " + applicantFullname + "!" + " Your job application has been accepted." +
+                        "\n" +
+                        "Job Name: " + jobName + "\n" +
+                        "Job Level: " + jobLevel + "\n" +
+                        "Job Time: " + jobTime + "\n" +
+                        "Company Name: " + companyName
+        );
+
+        return response;
+    }
+
+    @Override
+    public JobApplicationResponse declineJobApplication(Long applyJobId) {
+        JobApplicationResponse response = new JobApplicationResponse();
+        ApplyJob acceptedJobApplication = applyJobRepository.findJobApplicationByApplyJobId(applyJobId);
+
+        if (acceptedJobApplication == null) {
+            throw new JobApplicationNotFoundException("Job application not found!");
+        }
+
+        acceptedJobApplication.setStatus(EApplyJobStatus.DECLINED.toString());
+        applyJobRepository.save(acceptedJobApplication);
+
+        User applicant = acceptedJobApplication.getAppliedBy();
+        String applicantFullname = applicant.getUserProfile().getFirstName() + " " + applicant.getUserProfile().getLastName();
+        String jobName = acceptedJobApplication.getAppliedJob().getJobName();
+        String companyName = acceptedJobApplication.getAppliedJob().getCompanyName();
+        String jobLevel = acceptedJobApplication.getAppliedJob().getJobLevel();
+        String jobTime = acceptedJobApplication.getAppliedJob().getJobTime();
+
+        String message = "DECLINED: Job application from " + applicantFullname + " in applying for job ID: " + applyJobId + ", name: " + jobName + ", company: " + companyName + ".";
+        response.setApplyJob(acceptedJobApplication);
+        response.setMessage(message);
+        emailSenderService.sendMail(applicant.getEmail(),
+                "Declined Job Application | ABC Jobs Portal",
+                "Thank you for your interest. Unfortunately, your application for the position has been declined. Best regards." +
                         "\n" +
                         "Job Name: " + jobName + "\n" +
                         "Job Level: " + jobLevel + "\n" +
