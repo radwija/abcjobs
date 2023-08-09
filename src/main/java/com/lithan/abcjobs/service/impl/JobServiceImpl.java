@@ -70,5 +70,12 @@ public class JobServiceImpl implements JobService {
         return jobRepository.searchForJobs(keyword);
     }
 
-
+    @Override
+    public void deleteJob(Long jobId, String username) {
+        boolean isAdmin = userService.getUserByUsername(username).getRole().equals("ADMIN");
+        if (!isAdmin) {
+            throw new RefusedActionException("You're not allowed to delete jobs!");
+        }
+        jobRepository.deleteById(jobId);
+    }
 }

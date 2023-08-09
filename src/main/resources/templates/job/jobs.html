@@ -27,7 +27,6 @@
       </form>
       <table class="table">
         <tr>
-          <th>Job ID</th>
           <th>Job Name</th>
           <th>Company Name</th>
           <th>Job Level</th>
@@ -35,7 +34,6 @@
           <th>Action</th>
         </tr>
         <tr th:each="job: ${jobs}" scope="row">
-          <td>[[${job.jobId}]]</td>
           <td>[[${job.jobName}]]</td>
           <td>[[${job.companyName}]]</td>
           <td>[[${job.jobLevel}]]</td>

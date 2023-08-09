@@ -59,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/create-thread").hasAnyAuthority(ROLE_USER, ROLE_ADMIN)
                 .antMatchers(HttpMethod.POST, "/saveThreadComment").hasAnyAuthority(ROLE_USER, ROLE_ADMIN)
                 .antMatchers(HttpMethod.GET, "/deleteThread").hasAnyAuthority(ROLE_USER, ROLE_ADMIN)
+                .antMatchers(HttpMethod.GET, "/deleteJob").hasAnyAuthority(ROLE_ADMIN)
                 .and()
                 .logout()
                 .logoutSuccessUrl("/login")

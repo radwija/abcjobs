@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+</head>
+
+<body>
+  <div th:fragment="userTable">
+    <div class="table-responsive">
+      <table class="table">
+        <tr>
+          <th>User ID</th>
+          <th>Full Name</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Action</th>
+        </tr>
+        <tr th:each="user: ${users}" scope="row">
+          <td th:text="${user.userId}" />
+          <td th:text="${user.userProfile.firstName + ' ' + user.userProfile.lastName}" />
+          <td th:text="${user.username}" />
+          <td th:text="${user.email}" />
+          <td>
+            <a th:href="@{/u/__${user.username}__}" class="btn btn-primary"><i class="bi bi-eye-fill"></i> View</a>
+            <a th:if="${user.role != 'ADMIN'}" th:href="@{#}" class="btn btn-danger"><i class="bi bi-trash3-fill"></i>
+              Delete</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div th:fragment="jobs">
+    <div th:replace="components/message :: responseMessages"></div>
+    <form th:action="@{/jobs}" method="get" class="mb-3">
+      <div class="input-group">
+        <input type="text" class="form-control rounded" name="q" placeholder="Search" aria-label="Search"
+          aria-describedby="search-addon" />
+        <button type="submit" class="btn btn-outline-primary">search</button>
+      </div>
+    </form>
+    <table class="table">
+      <tr>
+        <th>Job ID</th>
+        <th>Job Name</th>
+        <th>Company Name</th>
+        <th>Job Level</th>
+        <th>Job Time</th>
+        <th>Action</th>
+      </tr>
+      <tr th:each="job: ${jobs}" scope="row">
+        <td>[[${job.jobId}]]</td>
+        <td>[[${job.jobName}]]</td>
+        <td>[[${job.companyName}]]</td>
+        <td>[[${job.jobLevel}]]</td>
+        <td>[[${job.jobTime}]]</td>
+        <td>
+          <a th:href="@{/job?detail=__${job.jobId}__}" class="btn btn-primary">View</a>
+          <a th:href="@{/admin/deleteJob?jobId=__${job.jobId}__}" class="btn btn-danger"
+            th:data-confirm-delete="|Are you sure you want to delete this job?|"
+            onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">Delete</a>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+
+</html>

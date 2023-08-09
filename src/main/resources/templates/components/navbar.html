@@ -71,6 +71,16 @@
                 </div>
             </div>
         </div>
+        <div th:if="${#request.userPrincipal != null && #request.isUserInRole('ROLE_ADMIN') && #httpServletRequest.requestURI.contains('/admin')}"
+            class="bg-light border d-md-block d-lg-none">
+            <div class="container m-2">
+                <div class="d-flex gap-2">
+                    <a th:href="@{/admin/user-management}" class="btn btn-outline-primary">User Management</a>
+                    <a th:href="@{/admin/jobs}" class="btn btn-outline-primary">Jobs</a>
+                    <a th:href="@{/admin/jobs/applied}" class="btn btn-outline-primary">Manage Applicant</a>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
