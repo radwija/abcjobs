@@ -122,7 +122,8 @@
           <td>[[${applicant.appliedJob.jobName}]]</td>
           <td>[[${applicant.appliedJob.companyName}]]</td>
           <td class="d-flex gap-3">
-            <a href="" class="btn btn-primary"><i class="bi bi-eye-fill"></i> Profile</a>
+            <a th:href="@{/u/__${applicant.appliedBy.username}__}" class="btn btn-primary"><i
+                class="bi bi-eye-fill"></i> Profile</a>
             <a href="" class="btn btn-warning"><i class="bi bi-file-earmark-fill"></i> Qualification</a>
           </td>
         </tr>
@@ -152,7 +153,8 @@
           <td>[[${applicant.appliedJob.jobName}]]</td>
           <td>[[${applicant.appliedJob.companyName}]]</td>
           <td class="d-flex gap-3">
-            <a href="" class="btn btn-primary"><i class="bi bi-eye-fill"></i> Profile</a>
+            <a th:href="@{/u/__${applicant.appliedBy.username}__}" class="btn btn-primary"><i
+                class="bi bi-eye-fill"></i> Profile</a>
             <a href="" class="btn btn-warning"><i class="bi bi-file-earmark-fill"></i> Qualification</a>
           </td>
         </tr>
