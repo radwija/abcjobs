@@ -31,7 +31,7 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/people}"><i class="bi bi-people-fill"></i> People</a>
                     </li>
-                    <li class="nav-item">
+                    <li th:if="${!#request.isUserInRole('ROLE_ADMIN')}" class="nav-item">
                         <a class="nav-link" th:href="@{/jobs}"><i class="bi bi-briefcase-fill"></i> Jobs</a>
                     </li>
                     <li class="nav-item">
