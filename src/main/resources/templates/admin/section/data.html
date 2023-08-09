@@ -33,7 +33,7 @@
 
   <div th:fragment="jobs">
     <div th:replace="components/message :: responseMessages"></div>
-    <form th:action="@{/jobs}" method="get" class="mb-3">
+    <form th:action="@{/admin/jobs}" method="get" class="mb-3">
       <div class="input-group">
         <input type="text" class="form-control rounded" name="q" placeholder="Search" aria-label="Search"
           aria-describedby="search-addon" />
