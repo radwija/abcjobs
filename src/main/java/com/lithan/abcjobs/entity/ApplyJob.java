@@ -18,6 +18,8 @@ public class ApplyJob {
 
     private String qualificationUrl;
 
+    private String status;
+
     public Long getApplyJobId() {
         return applyJobId;
     }
@@ -48,5 +50,13 @@ public class ApplyJob {
 
     public void setQualificationUrl(String qualificationUrl) {
         this.qualificationUrl = qualificationUrl;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

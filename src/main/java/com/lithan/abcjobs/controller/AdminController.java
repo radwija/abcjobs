@@ -1,5 +1,7 @@
 package com.lithan.abcjobs.controller;
 
+import com.lithan.abcjobs.constraint.EApplyJobStatus;
+import com.lithan.abcjobs.entity.ApplyJob;
 import com.lithan.abcjobs.entity.Job;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/admin")
@@ -53,8 +56,9 @@ public class AdminController {
         model.addAttribute("users", users);
         model.addAttribute("userProfiles", userProfiles);
         model.addAttribute("isInUserManagement", true);
-        return  userManagementPage;
+        return userManagementPage;
     }
+
     @GetMapping("/jobs")
     public ModelAndView jobListView(@RequestParam(value = "q", required = false) String keyword, Model model, RedirectAttributes redirectAttributes) {
         ModelAndView jobListPage = new ModelAndView("admin/admin");
@@ -67,7 +71,7 @@ public class AdminController {
         }
         model.addAttribute("jobs", searchedJobs);
         model.addAttribute("isInJobs", true);
-        return  jobListPage;
+        return jobListPage;
     }
 
     @GetMapping("/jobs/post-job")
@@ -78,12 +82,32 @@ public class AdminController {
     }
 
     @GetMapping("/jobs/manage-applicant")
-    public ModelAndView manageApplicantView(@RequestParam("tab") String tab, RedirectAttributes redirectAttributes, Model model) {
+    public ModelAndView manageApplicantView(@RequestParam(value = "tab", required = false) String tab, RedirectAttributes redirectAttributes, Model model) {
         ModelAndView manageApplicantPage = new ModelAndView("admin/admin");
-        if (tab.equals("pending")) {
-            
-        } else if (tab.equals("accepted")) {
-            
+        model.addAttribute("isInManageApplicant", true);
+        List<ApplyJob> appliedJobs = applyJobService.getAllAppliedJobs();
+
+        if (Objects.equals(tab, null) || Objects.equals(tab, "")) {
+            int pending = applyJobService.findAppliedJobByStatus(EApplyJobStatus.PENDING.toString()).size();
+            int accepted = applyJobService.findAppliedJobByStatus(EApplyJobStatus.ACCEPTED.toString()).size();
+            int declined = applyJobService.findAppliedJobByStatus(EApplyJobStatus.DECLINED.toString()).size();
+
+            model.addAttribute("isInRecap", true);
+            model.addAttribute("pendingNumber", pending);
+            model.addAttribute("acceptedNumber", accepted);
+            model.addAttribute("declinedNumber", declined);
+        } else if (Objects.equals(tab, "pending")) {
+            appliedJobs = applyJobService.findAppliedJobByStatus(EApplyJobStatus.PENDING.toString());
+            model.addAttribute("isInPendingTab", true);
+            model.addAttribute("appliedJobs", appliedJobs);
+        } else if (Objects.equals(tab, "accepted")) {
+            appliedJobs = applyJobService.findAppliedJobByStatus(EApplyJobStatus.ACCEPTED.toString());
+            model.addAttribute("isInAcceptedTab", true);
+            model.addAttribute("appliedJobs", appliedJobs);
+        } else if (Objects.equals(tab, "declined")) {
+            appliedJobs = applyJobService.findAppliedJobByStatus(EApplyJobStatus.DECLINED.toString());
+            model.addAttribute("isInDeclinedTab", true);
+            model.addAttribute("appliedJobs", appliedJobs);
         }
 
         return manageApplicantPage;

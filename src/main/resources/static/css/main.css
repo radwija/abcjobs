@@ -18,7 +18,7 @@ body {
 
 @media (max-width: 992px) {
   .my-jobs-container-custom {
-    margin-top: 130px !important;
+    margin-top: 150px !important;
     margin-bottom: 50px !important;
   }
 }
@@ -116,6 +116,9 @@ body {
   list-style: none;
 }
 
+.sidebar-top {
+  overflow-x: scroll;
+}
 
 .sidebar-link li {
   padding: 10px;
@@ -131,4 +134,9 @@ body {
 
 .sidebar-link li:hover {
   background-color: rgb(229, 229, 229);
+}
+
+.recap-card a {
+  text-decoration: none;
+  color: white;
 }

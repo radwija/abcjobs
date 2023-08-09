@@ -33,6 +33,7 @@
 					</div>
 				</div>
 			</div>
+			<!-- Main Content -->
 			<div class="col-md-12 col-lg-10">
 				<div class="table-responsive">
 					<div th:if="${isInUserManagement}">
@@ -41,6 +42,53 @@
 					<div th:if="${isInJobs}">
 						<a th:href="@{/admin/jobs/post-job}" class="btn btn-primary mb-3">+ Post job</a>
 						<div th:replace="admin/section/data :: jobs"></div>
+					</div>
+					<div th:if="${isInManageApplicant}">
+						<div class="mb-3">
+							<a th:href="@{/admin/jobs/manage-applicant?tab=pending}" type="button"
+								class="btn btn-outline-primary">Pending</a>
+							<a th:href="@{/admin/jobs/manage-applicant?tab=accepted}" type="button"
+								class="btn btn-outline-primary">Accepted</a>
+							<a th:href="@{/admin/jobs/manage-applicant?tab=declined}" type="button"
+								class="btn btn-outline-primary">Declined</a>
+						</div>
+						<div th:if="${isInRecap}">
+							<div class="row gap">
+								<div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3">
+									<div class="recap-card bg-primary text-center rounded border p-5">
+										<a th:href="@{/admin/jobs/manage-applicant?tab=pending}">
+											<h3>Pending</h3>
+											<h1>[[${pendingNumber}]]</h1>
+										</a>
+									</div>
+								</div>
+								<div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3">
+									<div class="recap-card bg-success text-center rounded border p-5">
+										<a th:href="@{/admin/jobs/manage-applicant?tab=accepted}">
+											<h3>Accepted</h3>
+											<h1>[[${acceptedNumber}]]</h1>
+										</a>
+									</div>
+								</div>
+								<div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3">
+									<div class="recap-card bg-danger text-center rounded border p-5">
+										<a th:href="@{/admin/jobs/manage-applicant?tab=declined}">
+											<h3>Declined</h3>
+											<h1>[[${declinedNumber}]]</h1>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div th:if="${isInPendingTab}">
+							Pending
+						</div>
+						<div th:if="${isInAcceptedTab}">
+							Accepted
+						</div>
+						<div th:if="${isInDeclinedTab}">
+							Declined
+						</div>
 					</div>
 				</div>
 			</div>
