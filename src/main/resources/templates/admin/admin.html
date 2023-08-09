@@ -35,7 +35,8 @@
 			</div>
 			<!-- Main Content -->
 			<div class="col-md-12 col-lg-10">
-				<div class="table-responsive">
+				<div class="">
+					<div th:replace="components/message :: responseMessages"></div>
 					<div th:if="${isInUserManagement}">
 						<div th:replace="admin/section/data :: userTable"></div>
 					</div>
@@ -81,13 +82,16 @@
 							</div>
 						</div>
 						<div th:if="${isInPendingTab}">
-							Pending
+							<h2 class="mb-4">Pending Applicants</h2>
+							<div th:replace="admin/section/data :: pendingApplicants"></div>
 						</div>
 						<div th:if="${isInAcceptedTab}">
-							Accepted
+							<h2 class="mb-4">Accepted Applicants</h2>
+
 						</div>
 						<div th:if="${isInDeclinedTab}">
-							Declined
+							<h2 class="mb-4">Declined Applicants</h2>
+
 						</div>
 					</div>
 				</div>

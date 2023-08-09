@@ -85,7 +85,7 @@ public class AdminController {
     public ModelAndView manageApplicantView(@RequestParam(value = "tab", required = false) String tab, RedirectAttributes redirectAttributes, Model model) {
         ModelAndView manageApplicantPage = new ModelAndView("admin/admin");
         model.addAttribute("isInManageApplicant", true);
-        List<ApplyJob> appliedJobs = applyJobService.getAllAppliedJobs();
+        List<ApplyJob> applicants = applyJobService.getAllAppliedJobs();
 
         if (Objects.equals(tab, null) || Objects.equals(tab, "")) {
             int pending = applyJobService.findAppliedJobByStatus(EApplyJobStatus.PENDING.toString()).size();
@@ -97,17 +97,17 @@ public class AdminController {
             model.addAttribute("acceptedNumber", accepted);
             model.addAttribute("declinedNumber", declined);
         } else if (Objects.equals(tab, "pending")) {
-            appliedJobs = applyJobService.findAppliedJobByStatus(EApplyJobStatus.PENDING.toString());
+            applicants = applyJobService.findAppliedJobByStatus(EApplyJobStatus.PENDING.toString());
             model.addAttribute("isInPendingTab", true);
-            model.addAttribute("appliedJobs", appliedJobs);
+            model.addAttribute("applicants", applicants);
         } else if (Objects.equals(tab, "accepted")) {
-            appliedJobs = applyJobService.findAppliedJobByStatus(EApplyJobStatus.ACCEPTED.toString());
+            applicants = applyJobService.findAppliedJobByStatus(EApplyJobStatus.ACCEPTED.toString());
             model.addAttribute("isInAcceptedTab", true);
-            model.addAttribute("appliedJobs", appliedJobs);
+            model.addAttribute("applicants", applicants);
         } else if (Objects.equals(tab, "declined")) {
-            appliedJobs = applyJobService.findAppliedJobByStatus(EApplyJobStatus.DECLINED.toString());
+            applicants = applyJobService.findAppliedJobByStatus(EApplyJobStatus.DECLINED.toString());
             model.addAttribute("isInDeclinedTab", true);
-            model.addAttribute("appliedJobs", appliedJobs);
+            model.addAttribute("applicants", applicants);
         }
 
         return manageApplicantPage;

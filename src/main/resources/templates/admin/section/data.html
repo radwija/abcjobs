@@ -66,6 +66,38 @@
       </tr>
     </table>
   </div>
+
+  <div th:fragment="pendingApplicants">
+    <div class="table-responsive">
+      <table class="table">
+        <tr>
+          <th>User ID</th>
+          <th>Full Name</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Job Detail</th>
+          <th>Job Name</th>
+          <th>Company Name</th>
+          <th>Action</th>
+        </tr>
+        <tr th:each="applicant: ${applicants}" scope="row">
+          <td>[[${applicant.applyJobId}]]</td>
+          <td>[[${applicant.appliedBy.userProfile.firstName} + ' ' + ${applicant.appliedBy.userProfile.lastName}]]</td>
+          <td>[[${applicant.appliedBy.username}]]</td>
+          <td>[[${applicant.appliedBy.email}]]</td>
+          <td><a th:href="@{/job?detail=__${applicant.appliedJob.jobId}__}">Detail</a></td>
+          <td>[[${applicant.appliedJob.jobName}]]</td>
+          <td>[[${applicant.appliedJob.companyName}]]</td>
+          <td class="d-flex gap-3">
+            <a href="" class="btn btn-primary"><i class="bi bi-eye-fill"></i> Profile</a>
+            <a href="" class="btn btn-warning"><i class="bi bi-file-earmark-fill"></i> Qualification</a>
+            <a href="" class="btn btn-success"><i class="bi bi-check-circle-fill"></i> Accept</a>
+            <a href="" class="btn btn-danger"><i class="bi bi-x-octagon-fill"></i> Decline</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </body>
 
 </html>
