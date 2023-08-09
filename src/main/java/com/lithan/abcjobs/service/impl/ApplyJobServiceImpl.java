@@ -11,10 +11,9 @@ import com.lithan.abcjobs.service.JobService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.spring5.processor.SpringObjectTagProcessor;
 
 @Service
-public class ApplyJobImpl implements ApplyJobService {
+public class ApplyJobServiceImpl implements ApplyJobService {
     @Autowired
     private ApplyJobRepository applyJobRepository;
 
