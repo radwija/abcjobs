@@ -140,3 +140,13 @@ body {
   text-decoration: none;
   color: white;
 }
+
+/* User Table in Send Email Page */
+.header {
+  position: sticky;
+  top: 0;
+}
+
+.user-email {
+  height: 600px;
+}

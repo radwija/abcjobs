@@ -9,11 +9,9 @@ import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.exception.JobApplicationNotFoundException;
 import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.JobRequest;
+import com.lithan.abcjobs.payload.request.SendMailRequest;
 import com.lithan.abcjobs.payload.response.JobApplicationResponse;
-import com.lithan.abcjobs.service.ApplyJobService;
-import com.lithan.abcjobs.service.JobService;
-import com.lithan.abcjobs.service.UserProfileService;
-import com.lithan.abcjobs.service.UserService;
+import com.lithan.abcjobs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +37,9 @@ public class AdminController {
 
     @Autowired
     private ApplyJobService applyJobService;
+
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     @GetMapping({"", "/", "/dashboard"})
     public ModelAndView mantap(Model model) {
@@ -69,6 +70,35 @@ public class AdminController {
         model.addAttribute("userProfiles", userProfiles);
         model.addAttribute("isInUserManagement", true);
         return userManagementPage;
+    }
+
+    @GetMapping("/send-mail")
+    public ModelAndView sendMailView(Model model, RedirectAttributes redirectAttributes) {
+        ModelAndView sendMailPage = new ModelAndView("admin/sendMail");
+        SendMailRequest sendMailRequest = new SendMailRequest();
+        List<User> users = userService.getAllUsers();
+        List<User> adminUsers = userService.findUserByRole("ADMIN");
+
+        for (User adminUser : adminUsers) {
+            users.remove(adminUser);
+        }
+
+        sendMailPage.addObject("sendMailRequest", sendMailRequest);
+        model.addAttribute("users", users);
+        return sendMailPage;
+    }
+
+    @PostMapping("/sendMail")
+    public ModelAndView sendMail(@ModelAttribute SendMailRequest sendMailRequest, Principal principal, RedirectAttributes redirectAttributes) {
+        try {
+            String username = principal.getName();
+            emailSenderService.sendMailToUsers(sendMailRequest, username);
+            redirectAttributes.addFlashAttribute("successMessage", "Email sent successfully!");
+            return new ModelAndView("redirect:/admin/send-mail");
+        } catch (RefusedActionException e) {
+            redirectAttributes.addFlashAttribute("successMessage", e.getMessage());
+            return new ModelAndView("redirect:/admin/send-mail");
+        }
     }
 
     @GetMapping("/deleteUser")

@@ -83,6 +83,9 @@
 						</div>
 					</div>
 					<div th:if="${isInUserManagement}">
+						<div class="mb-3">
+							<a th:href="@{/admin/send-mail}" class="btn btn-outline-primary">Send mail</a>
+						</div>
 						<div th:replace="admin/section/data :: userTable"></div>
 					</div>
 					<div th:if="${isInJobs}">
