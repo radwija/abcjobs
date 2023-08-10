@@ -16,6 +16,10 @@
   <div th:replace="components/navbar :: navbar"></div>
   <div
     th:class="${#request.userPrincipal != null} ? 'my-jobs-container-custom container my-container-custom' : 'container my-container-custom'">
+    <div class="d-flex align-items-center mb-3">
+      <a th:href="@{/admin/user-management}" class="btn"><i class="bi bi-x-circle"></i></a>
+      <h1 class="mb-0">Send Email Page</h1>
+    </div>
     <div th:replace="components/message :: responseMessages"></div>
     <form th:action="@{/admin/sendMail}" th:object="${sendMailRequest}" method="post" onsubmit="return validateForm();">
       <div class="row">
@@ -28,7 +32,7 @@
                 required>
             </div>
             <div class="mb-3">
-              <label for="text" class="form-label">Subject</label>
+              <label for="text" class="form-label">Body</label>
               <textarea class="form-control" name="text" id="text" th:field="*{text}" rows="15" cols="40"
                 required></textarea>
             </div>
