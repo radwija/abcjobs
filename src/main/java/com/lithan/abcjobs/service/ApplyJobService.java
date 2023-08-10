@@ -9,6 +9,7 @@ import java.util.List;
 public interface ApplyJobService {
     ApplyJob saveAppliedJob(Long jobId, ApplyJobRequest applyJobRequest, String username);
     void deleteApplyJobByAppliedJobId(Long jobId);
+    void deleteApplyJobByAppliedById(Long userId);
     List<ApplyJob> getAllAppliedJobs();
     List<ApplyJob> findAppliedJobByStatus(String status);
     JobApplicationResponse acceptJobApplication(Long applyJobId);

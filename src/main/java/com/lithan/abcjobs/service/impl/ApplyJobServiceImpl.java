@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class ApplyJobServiceImpl implements ApplyJobService {
@@ -53,7 +52,12 @@ public class ApplyJobServiceImpl implements ApplyJobService {
 
     @Override
     public void deleteApplyJobByAppliedJobId(Long jobId) {
-        applyJobRepository.deleteByAppliedJobByJobId(jobId);
+        applyJobRepository.deleteByAppliedJobId(jobId);
+    }
+
+    @Override
+    public void deleteApplyJobByAppliedById(Long userId) {
+        applyJobRepository.deleteByUserId(userId);
     }
 
     @Override

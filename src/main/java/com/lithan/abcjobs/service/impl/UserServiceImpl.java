@@ -1,15 +1,19 @@
 package com.lithan.abcjobs.service.impl;
 
 import com.lithan.abcjobs.constraint.ERole;
+import com.lithan.abcjobs.entity.ApplyJob;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.CredentialAlreadyTakenException;
 import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.exception.UserProfileNotFoundException;
+import com.lithan.abcjobs.repository.ApplyJobRepository;
 import com.lithan.abcjobs.repository.UserProfileRepository;
 import com.lithan.abcjobs.repository.UserRepository;
 import com.lithan.abcjobs.payload.request.RegistrationRequest;
+import com.lithan.abcjobs.service.ApplyJobService;
 import com.lithan.abcjobs.service.EmailSenderService;
+import com.lithan.abcjobs.service.UserProfileService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +32,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     EmailSenderService emailSenderService;
+
+    @Autowired
+    ApplyJobRepository applyJobRepository;
+
+    @Autowired
+    UserProfileService userProfileService;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -67,6 +77,24 @@ public class UserServiceImpl implements UserService {
                 "Thanks for registering in ABC Jobs Portal. Here is you activation URL to get started your journey in ABC Jobs Portal!" +
                         "\n" +
                         "http://localhost:8080/register-confirmation?id=" + userRepository.findByEmail(user.getEmail()).getUserId());
+    }
+
+    @Override
+    public void deleteUserByUserId(Long userId) {
+        User user = userRepository.getUserByUserId(userId);
+        if (user == null) {
+            throw new AccountNotFoundException("User ID: " + userId + "  not found");
+        }
+        if (user.getRole().equals("ADMIN")) {
+            throw new AccountNotFoundException("Admin user unable to be deleted!");
+        }
+
+        UserProfile userProfile = user.getUserProfile();
+        userProfile.setJob(null);
+        userProfileService.saveUpdateUserProfile(userProfile);
+
+        applyJobRepository.deleteByUserId(userId);
+        userRepository.delete(user);
     }
 
     @Override

@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface UserService {
     void saveUserRegister(RegistrationRequest user);
+    void deleteUserByUserId(Long userId);
     List<User> getAllUsers();
     List<User> findUserByRole(String role);
     User getUserByUsername(String username);

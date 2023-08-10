@@ -36,8 +36,12 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ThreadComment> threadComments = new ArrayList<>();
 
+    // Posted jobs from admin
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Job> jobs = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "appliedBy", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<ApplyJob> applyJobs = new ArrayList<>();
 
     public Long getUserId() {
         return userId;

@@ -5,6 +5,7 @@ import com.lithan.abcjobs.entity.ApplyJob;
 import com.lithan.abcjobs.entity.Job;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
+import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.exception.JobApplicationNotFoundException;
 import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.JobRequest;
@@ -68,6 +69,18 @@ public class AdminController {
         model.addAttribute("userProfiles", userProfiles);
         model.addAttribute("isInUserManagement", true);
         return userManagementPage;
+    }
+
+    @GetMapping("/deleteUser")
+    public ModelAndView deleteUser(@RequestParam("userId") Long userId, RedirectAttributes redirectAttributes, Model model) {
+        try {
+            userService.deleteUserByUserId(userId);
+            redirectAttributes.addFlashAttribute("successMessage", "User ID: " + userId + " deleted successfully");
+            return new ModelAndView("redirect:/admin/user-management");
+        }catch (AccountNotFoundException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return new ModelAndView("redirect:/admin/user-management");
+        }
     }
 
     @GetMapping("/jobs")
