@@ -20,7 +20,7 @@ public class UserProfile {
 
     @OneToOne
     @JoinColumn(name = "job_id")
-    private Job jobId;
+    private Job job;
 
     public Long getUserDetailId() {
         return userDetailId;
@@ -78,11 +78,11 @@ public class UserProfile {
         this.country = country;
     }
 
-    public Job getJobId() {
-        return jobId;
+    public Job getJob() {
+        return job;
     }
 
-    public void setJobId(Job jobId) {
-        this.jobId = jobId;
+    public void setJob(Job job) {
+        this.job = job;
     }
 }

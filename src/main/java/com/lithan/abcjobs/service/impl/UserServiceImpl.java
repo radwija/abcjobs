@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
         }
 
         UserProfile userProfile = user.getUserProfile();
-        userProfile.setJobId(null);
+        userProfile.setJob(null);
         userProfileService.saveUpdateUserProfile(userProfile);
 
         applyJobRepository.deleteByUserId(userId);

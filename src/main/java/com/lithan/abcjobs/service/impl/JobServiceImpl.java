@@ -85,11 +85,14 @@ public class JobServiceImpl implements JobService {
         if (!isAdmin) {
             throw new RefusedActionException("You're not allowed to delete jobs!");
         }
-        applyJobRepository.deleteByAppliedJobId(jobId);
-        List<UserProfile> userProfiles = userProfileService.findUserProfileByAppliedJobId(jobId);
+        Job job = jobRepository.findJobByJobId(jobId);
+
+        List<UserProfile> userProfiles = userProfileService.findUserProfileByAppliedJob(job);
         for (UserProfile userProfile : userProfiles) {
-            userProfile.setJobId(null);
+            userProfile.setJob(null);
+            userProfileService.saveUpdateUserProfile(userProfile);
         }
+        applyJobRepository.deleteByAppliedJobId(jobId);
         jobRepository.deleteById(jobId);
     }
 }

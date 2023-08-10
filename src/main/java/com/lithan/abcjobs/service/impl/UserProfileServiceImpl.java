@@ -1,5 +1,6 @@
 package com.lithan.abcjobs.service.impl;
 
+import com.lithan.abcjobs.entity.Job;
 import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.repository.UserProfileRepository;
 import com.lithan.abcjobs.service.UserProfileService;
@@ -31,9 +32,10 @@ public class UserProfileServiceImpl implements UserProfileService {
         return userProfileRepository.findAll();
     }
 
+    // TODO: Bug is here
     @Override
-    public List<UserProfile> findUserProfileByAppliedJobId(Long jobId) {
-        return userProfileRepository.getUserProfilesByJobId(jobId);
+    public List<UserProfile> findUserProfileByAppliedJob(Job job) {
+        return userProfileRepository.findUserProfileByJob(job);
     }
 
 }

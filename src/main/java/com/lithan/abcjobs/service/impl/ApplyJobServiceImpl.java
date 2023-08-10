@@ -83,7 +83,7 @@ public class ApplyJobServiceImpl implements ApplyJobService {
         Job job = acceptedJobApplication.getAppliedJob();
 
         acceptedJobApplication.setStatus(EApplyJobStatus.ACCEPTED.toString());
-        userProfile.setJobId(job);
+        userProfile.setJob(job);
         userProfileService.saveUpdateUserProfile(userProfile);
         applyJobRepository.save(acceptedJobApplication);
 

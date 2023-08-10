@@ -77,7 +77,7 @@ public class AdminController {
             userService.deleteUserByUserId(userId);
             redirectAttributes.addFlashAttribute("successMessage", "User ID: " + userId + " deleted successfully");
             return new ModelAndView("redirect:/admin/user-management");
-        }catch (AccountNotFoundException e) {
+        } catch (AccountNotFoundException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return new ModelAndView("redirect:/admin/user-management");
         }
