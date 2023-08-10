@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface UserProfileService {
     UserProfile saveUpdateUserProfile(UserProfile userProfile);
     List<UserProfile> getAllUserProfiles();
+    List<UserProfile> findUserProfileByAppliedJobId(Long jobId);
 }

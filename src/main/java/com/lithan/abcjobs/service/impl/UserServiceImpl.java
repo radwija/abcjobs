@@ -1,7 +1,6 @@
 package com.lithan.abcjobs.service.impl;
 
 import com.lithan.abcjobs.constraint.ERole;
-import com.lithan.abcjobs.entity.ApplyJob;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.CredentialAlreadyTakenException;
@@ -11,7 +10,6 @@ import com.lithan.abcjobs.repository.ApplyJobRepository;
 import com.lithan.abcjobs.repository.UserProfileRepository;
 import com.lithan.abcjobs.repository.UserRepository;
 import com.lithan.abcjobs.payload.request.RegistrationRequest;
-import com.lithan.abcjobs.service.ApplyJobService;
 import com.lithan.abcjobs.service.EmailSenderService;
 import com.lithan.abcjobs.service.UserProfileService;
 import com.lithan.abcjobs.service.UserService;
@@ -90,7 +88,7 @@ public class UserServiceImpl implements UserService {
         }
 
         UserProfile userProfile = user.getUserProfile();
-        userProfile.setJob(null);
+        userProfile.setJobId(null);
         userProfileService.saveUpdateUserProfile(userProfile);
 
         applyJobRepository.deleteByUserId(userId);

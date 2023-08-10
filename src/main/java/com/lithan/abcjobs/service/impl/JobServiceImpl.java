@@ -4,12 +4,14 @@ import com.lithan.abcjobs.constraint.EJobLevel;
 import com.lithan.abcjobs.constraint.EJobTime;
 import com.lithan.abcjobs.entity.Job;
 import com.lithan.abcjobs.entity.User;
+import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.JobNotFoundException;
 import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.JobRequest;
+import com.lithan.abcjobs.repository.ApplyJobRepository;
 import com.lithan.abcjobs.repository.JobRepository;
-import com.lithan.abcjobs.service.ApplyJobService;
 import com.lithan.abcjobs.service.JobService;
+import com.lithan.abcjobs.service.UserProfileService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,12 @@ public class JobServiceImpl implements JobService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserProfileService userProfileService;
+
+    @Autowired
+    private ApplyJobRepository applyJobRepository;
 
     public Job findJobByJobId(Long jobId) {
         Job job = jobRepository.findJobByJobId(jobId);
@@ -76,6 +84,11 @@ public class JobServiceImpl implements JobService {
         boolean isAdmin = userService.getUserByUsername(username).getRole().equals("ADMIN");
         if (!isAdmin) {
             throw new RefusedActionException("You're not allowed to delete jobs!");
+        }
+        applyJobRepository.deleteByAppliedJobId(jobId);
+        List<UserProfile> userProfiles = userProfileService.findUserProfileByAppliedJobId(jobId);
+        for (UserProfile userProfile : userProfiles) {
+            userProfile.setJobId(null);
         }
         jobRepository.deleteById(jobId);
     }

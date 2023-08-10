@@ -152,14 +152,13 @@ public class AdminController {
     public ModelAndView deleteJob(@RequestParam("jobId") Long jobId, Principal principal, RedirectAttributes redirectAttributes, Model model) {
         try {
             String username = principal.getName();
-            applyJobService.deleteApplyJobByAppliedJobId(jobId);
             jobService.deleteJob(jobId, username);
 
             redirectAttributes.addFlashAttribute("successMessage", "Job deleted successfully!");
             return new ModelAndView("redirect:/admin/jobs");
         } catch (RefusedActionException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return new ModelAndView("redirect:/admin/jobs");
+            return new ModelAndView("redirect:/jobs");
         }
     }
 

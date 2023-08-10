@@ -83,17 +83,17 @@ public class ApplyJobServiceImpl implements ApplyJobService {
         Job job = acceptedJobApplication.getAppliedJob();
 
         acceptedJobApplication.setStatus(EApplyJobStatus.ACCEPTED.toString());
-        userProfile.setJob(job);
+        userProfile.setJobId(job);
         userProfileService.saveUpdateUserProfile(userProfile);
         applyJobRepository.save(acceptedJobApplication);
 
         String applicantFullname = applicant.getUserProfile().getFirstName() + " " + applicant.getUserProfile().getLastName();
-        String jobName = acceptedJobApplication.getAppliedJob().getJobName();
-        String companyName = acceptedJobApplication.getAppliedJob().getCompanyName();
-        String jobLevel = acceptedJobApplication.getAppliedJob().getJobLevel();
-        String jobTime = acceptedJobApplication.getAppliedJob().getJobTime();
+        String jobName = job.getJobName();
+        String companyName = job.getCompanyName();
+        String jobLevel = job.getJobLevel();
+        String jobTime = job.getJobTime();
 
-        String message = "ACCEPTED: Job application from " + applicantFullname + " in applying for job ID: " + applyJobId + ", name: " + jobName + ", company: " + companyName + ".";
+        String message = "ACCEPTED: Job application from " + applicantFullname + " in applying for job ID: " +  job.getJobId() + ", name: " + jobName + ", company: " + companyName + ".";
         response.setApplyJob(acceptedJobApplication);
         response.setMessage(message);
         emailSenderService.sendMail(applicant.getEmail(),
