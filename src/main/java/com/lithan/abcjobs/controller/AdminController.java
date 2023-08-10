@@ -72,8 +72,9 @@ public class AdminController {
     }
 
     @GetMapping("/deleteUser")
-    public ModelAndView deleteUser(@RequestParam("userId") Long userId, RedirectAttributes redirectAttributes, Model model) {
+    public ModelAndView deleteUser(@RequestParam("userId") String userIdStr, RedirectAttributes redirectAttributes, Model model) {
         try {
+            Long userId = Long.parseLong(userIdStr);
             userService.deleteUserByUserId(userId);
             redirectAttributes.addFlashAttribute("successMessage", "User ID: " + userId + " deleted successfully");
             return new ModelAndView("redirect:/admin/user-management");
@@ -149,8 +150,9 @@ public class AdminController {
     }
 
     @GetMapping("/deleteJob")
-    public ModelAndView deleteJob(@RequestParam("jobId") Long jobId, Principal principal, RedirectAttributes redirectAttributes, Model model) {
+    public ModelAndView deleteJob(@RequestParam("jobId") String jobIdStr, Principal principal, RedirectAttributes redirectAttributes, Model model) {
         try {
+            Long jobId = Long.parseLong(jobIdStr);
             String username = principal.getName();
             jobService.deleteJob(jobId, username);
 
@@ -163,8 +165,9 @@ public class AdminController {
     }
 
     @GetMapping("/acceptJobApplication")
-    public ModelAndView acceptJobApplication(@RequestParam("applyJobId") Long applyJobId, Principal principal, RedirectAttributes redirectAttributes) {
+    public ModelAndView acceptJobApplication(@RequestParam("applyJobId") String applyJobIdStr, Principal principal, RedirectAttributes redirectAttributes) {
         try {
+            Long applyJobId = Long.parseLong(applyJobIdStr);
             JobApplicationResponse response = applyJobService.acceptJobApplication(applyJobId);
             redirectAttributes.addFlashAttribute("successMessage", response.getMessage());
             return new ModelAndView("redirect:/admin/jobs/manage-applicant?tab=pending");
@@ -175,8 +178,9 @@ public class AdminController {
     }
 
     @GetMapping("/declineJobApplication")
-    public ModelAndView declineJobApplication(@RequestParam("applyJobId") Long applyJobId, Principal principal, RedirectAttributes redirectAttributes) {
+    public ModelAndView declineJobApplication(@RequestParam("applyJobId") String applyJobIdStr, Principal principal, RedirectAttributes redirectAttributes) {
         try {
+            Long applyJobId = Long.parseLong(applyJobIdStr);
             JobApplicationResponse response = applyJobService.declineJobApplication(applyJobId);
             redirectAttributes.addFlashAttribute("successMessage", response.getMessage());
             return new ModelAndView("redirect:/admin/jobs/manage-applicant?tab=pending");

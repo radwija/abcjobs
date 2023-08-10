@@ -49,12 +49,13 @@ public class JobController {
     }
 
     @GetMapping("/job")
-    public ModelAndView jobDetailView(@RequestParam(value = "detail", required = false) Long jobId, @ModelAttribute ApplyJobRequest applyJobRequest, Model model, RedirectAttributes redirectAttributes) {
+    public ModelAndView jobDetailView(@RequestParam(value = "detail", required = false) String jobIdStr, @ModelAttribute ApplyJobRequest applyJobRequest, Model model, RedirectAttributes redirectAttributes) {
         try {
-            ModelAndView jobDetailPage = new ModelAndView("job/jobDetail");
-            if (jobId == null) {
+            if (jobIdStr.equals("")) {
                 return new ModelAndView("redirect:/jobs");
             }
+            Long jobId = Long.parseLong(jobIdStr);
+            ModelAndView jobDetailPage = new ModelAndView("job/jobDetail");
             Job detailedJob = jobService.findJobByJobId(jobId);
             jobDetailPage.addObject("applyJobRequest", applyJobRequest);
             model.addAttribute("detailedJob", detailedJob);

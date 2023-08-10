@@ -132,7 +132,8 @@ public class UserController {
     }
 
     @PostMapping("/saveThreadComment")
-    public ModelAndView saveThreadComment(@RequestParam("threadId") Long threadId, @ModelAttribute ThreadCommentRequest threadCommentRequest, Principal principal, RedirectAttributes redirectAttributes) {
+    public ModelAndView saveThreadComment(@RequestParam("threadId") String threadIdStr, @ModelAttribute ThreadCommentRequest threadCommentRequest, Principal principal, RedirectAttributes redirectAttributes) {
+        Long threadId = Long.parseLong(threadIdStr);
         String threadOwnerUsername = threadPostService.getThreadPostByThreadId(threadId).getUser().getUsername();
         try {
             String username = principal.getName();
@@ -145,7 +146,8 @@ public class UserController {
     }
 
     @GetMapping("/deleteThread")
-    public ModelAndView deleteThread(@RequestParam("threadId") Long threadId, Principal principal, RedirectAttributes redirectAttributes) {
+    public ModelAndView deleteThread(@RequestParam("threadId") String threadIdStr, Principal principal, RedirectAttributes redirectAttributes) {
+        Long threadId = Long.parseLong(threadIdStr);
         String threadOwnerUsername = threadPostService.getThreadPostByThreadId(threadId).getUser().getUsername();
         if (principal == null) {
             return new ModelAndView("redirect:/u/" + threadOwnerUsername + "/thread?id=" + threadId);
@@ -214,7 +216,8 @@ public class UserController {
     }
 
     @PostMapping("/applyJob")
-    public ModelAndView applyJob(@RequestParam("detail") Long jobId, Principal principal, @ModelAttribute ApplyJobRequest applyJobRequest, RedirectAttributes redirectAttributes) {
+    public ModelAndView applyJob(@RequestParam("detail") String jobIdStr, Principal principal, @ModelAttribute ApplyJobRequest applyJobRequest, RedirectAttributes redirectAttributes) {
+        Long jobId = Long.parseLong(jobIdStr);
         try {
             String appliedByUsername = principal.getName();
             applyJobService.saveAppliedJob(jobId, applyJobRequest, appliedByUsername);

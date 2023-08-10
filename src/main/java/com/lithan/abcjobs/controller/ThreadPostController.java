@@ -31,12 +31,13 @@ public class ThreadPostController {
     ThreadPostService threadPostService;
 
     @GetMapping("/u/{username}/thread")
-    public ModelAndView threadDetailView(@PathVariable("username") String username, @RequestParam(value = "id", required = false) Long id, Model model) {
+    public ModelAndView threadDetailView(@PathVariable("username") String username, @RequestParam(value = "id", required = false) String idStr, Model model) {
         try {
-            ModelAndView threadDetailPage = new ModelAndView("thread/threadDetail");
-            if (id == null) {
+            if (idStr == null || idStr.equals("")) {
                 return new ModelAndView("redirect:/u/" + username + "?tab=threads");
             }
+            Long id = Long.parseLong(idStr);
+            ModelAndView threadDetailPage = new ModelAndView("thread/threadDetail");
             ThreadResponse threadResponse = threadPostService.getThreadByUsernameAndThreadId(username, id);
 
             ThreadPost currentThread = threadResponse.getThreadPost();
@@ -82,7 +83,8 @@ public class ThreadPostController {
     }
 
     @GetMapping("/u/{username}/edit/thread")
-    public ModelAndView editTreadDetailView(@RequestParam("id") Long threadId, Principal principal, RedirectAttributes redirectAttributes, Model model) {
+    public ModelAndView editTreadDetailView(@RequestParam("id") String threadIdStr, Principal principal, RedirectAttributes redirectAttributes, Model model) {
+        Long threadId = Long.parseLong(threadIdStr);
         String threadOwnerUsername = threadPostService.getThreadPostByThreadId(threadId).getUser().getUsername();
         if (principal == null) {
             return new ModelAndView("redirect:/u/" + threadOwnerUsername + "/thread?id=" + threadId);
