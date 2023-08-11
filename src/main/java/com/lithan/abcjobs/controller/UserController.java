@@ -5,9 +5,7 @@ import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.exception.RefusedActionException;
-import com.lithan.abcjobs.payload.request.ApplyJobRequest;
-import com.lithan.abcjobs.payload.request.ThreadCommentRequest;
-import com.lithan.abcjobs.payload.request.ThreadPostRequest;
+import com.lithan.abcjobs.payload.request.*;
 import com.lithan.abcjobs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -226,6 +225,65 @@ public class UserController {
         } catch (RefusedActionException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return new ModelAndView("redirect:/job?detail=" + jobId);
+        }
+    }
+
+    @GetMapping("/forgot-password")
+    public ModelAndView forgotPasswordView(Model model) {
+        ModelAndView forgotPasswordPage = new ModelAndView("auth/resetPassword/forgotPassword");
+        ForgotPassworRequest forgotPasswordRequest = new ForgotPassworRequest();
+        forgotPasswordPage.addObject("forgotPasswordRequest", forgotPasswordRequest);
+
+        return forgotPasswordPage;
+    }
+
+    @PostMapping("/findAccountByEmail")
+    public ModelAndView findAccountByEmail(@ModelAttribute ForgotPassworRequest forgotPassworRequest, RedirectAttributes redirectAttributes) {
+        try {
+            userService.updateUuidResetPassword(forgotPassworRequest);
+            redirectAttributes.addFlashAttribute("emailSent", forgotPassworRequest.getEmail());
+            return new ModelAndView("redirect:/email-sent");
+        }catch (AccountNotFoundException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return new ModelAndView("redirect:/forgot-password");
+        }
+    }
+
+    @GetMapping("/email-sent")
+    public ModelAndView emailSentView(Principal principal, RedirectAttributes redirectAttributes) {
+        if (principal != null) {
+            return new ModelAndView("redirect:/");
+        }
+
+        ModelAndView modelAndView = new ModelAndView("auth/resetPassword/emailSent");
+        return modelAndView;
+    }
+
+    @GetMapping("/reset-password")
+    public ModelAndView resetPasswordView(@RequestParam("reset") String uuid, Model model) {
+        ModelAndView resetPasswordPage = new ModelAndView("auth/resetPassword/resetPassword");
+        User user = userService.findByRegistrationCode(uuid);
+        if (user == null) {
+            model.addAttribute("isUrlValid", false);
+        } else {
+            model.addAttribute("isUrlValid", true);
+        }
+
+        model.addAttribute("token", uuid);
+        return resetPasswordPage;
+    }
+
+    @PostMapping("/resetPassword")
+    public ModelAndView resetPassword(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        try {
+            String uuid = request.getParameter("token");
+            String newPassword = request.getParameter("password");
+            userService.updatePassword(uuid, newPassword);
+            redirectAttributes.addFlashAttribute("successMessage", "Password updated successfully!");
+            return new ModelAndView("redirect:/login");
+        } catch (AccountNotFoundException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return new ModelAndView("redirect:/");
         }
     }
 }

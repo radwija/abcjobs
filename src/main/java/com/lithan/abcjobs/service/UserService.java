@@ -2,7 +2,9 @@ package com.lithan.abcjobs.service;
 
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
+import com.lithan.abcjobs.payload.request.ForgotPassworRequest;
 import com.lithan.abcjobs.payload.request.RegistrationRequest;
+import com.lithan.abcjobs.payload.request.ResetPasswordRequest;
 
 import java.util.List;
 
@@ -16,4 +18,8 @@ public interface UserService {
     UserProfile getUserProfileByUsername(String username);
     User activateAccount(String registrationCode);
     List<User> searchForUsers(String keyword);
+    void updateUuidResetPassword(ForgotPassworRequest forgotPassworRequest);
+    User findByResetPasswordToken(String token);
+    User findByRegistrationCode(String uuid);
+    void updatePassword(String uuid, String newPassword);
 }

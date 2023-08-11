@@ -6,6 +6,8 @@ import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.CredentialAlreadyTakenException;
 import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.exception.UserProfileNotFoundException;
+import com.lithan.abcjobs.payload.request.ForgotPassworRequest;
+import com.lithan.abcjobs.payload.request.ResetPasswordRequest;
 import com.lithan.abcjobs.repository.ApplyJobRepository;
 import com.lithan.abcjobs.repository.UserProfileRepository;
 import com.lithan.abcjobs.repository.UserRepository;
@@ -13,6 +15,7 @@ import com.lithan.abcjobs.payload.request.RegistrationRequest;
 import com.lithan.abcjobs.service.EmailSenderService;
 import com.lithan.abcjobs.service.UserProfileService;
 import com.lithan.abcjobs.service.UserService;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -73,9 +76,6 @@ public class UserServiceImpl implements UserService {
         user.setUserProfile(userProfile);
 
         userRepository.save(user);
-//        System.out.println(user.getRegistrationCode());
-//        System.out.println("Ini usernya: " + userRepository.findByRegistrationCode(registrationCode));
-//        System.out.println("Ini UUID: " + user.getRegistrationCode());
 
         emailSenderService.sendMail(user.getEmail(),
                 "Account Activation | ABC Jobs Portal",
@@ -159,5 +159,51 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> searchForUsers(String keyword) {
         return userRepository.searchForUsers(keyword);
+    }
+
+    @Override
+    public void updateUuidResetPassword(ForgotPassworRequest forgotPassworRequest) {
+        String email = forgotPassworRequest.getEmail();
+        String token = RandomString.make(30);
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw  new AccountNotFoundException("Account not found with email " + email);
+        }
+        String fullname = user.getUserProfile().getFirstName() + " " + user.getUserProfile().getLastName();
+
+        UUID updatedUuid = UUID.randomUUID();
+        String parsedUuid = updatedUuid.toString();
+        user.setRegistrationCode(parsedUuid);
+        userRepository.save(user);
+
+        emailSenderService.sendMail(
+                email,
+                "Reset Password Link | ABC Jobs Portal",
+                "http://localhost:8080/reset-password?reset=" + parsedUuid
+        );
+    }
+
+    @Override
+    public User findByResetPasswordToken(String token) {
+        return userRepository.findByResetPasswordToken(token);
+    }
+
+    @Override
+    public User findByRegistrationCode(String uuid) {
+        return userRepository.findByRegistrationCode(uuid);
+    }
+
+    @Override
+    public void updatePassword(String uuid, String newPassword) {
+        User user = userRepository.findByRegistrationCode(uuid);
+        if (user == null) {
+            throw new AccountNotFoundException("Account not found!");
+        }
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        UUID updatedUuid = UUID.randomUUID();
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
+        user.setRegistrationCode(updatedUuid.toString());
+        userRepository.save(user);
     }
 }

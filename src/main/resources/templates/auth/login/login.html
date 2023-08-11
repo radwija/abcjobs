@@ -34,10 +34,15 @@
                             <label for="password" class="form-label">Username</label>
                             <input type="password" name="password" class="form-control" placeholder="Password" required>
                         </div>
+                        <a th:href="@{/forgot-password}" class="hyperlink">Forgot password?</a>
                         <div class="d-grid">
                             <input type="submit" name="Login" value="Login" class="btn btn-primary">
                         </div>
                     </form>
+                    <hr>
+                    <div class="text-center">Don't have an account? <a th:href="@{/register}"
+                            class="hyperlink">Register</a>
+                    </div>
                 </div>
             </div>
         </div>

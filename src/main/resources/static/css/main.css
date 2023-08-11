@@ -150,3 +150,8 @@ body {
 .user-email {
   height: 600px;
 }
+
+/* Login Page */
+.hyperlink {
+  color: black;
+}
