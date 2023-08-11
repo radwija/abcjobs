@@ -82,13 +82,19 @@ public class AuthController {
     }
 
     @GetMapping("/thank-you")
-    public ModelAndView thankYouPageView(Model model) {
+    public ModelAndView thankYouPageView(Principal principal, Model model) {
+        if (principal != null) {
+            return new ModelAndView("redirect:/");
+        }
         return new ModelAndView("auth/registration/thankYou");
     }
 
     @GetMapping("/register-confirmation")
-    public ModelAndView accountActivation(@RequestParam(name = "confirm") String registrationCode, Model model) {
+    public ModelAndView accountActivation(@RequestParam(name = "confirm") String registrationCode, Model model, Principal principal) {
         try {
+            if (principal != null) {
+                return new ModelAndView("redirect:/");
+            }
             User activatedUser = userService.activateAccount(registrationCode);
             model.addAttribute("activatedEmail", activatedUser.getEmail());
             return new ModelAndView("auth/registration/registerConfirmation");

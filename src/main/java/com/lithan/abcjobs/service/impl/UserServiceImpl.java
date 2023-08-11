@@ -7,7 +7,6 @@ import com.lithan.abcjobs.exception.CredentialAlreadyTakenException;
 import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.exception.UserProfileNotFoundException;
 import com.lithan.abcjobs.payload.request.ForgotPassworRequest;
-import com.lithan.abcjobs.payload.request.ResetPasswordRequest;
 import com.lithan.abcjobs.repository.ApplyJobRepository;
 import com.lithan.abcjobs.repository.UserProfileRepository;
 import com.lithan.abcjobs.repository.UserRepository;
@@ -15,7 +14,6 @@ import com.lithan.abcjobs.payload.request.RegistrationRequest;
 import com.lithan.abcjobs.service.EmailSenderService;
 import com.lithan.abcjobs.service.UserProfileService;
 import com.lithan.abcjobs.service.UserService;
-import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -164,22 +162,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUuidResetPassword(ForgotPassworRequest forgotPassworRequest) {
         String email = forgotPassworRequest.getEmail();
-        String token = RandomString.make(30);
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            throw  new AccountNotFoundException("Account not found with email " + email);
+            throw new AccountNotFoundException("Account not found with email " + email);
         }
-        String fullname = user.getUserProfile().getFirstName() + " " + user.getUserProfile().getLastName();
+        String fullName = user.getUserProfile().getFirstName() + " " + user.getUserProfile().getLastName();
 
         UUID updatedUuid = UUID.randomUUID();
         String parsedUuid = updatedUuid.toString();
         user.setRegistrationCode(parsedUuid);
         userRepository.save(user);
 
+        String emailContent =
+                "Dear " + fullName + ",\n\n" +
+                "We recently received a request to reset your password for your ABC Jobs Portal account. To proceed with resetting your password, please click the link below:\n\n" +
+                "http://localhost:8080/reset-password?reset=" + parsedUuid + "\n\n" +
+                "If you didn't initiate this request, you can safely ignore this email and your password will remain unchanged.\n\n" +
+                "Thank you for using ABC Jobs Portal!\n\n" +
+                "Best Regards,\n" +
+                "The ABC Jobs Portal Team";
+
         emailSenderService.sendMail(
                 email,
                 "Reset Password Link | ABC Jobs Portal",
-                "http://localhost:8080/reset-password?reset=" + parsedUuid
+                emailContent
         );
     }
 

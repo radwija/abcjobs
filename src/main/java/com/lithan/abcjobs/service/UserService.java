@@ -4,7 +4,6 @@ import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.payload.request.ForgotPassworRequest;
 import com.lithan.abcjobs.payload.request.RegistrationRequest;
-import com.lithan.abcjobs.payload.request.ResetPasswordRequest;
 
 import java.util.List;
 

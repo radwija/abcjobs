@@ -255,8 +255,7 @@ public class UserController {
             return new ModelAndView("redirect:/");
         }
 
-        ModelAndView modelAndView = new ModelAndView("auth/resetPassword/emailSent");
-        return modelAndView;
+        return new ModelAndView("auth/resetPassword/emailSent");
     }
 
     @GetMapping("/reset-password")
