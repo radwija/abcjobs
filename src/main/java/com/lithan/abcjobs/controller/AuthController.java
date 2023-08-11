@@ -87,9 +87,9 @@ public class AuthController {
     }
 
     @GetMapping("/register-confirmation")
-    public ModelAndView accountActivation(@RequestParam(name = "id") Long id, Model model) {
+    public ModelAndView accountActivation(@RequestParam(name = "confirm") String registrationCode, Model model) {
         try {
-            User activatedUser = userService.activateAccount(id);
+            User activatedUser = userService.activateAccount(registrationCode);
             model.addAttribute("activatedEmail", activatedUser.getEmail());
             return new ModelAndView("auth/registration/registerConfirmation");
         } catch (AccountNotFoundException e) {

@@ -9,6 +9,7 @@ import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     private UserRepository userRepository;
 
     @Override
+    @Async
     public void sendMail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("abcjobsportal@lithan.com");
@@ -36,6 +38,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     }
 
     @Override
+    @Async
     public void sendMailToUsers(SendMailRequest sendMailRequest, String username) {
         boolean isAdmin = userRepository.getUserByUsername(username).getRole().equals("ADMIN");
         if (!isAdmin) {

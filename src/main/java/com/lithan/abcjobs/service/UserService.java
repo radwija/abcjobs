@@ -14,6 +14,6 @@ public interface UserService {
     List<User> findAllUsersByUserId(String[] userIds);
     User getUserByUsername(String username);
     UserProfile getUserProfileByUsername(String username);
-    User activateAccount(Long id);
+    User activateAccount(String registrationCode);
     List<User> searchForUsers(String keyword);
 }

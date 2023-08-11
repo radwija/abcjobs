@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -62,6 +62,9 @@ public class UserServiceImpl implements UserService {
         user.setRole(ERole.USER.toString());
         user.setActive(false);
 
+        UUID registrationCode = UUID.randomUUID();
+        user.setRegistrationCode(registrationCode.toString());
+
         UserProfile userProfile = new UserProfile();
         userProfile.setFirstName(registrationRequest.getFirstName());
         userProfile.setLastName(registrationRequest.getLastName());
@@ -70,12 +73,16 @@ public class UserServiceImpl implements UserService {
         user.setUserProfile(userProfile);
 
         userRepository.save(user);
+//        System.out.println(user.getRegistrationCode());
+//        System.out.println("Ini usernya: " + userRepository.findByRegistrationCode(registrationCode));
+//        System.out.println("Ini UUID: " + user.getRegistrationCode());
 
         emailSenderService.sendMail(user.getEmail(),
                 "Account Activation | ABC Jobs Portal",
                 "Thanks for registering in ABC Jobs Portal. Here is you activation URL to get started your journey in ABC Jobs Portal!" +
                         "\n" +
-                        "http://localhost:8080/register-confirmation?id=" + userRepository.findByEmail(user.getEmail()).getUserId());
+                        "http://localhost:8080/register-confirmation?confirm=" + user.getRegistrationCode().toString()
+        );
     }
 
     @Override
@@ -136,10 +143,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User activateAccount(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User activatedUser = userOptional.get();
+    public User activateAccount(String registrationCode) {
+        User activatedUser = userRepository.findByRegistrationCode(registrationCode);
+        System.out.println(activatedUser);
+        if (activatedUser != null) {
             activatedUser.setActive(true);
 
             userRepository.save(activatedUser);

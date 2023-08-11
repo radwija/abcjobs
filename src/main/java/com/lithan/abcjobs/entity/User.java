@@ -17,6 +17,9 @@ public class User {
     @Column(name = "user_id")
     Long userId;
 
+    @Column(unique = true)
+    private String registrationCode;
+
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private UserProfile userProfile;
 
@@ -49,6 +52,14 @@ public class User {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getRegistrationCode() {
+        return registrationCode;
+    }
+
+    public void setRegistrationCode(String registrationCode) {
+        this.registrationCode = registrationCode;
     }
 
     public UserProfile getUserProfile() {
