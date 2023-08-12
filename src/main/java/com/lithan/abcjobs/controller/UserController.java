@@ -7,7 +7,9 @@ import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.*;
 import com.lithan.abcjobs.service.*;
+import net.bytebuddy.implementation.auxiliary.AuxiliaryType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +39,9 @@ public class UserController {
 
     @Autowired
     private ApplyJobService applyJobService;
+
+    @Autowired
+    private ExperienceService experienceService;
 
     @GetMapping({"/u", "/u/"})
     public String peopleView() {
@@ -243,7 +248,7 @@ public class UserController {
             userService.updateUuidResetPassword(forgotPassworRequest);
             redirectAttributes.addFlashAttribute("emailSent", forgotPassworRequest.getEmail());
             return new ModelAndView("redirect:/email-sent");
-        }catch (AccountNotFoundException e) {
+        } catch (AccountNotFoundException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return new ModelAndView("redirect:/forgot-password");
         }
@@ -285,4 +290,30 @@ public class UserController {
             return new ModelAndView("redirect:/");
         }
     }
+
+    @GetMapping("/add-experience")
+    public ModelAndView addExperienceView(Model model) {
+        ModelAndView addExperiencePage = new ModelAndView("user/addExperience");
+
+        ExperienceRequest experienceRequest = new ExperienceRequest();
+        addExperiencePage.addObject("experienceRequest", experienceRequest);
+        model.addAttribute("heading", "Add new experience");
+        return addExperiencePage;
+    }
+
+    @PostMapping("/saveExperience")
+    public ModelAndView saveExperience(@ModelAttribute ExperienceRequest experienceRequest, Principal principal, RedirectAttributes redirectAttributes, Model model) {
+        try {
+            if (principal == null) {
+                return new ModelAndView("redirect:/login");
+            }
+            String username = principal.getName();
+            experienceService.saveExperience(experienceRequest, username);
+            return new ModelAndView("redirect:/u/" + username);
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return new ModelAndView("redirect:/");
+        }
+    }
+
 }

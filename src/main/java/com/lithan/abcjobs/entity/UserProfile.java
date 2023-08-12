@@ -1,6 +1,8 @@
 package com.lithan.abcjobs.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class UserProfile {
@@ -21,6 +23,9 @@ public class UserProfile {
     @OneToOne
     @JoinColumn(name = "job_id")
     private Job job;
+
+    @OneToMany(mappedBy = "userProfile",cascade = CascadeType.ALL)
+    private List<Experience> experiences = new ArrayList<>();
 
     public Long getUserDetailId() {
         return userDetailId;
@@ -84,5 +89,13 @@ public class UserProfile {
 
     public void setJob(Job job) {
         this.job = job;
+    }
+
+    public List<Experience> getExperiences() {
+        return experiences;
+    }
+
+    public void setExperiences(List<Experience> experiences) {
+        this.experiences = experiences;
     }
 }
