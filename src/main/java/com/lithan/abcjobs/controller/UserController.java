@@ -1,11 +1,13 @@
 package com.lithan.abcjobs.controller;
 
+import com.lithan.abcjobs.entity.Experience;
 import com.lithan.abcjobs.entity.ThreadPost;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.*;
+import com.lithan.abcjobs.payload.response.ExperienceResponse;
 import com.lithan.abcjobs.service.*;
 import net.bytebuddy.implementation.auxiliary.AuxiliaryType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -301,6 +303,36 @@ public class UserController {
         return addExperiencePage;
     }
 
+    @GetMapping("/edit-experience")
+    public ModelAndView editExperienceView(@RequestParam("id") String experienceIdStr, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+        ModelAndView addExperiencePage = new ModelAndView("user/addExperience");
+        Long experienceId = Long.parseLong(experienceIdStr);
+
+        Experience existingExperience = experienceService.findExperienceByExperienceId(experienceId);
+        if (existingExperience == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Experience not found!");
+            return new ModelAndView("redirect:/");
+        }
+
+        String ownerUsername = existingExperience.getUserProfile().getUser().getUsername();
+        String currentUsername = principal.getName();
+        boolean isOwner = currentUsername.equals(ownerUsername);
+        if (!isOwner) {
+            redirectAttributes.addFlashAttribute("errorMessage", "You're not allowed to edit the experience!");
+            return new ModelAndView("redirect:/u/" + ownerUsername);
+        }
+        ExperienceRequest experienceRequest = new ExperienceRequest();
+        experienceRequest.setExperienceId(existingExperience.getExperienceId());
+        experienceRequest.setExperienceName(existingExperience.getExperienceName());
+        experienceRequest.setCompanyName(existingExperience.getCompanyName());
+        experienceRequest.setStartDate(existingExperience.getStartDate());
+        experienceRequest.setEndDate(existingExperience.getEndDate());
+
+        addExperiencePage.addObject("experienceRequest", experienceRequest);
+        model.addAttribute("heading", "Edit experience");
+        return addExperiencePage;
+    }
+
     @PostMapping("/saveExperience")
     public ModelAndView saveExperience(@ModelAttribute ExperienceRequest experienceRequest, Principal principal, RedirectAttributes redirectAttributes, Model model) {
         try {
@@ -308,7 +340,8 @@ public class UserController {
                 return new ModelAndView("redirect:/login");
             }
             String username = principal.getName();
-            experienceService.saveExperience(experienceRequest, username);
+            ExperienceResponse response = experienceService.saveExperience(experienceRequest, username);
+            redirectAttributes.addFlashAttribute("successMessage", response.getMessage());
             return new ModelAndView("redirect:/u/" + username);
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());

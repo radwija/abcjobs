@@ -5,6 +5,7 @@ import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.payload.request.ExperienceRequest;
+import com.lithan.abcjobs.payload.response.ExperienceResponse;
 import com.lithan.abcjobs.repository.ExperienceRepository;
 import com.lithan.abcjobs.repository.UserProfileRepository;
 import com.lithan.abcjobs.repository.UserRepository;
@@ -31,7 +32,7 @@ public class ExperienceServiceImpl implements ExperienceService {
     }
 
     @Override
-    public void saveExperience(ExperienceRequest experienceRequest, String username) {
+    public ExperienceResponse saveExperience(ExperienceRequest experienceRequest, String username) {
         User user = userRepository.getUserByUsername(username);
         if (user == null) {
             throw new AccountNotFoundException("User with username " + username + " not found");
@@ -42,6 +43,11 @@ public class ExperienceServiceImpl implements ExperienceService {
             Experience newExperience = mapExperienceRequestToExperience(experienceRequest);
             newExperience.setUserProfile(userProfile);
             experienceRepository.save(newExperience);
+
+            ExperienceResponse response = new ExperienceResponse();
+            response.setExperience(newExperience);
+            response.setMessage("New experience added successfully!");
+            return response;
         } else {
             Experience existingExperience = experienceRepository.findExperienceByExperienceId(experienceRequest.getExperienceId());
             if (existingExperience == null) {
@@ -49,6 +55,11 @@ public class ExperienceServiceImpl implements ExperienceService {
             }
             mapExperienceRequestToExperience(experienceRequest, existingExperience);
             experienceRepository.save(existingExperience);
+
+            ExperienceResponse response = new ExperienceResponse();
+            response.setExperience(existingExperience);
+            response.setMessage("Experience ID: " + experienceRequest.getExperienceId() + " updated successfully!");
+            return response;
         }
     }
 

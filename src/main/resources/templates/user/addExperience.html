@@ -17,11 +17,29 @@
 
   <div class="container my-container-custom">
     <form th:action="@{/saveExperience}" th:object="${experienceRequest}" method="post">
-      <input type="text" th:field="*{experienceName}" placeholder="">
-      <input type="text" th:field="*{companyName}" placeholder="">
-      <input type="date" th:field="*{startDate}">
-      <input type="date" th:field="*{endDate}">
-      <button type="submit">Add new experience</button>
+      <h1>[[${heading}]]</h1>
+      <input type="hidden" th:field="*{experienceId}">
+      <div class="mb-3">
+        <label for="experienceName" class="form-label">Experience name</label>
+        <input type="text" th:field="*{experienceName}" class="form-control" name="experienceName"
+          placeholder="Example: Fullstack Web Developer" required>
+      </div>
+      <div class="mb-3">
+        <label for="companyName" class="form-label">Company name</label>
+        <input type="text" th:field="*{companyName}" class="form-control" name="companyName" placeholder="Company name"
+          required>
+      </div>
+      <div class="mb-3">
+        <label for="startDate" class="form-label">Start date</label>
+        <input type="date" th:field="*{startDate}" class="form-control" name="startDate" style="width: 230px;" required>
+      </div>
+      <div class="mb-3">
+        <label for="endDate" class="form-label">End date</label>
+        <input type="date" th:field="*{endDate}" class="form-control" name="endDate" style="width: 230px;" required>
+      </div>
+      <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Add new experience</button>
+      </div>
     </form>
   </div>
 

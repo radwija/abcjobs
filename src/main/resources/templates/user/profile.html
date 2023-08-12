@@ -46,9 +46,23 @@
                     <a th:href="@{/u/__${user.username}__?tab=threads}" type="button"
                         class="btn btn-outline-primary">Threads</a>
                 </div>
-                <div class="border shadow-sm p-3 mb-5 rounded bg-white">
-                    <p th:if="${isInProfileTab}" th:text="${profileText}" />
-                    <div th:if="${isInThreadTab}">
+                <div>
+                    <div th:if="${isInProfileTab}">
+                        <div class="border shadow-sm p-3 mb-4 rounded bg-white">
+                            <a th:href="@{/add-experience}" class="btn btn-primary mb-3">+ Add experience</a>
+                            <div>
+                                <div class="bg-white border rounded p-3">
+                                    <h5>Experience Name</h5>
+                                    <p>Company Name</p>
+                                    <p>17-08-2023 - 17-08-2023</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border shadow-sm p-3 mb-4 rounded bg-white">
+                            Education
+                        </div>
+                    </div>
+                    <div th:if="${isInThreadTab}" class="border shadow-sm p-3 mb-5 rounded bg-white">
                         <div
                             th:if="${#request.userPrincipal != null && #request.userPrincipal.name == user.username && !(#request.isUserInRole('ROLE_ADMIN'))}">
                             <div th:replace="components/buttons :: postThreadButton"></div>
