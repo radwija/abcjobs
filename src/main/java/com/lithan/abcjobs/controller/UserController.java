@@ -9,9 +9,7 @@ import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.*;
 import com.lithan.abcjobs.payload.response.ExperienceResponse;
 import com.lithan.abcjobs.service.*;
-import net.bytebuddy.implementation.auxiliary.AuxiliaryType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -68,7 +66,11 @@ public class UserController {
 
             if (Objects.equals(tab, "profile") || Objects.equals(tab, null) || Objects.equals(tab, "")) {
                 model.addAttribute("isInProfileTab", true);
-                model.addAttribute("profileText", "You're in profile tab");
+
+                List<Experience> experiences = experienceService.findExperiencesByUserProfile(userProfile);
+                experiences.forEach(experience -> experience.setFormattedStartDate(formatDate(experience.getStartDate())));
+                experiences.forEach(experience -> experience.setFormattedEndDate(formatDate(experience.getStartDate())));
+                model.addAttribute("experiences", experiences);
             } else if (Objects.equals(tab, "threads")) {
                 model.addAttribute("isInThreadTab", true);
                 // Used for retrieving threads that belong to user

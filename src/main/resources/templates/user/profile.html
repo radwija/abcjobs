@@ -49,17 +49,12 @@
                 <div>
                     <div th:if="${isInProfileTab}">
                         <div class="border shadow-sm p-3 mb-4 rounded bg-white">
-                            <a th:href="@{/add-experience}" class="btn btn-primary mb-3">+ Add experience</a>
-                            <div>
-                                <div class="bg-white border rounded p-3">
-                                    <h5>Experience Name</h5>
-                                    <p>Company Name</p>
-                                    <p>17-08-2023 - 17-08-2023</p>
-                                </div>
-                            </div>
+                            <h3 class="mb-3">Experience</h3>
+                            <div th:replace="components/buttons :: addNewExperienceButton"></div>
+                            <div th:replace="components/experienceAndEducationCards :: experienceCards"></div>
                         </div>
                         <div class="border shadow-sm p-3 mb-4 rounded bg-white">
-                            Education
+                            <h3 class="mb-3">Experience</h3>
                         </div>
                     </div>
                     <div th:if="${isInThreadTab}" class="border shadow-sm p-3 mb-5 rounded bg-white">

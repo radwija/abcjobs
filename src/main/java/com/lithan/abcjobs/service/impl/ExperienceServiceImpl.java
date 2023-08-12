@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ExperienceServiceImpl implements ExperienceService {
     @Autowired
@@ -29,6 +31,11 @@ public class ExperienceServiceImpl implements ExperienceService {
     @Override
     public Experience findExperienceByExperienceId(Long experienceId) {
         return experienceRepository.findExperienceByExperienceId(experienceId);
+    }
+
+    @Override
+    public List<Experience> findExperiencesByUserProfile(UserProfile userProfile) {
+        return experienceRepository.findExperiencesByUserProfile(userProfile);
     }
 
     @Override

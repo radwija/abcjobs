@@ -10,6 +10,10 @@
     class="btn btn-primary mb-3">
     + Post thread
   </a>
+
+  <a th:fragment="addNewExperienceButton"
+    th:if="${#request.userPrincipal != null && #request.userPrincipal.name == user.username}"
+    th:href="@{/add-experience}" class="btn btn-primary mb-3">+ Add experience</a>
 </body>
 
 </html>

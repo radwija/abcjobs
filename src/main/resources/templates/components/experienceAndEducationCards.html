@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+</head>
+
+<body>
+  <div th:fragment="experienceCards" th:each="experience : ${experiences}" class="mb-3">
+    <div class="bg-white border rounded p-3 d-flex justify-content-between">
+      <div class="d-flex gap-3">
+        <i class="bi bi-briefcase-fill"></i>
+        <div>
+          <h5>[[${experience.experienceName}]]</h5>
+          <div>[[${experience.companyName}]]</div>
+          <div class="text-muted">
+            <span th:text="${experience.formattedStartDate}" /> - <span th:text="${experience.formattedEndDate}" />
+          </div>
+        </div>
+      </div>
+
+      <div th:if="${#request.userPrincipal != null && #request.userPrincipal.name == user.username}" class="dropdown">
+        <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-three-dots-vertical"></i>
+        </a>
+
+        <ul class="dropdown-menu">
+          <li><a th:href="@{/edit-experience?id=__${experience.experienceId}__}" class="dropdown-item">Edit</a></li>
+          <li><a th:href="@{/}" class="dropdown-item">Delete</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
