@@ -63,6 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/add-experience").hasAnyAuthority(ROLE_USER, ROLE_ADMIN)
                 .antMatchers(HttpMethod.GET, "/edit-experience").hasAnyAuthority(ROLE_USER, ROLE_ADMIN)
                 .antMatchers(HttpMethod.POST, "/saveExperience").hasAnyAuthority(ROLE_USER, ROLE_ADMIN)
+                .antMatchers(HttpMethod.GET, "/deleteExperience").hasAnyAuthority(ROLE_USER, ROLE_ADMIN)
                 .and()
                 .logout()
                 .logoutSuccessUrl("/login")

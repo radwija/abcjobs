@@ -4,6 +4,7 @@ import com.lithan.abcjobs.entity.Experience;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.AccountNotFoundException;
+import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.ExperienceRequest;
 import com.lithan.abcjobs.payload.response.ExperienceResponse;
 import com.lithan.abcjobs.repository.ExperienceRepository;
@@ -80,5 +81,15 @@ public class ExperienceServiceImpl implements ExperienceService {
     @Override
     public void mapExperienceRequestToExperience(ExperienceRequest experienceRequest, Experience experience) {
         BeanUtils.copyProperties(experienceRequest, experience);
+    }
+
+    @Override
+    public void deleteExperience(Long experienceId, String usernameDeleter) {
+        String threadOwner = experienceRepository.findExperienceByExperienceId(experienceId).getUserProfile().getUser().getUsername();
+        if (!(threadOwner.equals(usernameDeleter))) {
+            throw new RefusedActionException("You're not allowed to delete the experience!");
+        }
+
+        experienceRepository.deleteById(experienceId);
     }
 }

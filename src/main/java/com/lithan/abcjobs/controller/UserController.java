@@ -351,4 +351,23 @@ public class UserController {
         }
     }
 
+    @GetMapping("/deleteExperience")
+    public ModelAndView deleteExperience(@RequestParam("id") String experienceIdStr, Principal principal, RedirectAttributes redirectAttributes) {
+        Long experienceId = Long.parseLong(experienceIdStr);
+        String ownerUsername = experienceService.findExperienceByExperienceId(experienceId).getUserProfile().getUser().getUsername();
+        if (principal == null) {
+            return new ModelAndView("redirect:/u/" + ownerUsername + "?tab=profile");
+        }
+        try {
+            String usernameDeleter = principal.getName();
+            experienceService.deleteExperience(experienceId, usernameDeleter);
+
+            redirectAttributes.addFlashAttribute("successMessage", "Experience ID: " + experienceId + " deleted successfully!");
+        } catch (RefusedActionException e) {
+            System.out.println(e);
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
+        return new ModelAndView("redirect:/u/" + ownerUsername + "?tab=profile");
+    }
+
 }

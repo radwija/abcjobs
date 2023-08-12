@@ -13,4 +13,5 @@ public interface ExperienceService {
     ExperienceResponse saveExperience(ExperienceRequest experienceRequest, String username);
     Experience mapExperienceRequestToExperience(ExperienceRequest experienceRequest);
     void mapExperienceRequestToExperience(ExperienceRequest experienceRequest, Experience experience);
+    void deleteExperience(Long experienceId, String usernameDeleter);
 }
