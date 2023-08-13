@@ -28,9 +28,18 @@
                 <div th:if="${threadPosts.size() == 0}">
                     There isn't any thread...
                 </div>
+                <div class="d-md-block d-lg-none">
+                    <h5>Explore another threads</h5>
+                    <div class="table-responsive d-flex gap-2">
+                        <div th:each="tag : ${tags}" class="mb-3">
+                            <a th:href="@{/threads?tag=__${tag.tagName}__}" th:fragment="threadTagButton"
+                                class="btn btn-outline-primary">#[[${tag.tagName}]]</a>
+                        </div>
+                    </div>
+                </div>
                 <div th:replace="components/threadCard :: threadCard"></div>
             </div>
-            <div class="col-md-12 col-lg-3">
+            <div class="col-md-12 col-lg-3 d-none d-md-none d-lg-block">
                 <div class="border shadow-sm p-3 mb-5 rounded bg-white">
                     <h5>Explore another threads</h5>
                     <div th:each="tag : ${tags}" class="mb-3">
