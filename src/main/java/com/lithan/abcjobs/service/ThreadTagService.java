@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface ThreadTagService {
     List<ThreadTag> findAllThreadTags();
-    List<ThreadTag> findThreadTagByTagName(String tagName);
+    List<ThreadTag> findThreadTagsByTagName(String tagName);
+    ThreadTag findThreadTagByTagName(String tagName);
 }

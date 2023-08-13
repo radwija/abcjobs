@@ -18,6 +18,9 @@
   <a th:fragment="addNewEducationButton"
     th:if="${#request.userPrincipal != null && #request.userPrincipal.name == user.username}"
     th:href="@{/add-education}" class="btn btn-primary mb-3">+ Add education</a>
+
+  <a th:href="@{/threads?tag=__${thread.tag.tagName}__}" th:fragment="threadTagButton"
+    class="btn btn-outline-primary btn-sm">#[[${thread.tag.tagName}]]</a>
 </body>
 
 </html>

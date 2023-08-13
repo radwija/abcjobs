@@ -44,6 +44,7 @@
         </div>
 
       </div>
+      <div th:replace="components/buttons :: threadTagButton"></div>
       <a th:href="${'/u/' + thread.user.username + '/thread?id=' + thread.threadId}" class="text-decoration-none">
         <h3 th:text="${thread.title}" />
       </a>

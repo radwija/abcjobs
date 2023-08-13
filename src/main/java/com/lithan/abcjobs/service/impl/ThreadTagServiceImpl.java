@@ -19,8 +19,13 @@ public class ThreadTagServiceImpl implements ThreadTagService {
     }
 
     @Override
-    public List<ThreadTag> findThreadTagByTagName(String tagName) {
+    public List<ThreadTag> findThreadTagsByTagName(String tagName) {
         return threadTagRepository.findAllByTagName(tagName);
+    }
+
+    @Override
+    public ThreadTag findThreadTagByTagName(String tagName) {
+        return threadTagRepository.findByTagName(tagName);
     }
 
 

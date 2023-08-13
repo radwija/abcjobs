@@ -2,11 +2,13 @@ package com.lithan.abcjobs.controller;
 
 import com.lithan.abcjobs.entity.ThreadComment;
 import com.lithan.abcjobs.entity.ThreadPost;
+import com.lithan.abcjobs.entity.ThreadTag;
 import com.lithan.abcjobs.exception.ThreadPostNotFoundException;
 import com.lithan.abcjobs.payload.request.ThreadCommentRequest;
 import com.lithan.abcjobs.payload.request.ThreadPostRequest;
 import com.lithan.abcjobs.payload.response.ThreadResponse;
 import com.lithan.abcjobs.service.ThreadPostService;
+import com.lithan.abcjobs.service.ThreadTagService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +31,9 @@ public class ThreadPostController {
 
     @Autowired
     ThreadPostService threadPostService;
+
+    @Autowired
+    ThreadTagService threadTagService;
 
     @GetMapping("/u/{username}/thread")
     public ModelAndView threadDetailView(@PathVariable("username") String username, @RequestParam(value = "id", required = false) String idStr, Model model) {
@@ -67,17 +71,24 @@ public class ThreadPostController {
     }
 
     @GetMapping("/threads")
-    public ModelAndView viewAllThreadsView(@RequestParam(value = "q", required = false) String keyword, Model model) {
+    public ModelAndView viewAllThreadsView(@RequestParam(value = "q", required = false) String keyword, @RequestParam(value = "tag", required = false) String tag, Model model) {
         List<ThreadPost> searchedThread = threadPostService.getAllThreadPosts();
         if (searchedThread.size() == 0) {
             model.addAttribute("noResultMessage", "There isn't any thread");
         }
         if (keyword != null) {
             searchedThread = threadPostService.searchForThreadPostsByTitleAndContent(keyword);
+        } else if (tag != null) {
+            ThreadTag threadTag = threadTagService.findThreadTagByTagName(tag);
+            searchedThread = threadPostService.findThreadPostsByTag(threadTag);
         }
         searchedThread.forEach(thread -> thread.setFormattedCreatedAt(formatDate(thread.getCreatedAt())));
-        if (searchedThread.size() == 0 && keyword != null) {
-            model.addAttribute("noResultMessage", "No search result for: " + keyword);
+        if (searchedThread.size() == 0) {
+            if ( keyword != null) {
+                model.addAttribute("noResultMessage", "No search result for: " + keyword);
+            } else if  (tag != null){
+                model.addAttribute("noResultMessage", "There isn't any thread in tag " + tag);
+            }
         }
         model.addAttribute("threadPosts", searchedThread);
         return new ModelAndView("thread/threads");

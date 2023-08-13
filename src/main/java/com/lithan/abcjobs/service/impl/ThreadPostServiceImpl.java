@@ -59,6 +59,11 @@ public class ThreadPostServiceImpl implements ThreadPostService {
     }
 
     @Override
+    public List<ThreadPost> findThreadPostsByTag(ThreadTag threadTag) {
+        return threadPostRepository.findThreadPostsByTag(threadTag);
+    }
+
+    @Override
     public ThreadResponse getThreadByUsernameAndThreadId(String username, Long threadId) {
         User threadOwner = userService.getUserByUsername(username);
         ThreadPost threadPost = threadPostRepository.getThreadPostByThreadId(threadId);

@@ -53,6 +53,7 @@
               </div>
             </div>
           </div>
+          <div th:replace="components/buttons :: threadTagButton"></div>
           <h1 th:text="${thread.title}" />
           <p th:text="${thread.content}" style="white-space: pre-line" />
         </div>
