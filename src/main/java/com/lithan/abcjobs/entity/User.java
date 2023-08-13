@@ -46,9 +46,6 @@ public class User {
 //    @OneToMany(mappedBy = "appliedBy", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<ApplyJob> applyJobs = new ArrayList<>();
 
-    @Column(unique = true)
-    private String resetPasswordToken;
-
     public Long getUserId() {
         return userId;
     }
@@ -127,13 +124,5 @@ public class User {
 
     public void setComments(List<ThreadComment> threadComments) {
         this.threadComments = threadComments;
-    }
-
-    public String getResetPasswordToken() {
-        return resetPasswordToken;
-    }
-
-    public void setResetPasswordToken(String resetPasswordToken) {
-        this.resetPasswordToken = resetPasswordToken;
     }
 }

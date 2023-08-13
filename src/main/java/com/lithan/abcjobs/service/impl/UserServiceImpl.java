@@ -188,12 +188,6 @@ public class UserServiceImpl implements UserService {
                 emailContent
         );
     }
-
-    @Override
-    public User findByResetPasswordToken(String token) {
-        return userRepository.findByResetPasswordToken(token);
-    }
-
     @Override
     public User findByRegistrationCode(String uuid) {
         return userRepository.findByRegistrationCode(uuid);

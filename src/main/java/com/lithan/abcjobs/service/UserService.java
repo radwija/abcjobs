@@ -18,7 +18,6 @@ public interface UserService {
     User activateAccount(String registrationCode);
     List<User> searchForUsers(String keyword);
     void updateUuidResetPassword(ForgotPassworRequest forgotPassworRequest);
-    User findByResetPasswordToken(String token);
     User findByRegistrationCode(String uuid);
     void updatePassword(String uuid, String newPassword);
 }
