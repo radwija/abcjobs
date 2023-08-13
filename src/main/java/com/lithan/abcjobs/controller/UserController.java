@@ -1,12 +1,10 @@
 package com.lithan.abcjobs.controller;
 
-import com.lithan.abcjobs.entity.Experience;
-import com.lithan.abcjobs.entity.ThreadPost;
-import com.lithan.abcjobs.entity.User;
-import com.lithan.abcjobs.entity.UserProfile;
+import com.lithan.abcjobs.entity.*;
 import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.*;
+import com.lithan.abcjobs.payload.response.EducationResponse;
 import com.lithan.abcjobs.payload.response.ExperienceResponse;
 import com.lithan.abcjobs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +41,9 @@ public class UserController {
     @Autowired
     private ExperienceService experienceService;
 
+    @Autowired
+    private EducationService educationService;
+
     @GetMapping({"/u", "/u/"})
     public String peopleView() {
         return "redirect:/people";
@@ -71,6 +72,11 @@ public class UserController {
                 experiences.forEach(experience -> experience.setFormattedStartDate(formatDate(experience.getStartDate())));
                 experiences.forEach(experience -> experience.setFormattedEndDate(formatDate(experience.getStartDate())));
                 model.addAttribute("experiences", experiences);
+
+                List<Education> educations = educationService.findEducationsByUserProfile(userProfile);
+                educations.forEach(education -> education.setFormattedStartDate(formatDate(education.getStartDate())));
+                educations.forEach(education -> education.setFormattedEndDate(formatDate(education.getStartDate())));
+                model.addAttribute("educations", educations);
             } else if (Objects.equals(tab, "threads")) {
                 model.addAttribute("isInThreadTab", true);
                 // Used for retrieving threads that belong to user
@@ -302,6 +308,7 @@ public class UserController {
         ExperienceRequest experienceRequest = new ExperienceRequest();
         addExperiencePage.addObject("experienceRequest", experienceRequest);
         model.addAttribute("heading", "Add new experience");
+        model.addAttribute("buttonText", "Add new experience");
         return addExperiencePage;
     }
 
@@ -332,6 +339,7 @@ public class UserController {
 
         addExperiencePage.addObject("experienceRequest", experienceRequest);
         model.addAttribute("heading", "Edit experience");
+        model.addAttribute("buttonText", "Save update");
         return addExperiencePage;
     }
 
@@ -363,6 +371,83 @@ public class UserController {
             experienceService.deleteExperience(experienceId, usernameDeleter);
 
             redirectAttributes.addFlashAttribute("successMessage", "Experience ID: " + experienceId + " deleted successfully!");
+        } catch (RefusedActionException e) {
+            System.out.println(e);
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
+        return new ModelAndView("redirect:/u/" + ownerUsername + "?tab=profile");
+    }
+
+    @GetMapping("/add-education")
+    public ModelAndView addEducationView(Model model) {
+        ModelAndView addExperiencePage = new ModelAndView("user/addEducation");
+
+        EducationRequest educationRequest = new EducationRequest();
+        addExperiencePage.addObject("educationRequest", educationRequest);
+        model.addAttribute("heading", "Add new education");
+        model.addAttribute("buttonText", "Add new education");
+        return addExperiencePage;
+    }
+
+    @GetMapping("/edit-education")
+    public ModelAndView editEducationView(@RequestParam("id") String educationIdStr, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+        ModelAndView addExperiencePage = new ModelAndView("user/addEducation");
+        Long educationId = Long.parseLong(educationIdStr);
+
+        Education existingEducation = educationService.findEducationByEducationId(educationId);
+        if (existingEducation == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Education not found!");
+            return new ModelAndView("redirect:/");
+        }
+
+        String ownerUsername = existingEducation.getUserProfile().getUser().getUsername();
+        String currentUsername = principal.getName();
+        boolean isOwner = currentUsername.equals(ownerUsername);
+        if (!isOwner) {
+            redirectAttributes.addFlashAttribute("errorMessage", "You're not allowed to edit the education!");
+            return new ModelAndView("redirect:/u/" + ownerUsername);
+        }
+        EducationRequest educationRequest = new EducationRequest();
+        educationRequest.setEducationId(existingEducation.getEducationId());
+        educationRequest.setEducationName(existingEducation.getEducationName());
+        educationRequest.setInstitutionName(existingEducation.getInstitutionName());
+        educationRequest.setStartDate(existingEducation.getStartDate());
+        educationRequest.setEndDate(existingEducation.getEndDate());
+
+        addExperiencePage.addObject("educationRequest", educationRequest);
+        model.addAttribute("heading", "Edit education");
+        model.addAttribute("buttonText", "Save update");
+        return addExperiencePage;
+    }
+
+    @PostMapping("/saveEducation")
+    public ModelAndView saveEducation(@ModelAttribute EducationRequest educationRequest, Principal principal, RedirectAttributes redirectAttributes, Model model) {
+        try {
+            if (principal == null) {
+                return new ModelAndView("redirect:/login");
+            }
+            String username = principal.getName();
+            EducationResponse response = educationService.saveEducation(educationRequest, username);
+            redirectAttributes.addFlashAttribute("successMessage", response.getMessage());
+            return new ModelAndView("redirect:/u/" + username);
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return new ModelAndView("redirect:/");
+        }
+    }
+
+    @GetMapping("/deleteEducation")
+    public ModelAndView deleteEducation(@RequestParam("id") String educationIdStr, Principal principal, RedirectAttributes redirectAttributes) {
+        Long educationId = Long.parseLong(educationIdStr);
+        String ownerUsername = educationService.findEducationByEducationId(educationId).getUserProfile().getUser().getUsername();
+        if (principal == null) {
+            return new ModelAndView("redirect:/u/" + ownerUsername + "?tab=profile");
+        }
+        try {
+            String usernameDeleter = principal.getName();
+            educationService.deleteEducation(educationId, usernameDeleter);
+
+            redirectAttributes.addFlashAttribute("successMessage", "Education ID: " + educationId + " deleted successfully!");
         } catch (RefusedActionException e) {
             System.out.println(e);
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());

@@ -27,6 +27,9 @@ public class UserProfile {
     @OneToMany(mappedBy = "userProfile",cascade = CascadeType.ALL)
     private List<Experience> experiences = new ArrayList<>();
 
+    @OneToMany(mappedBy = "userProfile",cascade = CascadeType.ALL)
+    private List<Education> educations = new ArrayList<>();
+
     public Long getUserDetailId() {
         return userDetailId;
     }
@@ -97,5 +100,13 @@ public class UserProfile {
 
     public void setExperiences(List<Experience> experiences) {
         this.experiences = experiences;
+    }
+
+    public List<Education> getEducations() {
+        return educations;
+    }
+
+    public void setEducations(List<Education> educations) {
+        this.educations = educations;
     }
 }

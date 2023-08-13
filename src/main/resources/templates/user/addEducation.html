@@ -16,18 +16,18 @@
   <div th:replace="components/navbar :: navbar"></div>
 
   <div class="container my-container-custom">
-    <form th:action="@{/saveExperience}" th:object="${experienceRequest}" method="post">
+    <form th:action="@{/saveEducation}" th:object="${educationRequest}" method="post">
       <h1>[[${heading}]]</h1>
-      <input type="hidden" th:field="*{experienceId}">
+      <input type="hidden" th:field="*{educationId}">
       <div class="mb-3">
-        <label for="experienceName" class="form-label">Experience name</label>
-        <input type="text" th:field="*{experienceName}" class="form-control" name="experienceName"
-          placeholder="Example: Fullstack Web Developer" required>
+        <label for="educationName" class="form-label">Education name</label>
+        <input type="text" th:field="*{educationName}" class="form-control" name="educationName"
+          placeholder="Example: Applied Degreee in Software Engineering" required>
       </div>
       <div class="mb-3">
-        <label for="companyName" class="form-label">Company name</label>
-        <input type="text" th:field="*{companyName}" class="form-control" name="companyName" placeholder="Company name"
-          required>
+        <label for="institutionName" class="form-label">Institution name</label>
+        <input type="text" th:field="*{institutionName}" class="form-control" name="institutionName"
+          placeholder="Example: Lithan Academy Singapore" required>
       </div>
       <div class="mb-3">
         <label for="startDate" class="form-label">Start date</label>

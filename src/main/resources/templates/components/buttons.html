@@ -14,6 +14,10 @@
   <a th:fragment="addNewExperienceButton"
     th:if="${#request.userPrincipal != null && #request.userPrincipal.name == user.username}"
     th:href="@{/add-experience}" class="btn btn-primary mb-3">+ Add experience</a>
+
+  <a th:fragment="addNewEducationButton"
+    th:if="${#request.userPrincipal != null && #request.userPrincipal.name == user.username}"
+    th:href="@{/add-education}" class="btn btn-primary mb-3">+ Add education</a>
 </body>
 
 </html>
