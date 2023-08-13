@@ -12,6 +12,7 @@ public interface ThreadPostService {
     ThreadPost getThreadPostByThreadId(Long threadId);
     ThreadPost saveThread(ThreadPostRequest thread, String username);
     List<ThreadPost> findThreadPostsByTag(ThreadTag threadTag);
+    List<ThreadPost> findAllThreadPosts();
     ThreadResponse getThreadByUsernameAndThreadId(String username, Long threadId);
     List<ThreadPost> getThreadPostsByUserId(User user);
     void saveUpdateThreadPost(ThreadPostRequest threadPost, String authUsername);

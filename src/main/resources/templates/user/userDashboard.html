@@ -16,9 +16,31 @@
 
     <div class="container my-container-custom">
         <div th:replace="components/message :: responseMessages"></div>
-        <p th:text="${user.username}" />
-        <p th:text="${user.email}" />
-        <p th:text="${user.role}" />
+        <div class="row">
+            <div class="col-md-12 col-lg-3">
+                <div th:replace="user/profile :: profileCard"></div>
+            </div>
+            <div class="col-md-12 col-lg-6">
+                <div
+                    th:if="${#request.userPrincipal != null && #request.userPrincipal.name == user.username && !(#request.isUserInRole('ROLE_ADMIN'))}">
+                    <div th:replace="components/buttons :: postThreadButton"></div>
+                </div>
+                <div th:if="${threadPosts.size() == 0}">
+                    There isn't any thread...
+                </div>
+                <div th:replace="components/threadCard :: threadCard"></div>
+            </div>
+            <div class="col-md-12 col-lg-3">
+                <div class="border shadow-sm p-3 mb-5 rounded bg-white">
+                    <h5>Explore another threads</h5>
+                    <div th:each="tag : ${tags}" class="mb-3">
+                        <a th:href="@{/threads?tag=__${tag.tagName}__}" th:fragment="threadTagButton"
+                            class="btn btn-outline-primary">#[[${tag.tagName}]]</a>
+                        <div class="text-muted">[[${tag.threadPosts.size()}]] posts</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div th:replace="components/footer :: footer"></div>

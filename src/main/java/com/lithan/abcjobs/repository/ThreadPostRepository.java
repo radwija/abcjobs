@@ -15,7 +15,6 @@ public interface ThreadPostRepository extends JpaRepository<ThreadPost, Long> {
     List<ThreadPost> getThreadPostsByUser(User user);
     List<ThreadPost> findThreadPostsByTag(ThreadTag tag);
     ThreadPost getThreadPostByThreadId(Long threadId);
-
     @Query(value = "SELECT t FROM ThreadPost t WHERE t.title LIKE '%' || :keyword || '%'"
             + "OR t.content LIKE '%' || :keyword || '%'")
     List<ThreadPost> searchForThreadPostsByTitleAndContent(@Param("keyword") String keyword);

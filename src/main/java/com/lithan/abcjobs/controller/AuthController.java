@@ -1,14 +1,16 @@
 package com.lithan.abcjobs.controller;
 
+import com.lithan.abcjobs.entity.ThreadPost;
+import com.lithan.abcjobs.entity.ThreadTag;
 import com.lithan.abcjobs.entity.User;
+import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.CredentialAlreadyTakenException;
 import com.lithan.abcjobs.exception.AccountNotFoundException;
-import com.lithan.abcjobs.exception.UserNotActivatedException;
 import com.lithan.abcjobs.payload.request.RegistrationRequest;
+import com.lithan.abcjobs.service.ThreadPostService;
+import com.lithan.abcjobs.service.ThreadTagService;
 import com.lithan.abcjobs.service.UserService;
-import org.hibernate.query.QueryParameter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +19,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.util.Objects;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 public class AuthController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ThreadPostService threadPostService;
+
+    @Autowired
+    private ThreadTagService threadTagService;
 
     @GetMapping({"", "/"})
     public ModelAndView handleRootRequest(Model model, Principal principal, HttpSession httpSession) {
@@ -30,9 +39,23 @@ public class AuthController {
             return new ModelAndView("index");
         }
         User authenticatedUser = userService.getUserByUsername(principal.getName());
+        UserProfile userProfile = userService.getUserProfileByUsername(principal.getName());
+
+        List<ThreadTag> tags = threadTagService.findAllOrderByNumberOfThreadPostsDesc();
+        List<ThreadPost> threadPosts = threadPostService.findAllThreadPosts();
+
+        threadPosts.forEach(thread -> thread.setFormattedCreatedAt(formatDate(thread.getCreatedAt())));
+        model.addAttribute("threadPosts", threadPosts);
         model.addAttribute("user", authenticatedUser);
+        model.addAttribute("userProfile", userProfile);
+        model.addAttribute("tags", tags);
 
         return new ModelAndView("user/userDashboard");
+    }
+
+    private String formatDate(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
+        return dateFormat.format(date);
     }
 
     @GetMapping("/loginSuccess")

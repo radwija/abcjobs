@@ -18,7 +18,7 @@
         <div th:replace="components/message :: responseMessages"></div>
         <div class="row">
             <div class="col-md-12 col-lg-4">
-                <div class="border shadow-sm p-3 mb-5 rounded bg-white ">
+                <div th:fragment="profileCard" class="border shadow-sm p-3 mb-5 rounded bg-white">
                     <div class="top-card rounded">
                         <img src="https://www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg"
                             th:alt="${__user.username__ + '-img-profile'}" class="profile-img rounded-circle">

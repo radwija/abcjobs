@@ -28,5 +28,10 @@ public class ThreadTagServiceImpl implements ThreadTagService {
         return threadTagRepository.findByTagName(tagName);
     }
 
+    @Override
+    public List<ThreadTag> findAllOrderByNumberOfThreadPostsDesc() {
+        return threadTagRepository.findAllOrderByNumberOfThreadPostsDesc();
+    }
+
 
 }
