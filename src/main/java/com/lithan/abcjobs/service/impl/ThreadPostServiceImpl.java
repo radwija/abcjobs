@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ThreadPostPostServiceImpl implements ThreadPostService {
+public class ThreadPostServiceImpl implements ThreadPostService {
     @Autowired
     private ThreadPostRepository threadPostRepository;
 
@@ -39,7 +39,7 @@ public class ThreadPostPostServiceImpl implements ThreadPostService {
         if (user.getRole().equals("ADMIN")) {
             throw new RefusedActionException("Admin unable to create threads!");
         }
-        String tagName = thread.getTagName();
+        String tagName = thread.getTagName().trim().replaceAll(" ", "_");
         ThreadPost savedThread = new ThreadPost();
         ThreadTag tag = threadTagRepository.findByTagName(tagName);
 
@@ -82,7 +82,7 @@ public class ThreadPostPostServiceImpl implements ThreadPostService {
     }
 
     @Override
-    public void saveUpdateThreadPost(ThreadPost threadPost, String authUsername) {
+    public void saveUpdateThreadPost(ThreadPostRequest threadPost, String authUsername) {
         ThreadPost savedThreadPost = threadPostRepository.getThreadPostByThreadId(threadPost.getThreadId());
         User authUser = userService.getUserByUsername(authUsername);
         boolean isThreadOwner = authUser.getUsername().equals(savedThreadPost.getUser().getUsername());
@@ -91,7 +91,15 @@ public class ThreadPostPostServiceImpl implements ThreadPostService {
         if (!(isThreadOwner || isAdmin)) {
             throw new RefusedActionException("You're not allowed to edit this thread!");
         }
+        String tagName = threadPost.getTagName().trim().replaceAll(" ", "_");
+        ThreadTag tag = threadTagRepository.findByTagName(tagName);
 
+        if (tag == null) {
+            tag = new ThreadTag();
+            tag.setTagName(tagName);
+            threadTagRepository.save(tag);
+        }
+        savedThreadPost.setTag(tag);
         savedThreadPost.setTitle(threadPost.getTitle());
         savedThreadPost.setContent(threadPost.getContent());
 

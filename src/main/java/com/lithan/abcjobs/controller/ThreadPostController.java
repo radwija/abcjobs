@@ -4,6 +4,7 @@ import com.lithan.abcjobs.entity.ThreadComment;
 import com.lithan.abcjobs.entity.ThreadPost;
 import com.lithan.abcjobs.exception.ThreadPostNotFoundException;
 import com.lithan.abcjobs.payload.request.ThreadCommentRequest;
+import com.lithan.abcjobs.payload.request.ThreadPostRequest;
 import com.lithan.abcjobs.payload.response.ThreadResponse;
 import com.lithan.abcjobs.service.ThreadPostService;
 import com.lithan.abcjobs.service.UserService;
@@ -98,7 +99,12 @@ public class ThreadPostController {
             return new ModelAndView("redirect:/u/" + threadOwnerUsername + "/thread?id=" + threadId);
         }
 
-        ThreadPost threadPost = threadPostService.getThreadPostByThreadId(threadId);
+        ThreadPost oldThreadPost = threadPostService.getThreadPostByThreadId(threadId);
+        ThreadPostRequest threadPost = new ThreadPostRequest();
+        threadPost.setThreadId(oldThreadPost.getThreadId());
+        threadPost.setTitle(oldThreadPost.getTitle());
+        threadPost.setContent(oldThreadPost.getContent());
+        threadPost.setTagName(oldThreadPost.getTag().getTagName());
         model.addAttribute("threadPost", threadPost);
         return new ModelAndView("thread/editThread");
     }

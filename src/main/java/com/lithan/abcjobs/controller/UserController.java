@@ -128,7 +128,6 @@ public class UserController {
         ThreadPostRequest newThreadPost = new ThreadPostRequest();
         createThreadPage.addObject("newThreadPost", newThreadPost);
         List<ThreadTag> tags = threadTagService.findAllThreadTags();
-        tags.size();
         model.addAttribute("tags", tags);
         return createThreadPage;
     }
@@ -187,7 +186,7 @@ public class UserController {
     }
 
     @PostMapping("/saveUpdatedThread")
-    public ModelAndView saveUpdatedThread(@ModelAttribute ThreadPost threadPost, Principal principal, RedirectAttributes redirectAttributes, Model model) {
+    public ModelAndView saveUpdatedThread(@ModelAttribute ThreadPostRequest threadPost, Principal principal, RedirectAttributes redirectAttributes, Model model) {
         Long threadId = threadPost.getThreadId();
         String threadOwnerUsername = threadPostService.getThreadPostByThreadId(threadId).getUser().getUsername();
         if (principal == null) {

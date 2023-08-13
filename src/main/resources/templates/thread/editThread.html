@@ -17,15 +17,28 @@
   <div th:replace="components/navbar :: navbar"></div>
 
   <div class="container my-container-custom">
-    <a th:href="@{/u/__${threadPost.user.username}__/thread?id=__${threadPost.threadId}__}"
+    <!-- <a th:href="@{/u/__${threadPost.user.username}__/thread?id=__${threadPost.threadId}__}"
       th:data-confirm-delete="|Are you sure you want to revert changes?|"
       onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false" class="btn btn-danger mb-3"><i
-        class="bi bi-x-circle"></i> Cancel</a>
+        class="bi bi-x-circle"></i> Cancel</a> -->
     <form th:action="@{/saveUpdatedThread}" th:object="${threadPost}" method="post">
       <input type="hidden" th:field="*{threadId}" />
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input type="text" th:field="*{title}" class="form-control" name="title" placeholder="Title">
+      </div>
+      <div class="mb-3">
+        <label for="tagName" class="form-label">Add tag</label>
+        <div class="input-group" style="width: 300px;">
+          <span class="input-group-text" id="basic-addon1">#</span>
+          <input list="tags" th:field="*{tagName}" id="tagnName" name="tagnName" class="form-control" required>
+          <datalist id="tags">
+            <div th:each="tag : ${tags}">
+              <option th:value="${tag.tagName}">
+            </div>
+          </datalist>
+        </div>
+        <div class="form-text" id="basic-addon4">Let's categorize our threads!</div>
       </div>
       <div class="mb-3">
         <label for="content" class="form-label">Content</label>

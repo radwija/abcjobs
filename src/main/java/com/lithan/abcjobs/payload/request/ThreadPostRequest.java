@@ -3,12 +3,21 @@ package com.lithan.abcjobs.payload.request;
 import javax.persistence.Lob;
 
 public class ThreadPostRequest {
+    private Long threadId;
     private String title;
 
     private String tagName;
 
     @Lob
     private String content;
+
+    public Long getThreadId() {
+        return threadId;
+    }
+
+    public void setThreadId(Long threadId) {
+        this.threadId = threadId;
+    }
 
     public String getTitle() {
         return title;
