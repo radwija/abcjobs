@@ -22,6 +22,20 @@
         <input type="text" th:field="*{title}" class="form-control" name="title" placeholder="Title" required>
       </div>
       <div class="mb-3">
+        <label for="tagnName" class="form-label">Add tag</label>
+        <div class="input-group" style="width: 300px;">
+          <span class="input-group-text" id="basic-addon1">#</span>
+          <input list="tags" th:field="*{tagName}" id="tagnName" name="tagnName" class="form-control" required>
+          <datalist id="tags">
+            <div th:each="tag : ${tags}">
+              <option th:value="${tag.tagName}">
+            </div>
+          </datalist>
+        </div>
+        <div class="form-text" id="basic-addon4">Let's categorize our threads!</div>
+
+      </div>
+      <div class="mb-3">
         <label for="content" class="form-label">Content</label>
         <textarea class="form-control" name="content" id="content" th:field="*{content}" rows="15" cols="40"
           required></textarea>

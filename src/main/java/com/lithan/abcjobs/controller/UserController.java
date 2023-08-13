@@ -44,6 +44,9 @@ public class UserController {
     @Autowired
     private EducationService educationService;
 
+    @Autowired
+    private ThreadTagService threadTagService;
+
     @GetMapping({"/u", "/u/"})
     public String peopleView() {
         return "redirect:/people";
@@ -118,13 +121,15 @@ public class UserController {
     }
 
     @GetMapping("/create-thread")
-    public ModelAndView createThreadView(RedirectAttributes redirectAttributes) {
+    public ModelAndView createThreadView(RedirectAttributes redirectAttributes, Model model) {
         ModelAndView createThreadPage = new ModelAndView("thread/createThread");
 
         // Used for creating new thread
         ThreadPostRequest newThreadPost = new ThreadPostRequest();
         createThreadPage.addObject("newThreadPost", newThreadPost);
-
+        List<ThreadTag> tags = threadTagService.findAllThreadTags();
+        tags.size();
+        model.addAttribute("tags", tags);
         return createThreadPage;
     }
 

@@ -36,6 +36,10 @@ public class ThreadPost {
     @Transient
     private String formattedCreatedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "tag_id")
+    private ThreadTag tag;
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -90,5 +94,13 @@ public class ThreadPost {
 
     public void setComments(List<ThreadComment> threadComments) {
         this.threadComments = threadComments;
+    }
+
+    public ThreadTag getTag() {
+        return tag;
+    }
+
+    public void setTag(ThreadTag tag) {
+        this.tag = tag;
     }
 }

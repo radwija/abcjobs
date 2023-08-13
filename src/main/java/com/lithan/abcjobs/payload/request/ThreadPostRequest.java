@@ -5,6 +5,8 @@ import javax.persistence.Lob;
 public class ThreadPostRequest {
     private String title;
 
+    private String tagName;
+
     @Lob
     private String content;
 
@@ -14,6 +16,14 @@ public class ThreadPostRequest {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getTagName() {
+        return tagName;
+    }
+
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
     }
 
     public String getContent() {

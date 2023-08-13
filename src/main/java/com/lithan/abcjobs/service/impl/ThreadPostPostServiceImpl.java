@@ -1,6 +1,7 @@
 package com.lithan.abcjobs.service.impl;
 
 import com.lithan.abcjobs.entity.ThreadPost;
+import com.lithan.abcjobs.entity.ThreadTag;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.exception.ThreadPostNotFoundException;
@@ -8,7 +9,7 @@ import com.lithan.abcjobs.exception.UserProfileNotFoundException;
 import com.lithan.abcjobs.repository.ThreadPostRepository;
 import com.lithan.abcjobs.payload.request.ThreadPostRequest;
 import com.lithan.abcjobs.payload.response.ThreadResponse;
-import com.lithan.abcjobs.repository.UserRepository;
+import com.lithan.abcjobs.repository.ThreadTagRepository;
 import com.lithan.abcjobs.service.ThreadPostService;
 import com.lithan.abcjobs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class ThreadPostPostServiceImpl implements ThreadPostService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ThreadTagRepository threadTagRepository;
+
     @Override
     public ThreadPost getThreadPostByThreadId(Long threadId) {
         return threadPostRepository.getThreadPostByThreadId(threadId);
@@ -35,11 +39,20 @@ public class ThreadPostPostServiceImpl implements ThreadPostService {
         if (user.getRole().equals("ADMIN")) {
             throw new RefusedActionException("Admin unable to create threads!");
         }
+        String tagName = thread.getTagName();
         ThreadPost savedThread = new ThreadPost();
+        ThreadTag tag = threadTagRepository.findByTagName(tagName);
+
+        if (tag == null) {
+            tag = new ThreadTag();
+            tag.setTagName(tagName);
+            threadTagRepository.save(tag);
+        }
+        savedThread.setTag(tag);
+
         savedThread.setTitle(thread.getTitle());
         savedThread.setContent(thread.getContent());
         savedThread.setUser(user);
-
 
         threadPostRepository.save(savedThread);
         return savedThread;
