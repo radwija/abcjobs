@@ -175,7 +175,7 @@ public class AdminController {
         }
         String postByUsername = principal.getName();
         jobService.saveJob(jobRequest, postByUsername);
-
+        redirectAttributes.addFlashAttribute("successMessage", "New job posted successfully!");
         return new ModelAndView("redirect:/admin/jobs");
     }
 

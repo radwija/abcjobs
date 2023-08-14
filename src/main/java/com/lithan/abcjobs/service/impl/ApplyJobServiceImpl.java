@@ -164,5 +164,10 @@ public class ApplyJobServiceImpl implements ApplyJobService {
         return applyJobRepository.existsByAppliedByAndAppliedJob(appliedBy, appliedJob);
     }
 
+    @Override
+    public ApplyJob findByAppliedByAndApplyAppliedJob(User user, Job applyJob) {
+        return applyJobRepository.findByAppliedByAndAppliedJob(user, applyJob);
+    }
+
 
 }

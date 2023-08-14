@@ -16,6 +16,7 @@
 
 	<div
 		th:class="${#request.userPrincipal != null} ? 'my-jobs-container-custom container-fluid my-container-custom' : 'container-fluid my-container-custom'">
+		<div th:replace="components/message :: responseMessages"></div>
 		<div class="row">
 			<div class="d-none d-md-none d-lg-block col col-lg-2">
 				<div class="sidebar d-flex flex-column justify-content-between bg-white shadow-sm p-3 mb-5 rounded">

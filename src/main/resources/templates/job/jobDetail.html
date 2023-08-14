@@ -19,23 +19,64 @@
   <div
     th:class="${#request.userPrincipal != null && !#request.isUserInRole('ROLE_ADMIN')} ? 'my-jobs-container-custom container my-container-custom' : 'container my-container-custom'">
     <div th:replace="components/message :: responseMessages"></div>
-    <h4>[[${detailedJob.jobId}]]</h4>
-    <h1>[[${detailedJob.jobName}]]</h1>
-    <h2>[[${detailedJob.companyName}]]</h2>
-    <p>[[${detailedJob.jobLevel}]]</p>
-    <p>[[${detailedJob.jobTime}]]</p>
+    <div class="row">
+      <div class="col-md-12 col-lg-7 mb-3">
+        <div class="bg-white border rounded p-4">
+          <div class="job-identity mb-4">
+            <h1>[[${detailedJob.jobName}]]</h1>
+            <h2><i class="bi bi-building-fill"></i> [[${detailedJob.companyName}]]</h2>
+            <a href="" class="btn btn-outline-primary btn-sm">[[${detailedJob.jobLevel}]]</a>
+            <a href="" class="btn btn-outline-primary btn-sm">[[${detailedJob.jobTime}]]</a>
+          </div>
+          <p style="white-space: pre-line">[[${detailedJob.jobDescription}]]</p>
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-5 mb-3">
+        <div class="bg-white border rounded p-4">
+          <h4>Apply for this job</h4>
+          <div th:if="${!isUserAlreadyApply}">
+            <form th:action="@{/applyJob?detail=__${detailedJob.jobId}__}" th:object="${applyJobRequest}" method="POST">
+              <div class="mb-3">
+                <label for="qualificationUrl" class="form-label">Your portfolio</label>
+                <input type="text" th:field="*{qualificationUrl}" name="qualificationUrl" class="form-control"
+                  placeholder="Your portfolio URL" required>
+              </div>
+              <div class="mb-3">
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-primary">Apply</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div th:if="${isUserAlreadyApply}">
+            <div class="mb-2">Your application status: <strong>[[${applyJob.status}]]</strong></div>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+              See my qualification
+            </button>
 
-    <div th:if="${#request.userPrincipal != null}">
-      <form th:action="@{/applyJob?detail=__${detailedJob.jobId}__}" th:object="${applyJobRequest}" method="POST">
-        <div class="mb-3">
-          <label for="qualificationUrl" class="form-label">Your portfolio</label>
-          <input type="text" th:field="*{qualificationUrl}" name="qualificationUrl" class="form-control"
-            placeholder="Your portfolio URL" required>
-          <div class="d-grid">
-            <button type="submit" class="btn btn-primary">Apply</button>
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+              aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    ...
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   </div>
   <div th:replace="components/footer :: footer"></div>

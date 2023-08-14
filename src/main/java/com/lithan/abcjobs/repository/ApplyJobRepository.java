@@ -24,6 +24,7 @@ public interface ApplyJobRepository extends JpaRepository<ApplyJob, Long> {
     ApplyJob findJobApplicationByApplyJobId(Long applyJobId);
     List<ApplyJob> findByAppliedBy(User user);
     List<ApplyJob> findByAppliedByAndStatus(User user, String status);
+    ApplyJob findByAppliedByAndAppliedJob(User user, Job applyJob);
     boolean existsByAppliedByAndAppliedJob(User appliedBy, Job appliedJob);
 
 }

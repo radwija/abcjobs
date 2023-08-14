@@ -19,4 +19,5 @@ public interface ApplyJobService {
     JobApplicationResponse acceptJobApplication(Long applyJobId);
     JobApplicationResponse declineJobApplication(Long applyJobId);
     boolean checkUserAlreadyApply(User appliedBy, Job appliedJob);
+    ApplyJob findByAppliedByAndApplyAppliedJob(User user, Job applyJob);
 }
