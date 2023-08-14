@@ -1,5 +1,6 @@
 package com.lithan.abcjobs.controller;
 
+import com.lithan.abcjobs.constraint.EApplyJobStatus;
 import com.lithan.abcjobs.entity.*;
 import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.exception.RefusedActionException;
@@ -240,11 +241,46 @@ public class UserController {
             String appliedByUsername = principal.getName();
             applyJobService.saveAppliedJob(jobId, applyJobRequest, appliedByUsername);
             redirectAttributes.addFlashAttribute("successMessage", "Job applied successfully!");
-            return new ModelAndView("redirect:/job/applied");
+            return new ModelAndView("redirect:/jobs/applied");
         } catch (RefusedActionException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return new ModelAndView("redirect:/job?detail=" + jobId);
         }
+    }
+
+    @GetMapping("/jobs/applied")
+    public ModelAndView appliedJobView(Principal principal, Model model) {
+        if (principal == null) {
+            return new ModelAndView("redirect:/login");
+        }
+        String currentUsername = principal.getName();
+        User user = userService.getUserByUsername(currentUsername);
+        if (user.getRole().equals("ADMIN")) {
+            return new ModelAndView("redirect:/");
+        }
+        List<ApplyJob> myApplications = applyJobService.findApplyJobByAppliedBy(user);
+        List<ApplyJob> acceptedApplications = applyJobService.findAppliedJobByStatus(EApplyJobStatus.ACCEPTED.toString());
+        myApplications.size();
+        for (ApplyJob acceptedApplication : acceptedApplications) {
+            myApplications.remove(acceptedApplication);
+        }
+        myApplications.size();
+        model.addAttribute("myApplications", myApplications);
+        model.addAttribute("isInAppliedJobs", true);
+
+        return new ModelAndView("user/jobsAuth");
+    }
+
+    @GetMapping("/jobs/my-job")
+    public ModelAndView acceptedJobView(Principal principal, Model model) {
+        String currentUsername = principal.getName();
+        User user = userService.getUserByUsername(currentUsername);
+        List<ApplyJob> acceptedApplications = applyJobService.findByAppliedByAndStatus(user, EApplyJobStatus.ACCEPTED.toString());
+
+        model.addAttribute("acceptedApplications", acceptedApplications);
+        model.addAttribute("isInMyJob", true);
+
+        return new ModelAndView("user/jobsAuth");
     }
 
     @GetMapping("/forgot-password")

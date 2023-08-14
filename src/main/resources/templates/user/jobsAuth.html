@@ -27,9 +27,60 @@
           </ul>
         </div>
       </div>
+      <!-- Main Content -->
       <div class="col-md-12 col-lg-10">
         <div class="table-responsive">
-          <div th:replace="job/jobs :: jobsAndSearchBar"></div>
+          <div th:if="${isInJobLists}">
+            <div th:replace="job/jobs :: jobsAndSearchBar"></div>
+          </div>
+          <div th:if="${isInAppliedJobs}">
+            <table class="table">
+              <tr>
+                <th>App ID</th>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Job Detail</th>
+                <th>Job Name</th>
+                <th>Company Name</th>
+              </tr>
+              <tr th:each="myApplication: ${myApplications}" scope="row">
+                <td>[[${myApplication.applyJobId}]]</td>
+                <td>[[${myApplication.appliedBy.userProfile.firstName} + ' ' +
+                  ${myApplication.appliedBy.userProfile.lastName}]]
+                </td>
+                <td>[[${myApplication.appliedBy.username}]]</td>
+                <td>[[${myApplication.appliedBy.email}]]</td>
+                <td><a th:href="@{/job?detail=__${myApplication.appliedJob.jobId}__}">Detail</a></td>
+                <td>[[${myApplication.appliedJob.jobName}]]</td>
+                <td>[[${myApplication.appliedJob.companyName}]]</td>
+              </tr>
+            </table>
+          </div>
+          <div th:if="${isInMyJob}">
+            <table class="table">
+              <tr>
+                <th>App ID</th>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Job Detail</th>
+                <th>Job Name</th>
+                <th>Company Name</th>
+              </tr>
+              <tr th:each="acceptedApplication: ${acceptedApplications}" scope="row">
+                <td>[[${acceptedApplication.applyJobId}]]</td>
+                <td>[[${acceptedApplication.appliedBy.userProfile.firstName} + ' ' +
+                  ${acceptedApplication.appliedBy.userProfile.lastName}]]
+                </td>
+                <td>[[${acceptedApplication.appliedBy.username}]]</td>
+                <td>[[${acceptedApplication.appliedBy.email}]]</td>
+                <td><a th:href="@{/job?detail=__${acceptedApplication.appliedJob.jobId}__}">Detail</a></td>
+                <td>[[${acceptedApplication.appliedJob.jobName}]]</td>
+                <td>[[${acceptedApplication.appliedJob.companyName}]]</td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
     </div>

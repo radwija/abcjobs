@@ -1,6 +1,8 @@
 package com.lithan.abcjobs.service;
 
 import com.lithan.abcjobs.entity.ApplyJob;
+import com.lithan.abcjobs.entity.Job;
+import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.payload.request.ApplyJobRequest;
 import com.lithan.abcjobs.payload.response.JobApplicationResponse;
 
@@ -12,6 +14,9 @@ public interface ApplyJobService {
     void deleteApplyJobByAppliedById(Long userId);
     List<ApplyJob> getAllAppliedJobs();
     List<ApplyJob> findAppliedJobByStatus(String status);
+    List<ApplyJob> findApplyJobByAppliedBy(User user);
+    List<ApplyJob> findByAppliedByAndStatus(User user, String status);
     JobApplicationResponse acceptJobApplication(Long applyJobId);
     JobApplicationResponse declineJobApplication(Long applyJobId);
+    boolean checkUserAlreadyApply(User appliedBy, Job appliedJob);
 }

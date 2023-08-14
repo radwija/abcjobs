@@ -1,6 +1,7 @@
 package com.lithan.abcjobs.controller;
 
 import com.lithan.abcjobs.entity.Job;
+import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.exception.JobNotFoundException;
 import com.lithan.abcjobs.payload.request.ApplyJobRequest;
 import com.lithan.abcjobs.payload.request.JobRequest;
@@ -27,6 +28,9 @@ public class JobController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ApplyJobService applyJobService;
+
     @GetMapping("/jobs")
     public ModelAndView jobListView(@RequestParam(value = "q", required = false) String keyword, @ModelAttribute ApplyJobRequest applyJobRequest, Principal principal, Model model) {
         ModelAndView jobListPage = new ModelAndView("job/jobs");
@@ -45,11 +49,12 @@ public class JobController {
             searchedJobs = jobService.searchForJobs(keyword);
         }
         model.addAttribute("jobs", searchedJobs);
+        model.addAttribute("isInJobLists", true);
         return jobListPage;
     }
 
     @GetMapping("/job")
-    public ModelAndView jobDetailView(@RequestParam(value = "detail", required = false) String jobIdStr, @ModelAttribute ApplyJobRequest applyJobRequest, Model model, RedirectAttributes redirectAttributes) {
+    public ModelAndView jobDetailView(@RequestParam(value = "detail", required = false) String jobIdStr, @ModelAttribute ApplyJobRequest applyJobRequest, Principal principal,  Model model, RedirectAttributes redirectAttributes) {
         try {
             if (jobIdStr.equals("")) {
                 return new ModelAndView("redirect:/jobs");
@@ -57,8 +62,15 @@ public class JobController {
             Long jobId = Long.parseLong(jobIdStr);
             ModelAndView jobDetailPage = new ModelAndView("job/jobDetail");
             Job detailedJob = jobService.findJobByJobId(jobId);
+            boolean isUserAlreadyApply = false;
+            if (principal != null) {
+                User user = userService.getUserByUsername(principal.getName());
+                isUserAlreadyApply = applyJobService.checkUserAlreadyApply(user ,detailedJob);
+            }
+
             jobDetailPage.addObject("applyJobRequest", applyJobRequest);
             model.addAttribute("detailedJob", detailedJob);
+            model.addAttribute("isUserAlreadyApply", isUserAlreadyApply);
             return jobDetailPage;
         } catch (JobNotFoundException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());

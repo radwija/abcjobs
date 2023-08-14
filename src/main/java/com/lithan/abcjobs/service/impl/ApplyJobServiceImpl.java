@@ -37,10 +37,15 @@ public class ApplyJobServiceImpl implements ApplyJobService {
     public ApplyJob saveAppliedJob(Long jobId, ApplyJobRequest applyJobRequest, String username) {
         ApplyJob applyJob = new ApplyJob();
         User appliedBy = userService.getUserByUsername(username);
+
         if (appliedBy.getRole().equals("ADMIN")) {
             throw new RefusedActionException("Admin unable to apply for any jobs!");
         }
         Job appliedJob = jobService.findJobByJobId(jobId);
+        boolean isUserAlreadyApply = applyJobRepository.existsByAppliedByAndAppliedJob(appliedBy, appliedJob);
+        if (isUserAlreadyApply) {
+            throw new RefusedActionException("You already applied for this job");
+        }
 
         applyJob.setQualificationUrl(applyJobRequest.getQualificationUrl());
         applyJob.setAppliedBy(appliedBy);
@@ -68,6 +73,16 @@ public class ApplyJobServiceImpl implements ApplyJobService {
     @Override
     public List<ApplyJob> findAppliedJobByStatus(String status) {
         return applyJobRepository.findAppliedJobByStatus(status);
+    }
+
+    @Override
+    public List<ApplyJob> findApplyJobByAppliedBy(User user) {
+        return applyJobRepository.findByAppliedBy(user);
+    }
+
+    @Override
+    public List<ApplyJob> findByAppliedByAndStatus(User user, String status) {
+        return applyJobRepository.findByAppliedByAndStatus(user, status);
     }
 
     @Override
@@ -142,6 +157,11 @@ public class ApplyJobServiceImpl implements ApplyJobService {
         );
 
         return response;
+    }
+
+    @Override
+    public boolean checkUserAlreadyApply(User appliedBy, Job appliedJob) {
+        return applyJobRepository.existsByAppliedByAndAppliedJob(appliedBy, appliedJob);
     }
 
 
