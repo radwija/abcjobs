@@ -72,12 +72,12 @@ public class ApplyJobServiceImpl implements ApplyJobService {
 
     @Override
     public List<ApplyJob> findAppliedJobByStatus(String status) {
-        return applyJobRepository.findAppliedJobByStatus(status);
+        return applyJobRepository.findByStatus(status);
     }
 
     @Override
     public List<ApplyJob> findAppliedJobByAppliedJob(Job appliedJob) {
-        return applyJobRepository.findAppliedJobByAppliedJob(appliedJob);
+        return applyJobRepository.findByAppliedJob(appliedJob);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class ApplyJobServiceImpl implements ApplyJobService {
     @Override
     public JobApplicationResponse acceptJobApplication(Long applyJobId) {
         JobApplicationResponse response = new JobApplicationResponse();
-        ApplyJob acceptedJobApplication = applyJobRepository.findJobApplicationByApplyJobId(applyJobId);
+        ApplyJob acceptedJobApplication = applyJobRepository.findByApplyJobId(applyJobId);
 
         if (acceptedJobApplication == null) {
             throw new JobApplicationNotFoundException("Job application not found!");
@@ -132,7 +132,7 @@ public class ApplyJobServiceImpl implements ApplyJobService {
     @Override
     public JobApplicationResponse declineJobApplication(Long applyJobId) {
         JobApplicationResponse response = new JobApplicationResponse();
-        ApplyJob acceptedJobApplication = applyJobRepository.findJobApplicationByApplyJobId(applyJobId);
+        ApplyJob acceptedJobApplication = applyJobRepository.findByApplyJobId(applyJobId);
 
         if (acceptedJobApplication == null) {
             throw new JobApplicationNotFoundException("Job application not found!");

@@ -2,6 +2,7 @@ package com.lithan.abcjobs.service.impl;
 
 import com.lithan.abcjobs.constraint.EJobLevel;
 import com.lithan.abcjobs.constraint.EJobTime;
+import com.lithan.abcjobs.entity.ApplyJob;
 import com.lithan.abcjobs.entity.Job;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
@@ -10,6 +11,7 @@ import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.JobRequest;
 import com.lithan.abcjobs.repository.ApplyJobRepository;
 import com.lithan.abcjobs.repository.JobRepository;
+import com.lithan.abcjobs.repository.UserProfileRepository;
 import com.lithan.abcjobs.service.JobService;
 import com.lithan.abcjobs.service.UserProfileService;
 import com.lithan.abcjobs.service.UserService;
@@ -28,6 +30,9 @@ public class JobServiceImpl implements JobService {
 
     @Autowired
     private UserProfileService userProfileService;
+
+    @Autowired
+    private UserProfileRepository userProfileRepository;
 
     @Autowired
     private ApplyJobRepository applyJobRepository;
@@ -88,10 +93,20 @@ public class JobServiceImpl implements JobService {
         Job job = jobRepository.findJobByJobId(jobId);
 
         List<UserProfile> userProfiles = userProfileService.findUserProfileByAppliedJob(job);
+        userProfiles.size();
         for (UserProfile userProfile : userProfiles) {
+            userProfile.getFirstName();
             userProfile.setJob(null);
-            userProfileService.saveUpdateUserProfile(userProfile);
+            userProfileRepository.save(userProfile);
+            userProfile.getJob();
         }
+        userProfiles.get(0).getJob();
+        List<ApplyJob> jobApplications = applyJobRepository.findByAppliedJob(job);
+        for (ApplyJob jobApplication : jobApplications) {
+            jobApplication.setAppliedBy(null);
+            applyJobRepository.save(jobApplication);
+        }
+
         applyJobRepository.deleteByAppliedJobId(jobId);
         jobRepository.deleteById(jobId);
     }

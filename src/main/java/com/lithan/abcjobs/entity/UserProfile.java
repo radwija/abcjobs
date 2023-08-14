@@ -20,7 +20,7 @@ public class UserProfile {
     private String city;
     private String country;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "job_id")
     private Job job;
 

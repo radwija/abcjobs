@@ -1,10 +1,7 @@
 package com.lithan.abcjobs.controller;
 
 import com.lithan.abcjobs.constraint.EApplyJobStatus;
-import com.lithan.abcjobs.entity.ApplyJob;
-import com.lithan.abcjobs.entity.Job;
-import com.lithan.abcjobs.entity.User;
-import com.lithan.abcjobs.entity.UserProfile;
+import com.lithan.abcjobs.entity.*;
 import com.lithan.abcjobs.exception.AccountNotFoundException;
 import com.lithan.abcjobs.exception.JobApplicationNotFoundException;
 import com.lithan.abcjobs.exception.RefusedActionException;
@@ -41,19 +38,24 @@ public class AdminController {
     @Autowired
     private EmailSenderService emailSenderService;
 
+    @Autowired
+    private ThreadPostService threadPostService;
+
     @GetMapping({"", "/", "/dashboard"})
     public ModelAndView mantap(Model model) {
         List<User> users = userService.getAllUsers();
         List<Job> jobs = jobService.getAllJobs();
         List<ApplyJob> jobApplications = applyJobService.getAllAppliedJobs();
+        List<ThreadPost> threadPosts = threadPostService.findAllThreadPosts();
         List<ApplyJob> pendingJobApplications = applyJobService.findAppliedJobByStatus(EApplyJobStatus.PENDING.toString());
-        List<ApplyJob> acceptedJobApplications = applyJobService.findAppliedJobByStatus(EApplyJobStatus.PENDING.toString());
+        List<ApplyJob> acceptedJobApplications = applyJobService.findAppliedJobByStatus(EApplyJobStatus.ACCEPTED.toString());
         List<ApplyJob> declinedJobApplications = applyJobService.findAppliedJobByStatus(EApplyJobStatus.DECLINED.toString());
 
 
         model.addAttribute("isInDashboard", true);
         model.addAttribute("userNumber", users.size());
         model.addAttribute("jobNumber", jobs.size());
+        model.addAttribute("threadNumber", threadPosts.size());
         model.addAttribute("pendingNumber", pendingJobApplications.size());
         model.addAttribute("acceptedNumber", acceptedJobApplications.size());
         model.addAttribute("declinedNumber", declinedJobApplications.size());

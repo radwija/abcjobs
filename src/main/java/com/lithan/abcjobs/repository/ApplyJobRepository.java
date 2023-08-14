@@ -20,9 +20,9 @@ public interface ApplyJobRepository extends JpaRepository<ApplyJob, Long> {
     @Query("DELETE FROM ApplyJob a WHERE a.appliedBy.userId = :userId")
     void deleteByUserId(Long userId);
 
-    List<ApplyJob> findAppliedJobByStatus(String status);
-    List<ApplyJob> findAppliedJobByAppliedJob(Job appliedJob);
-    ApplyJob findJobApplicationByApplyJobId(Long applyJobId);
+    List<ApplyJob> findByStatus(String status);
+    List<ApplyJob> findByAppliedJob(Job appliedJob);
+    ApplyJob findByApplyJobId(Long applyJobId);
     List<ApplyJob> findByAppliedBy(User user);
     List<ApplyJob> findByAppliedByAndStatus(User user, String status);
     ApplyJob findByAppliedByAndAppliedJob(User user, Job applyJob);

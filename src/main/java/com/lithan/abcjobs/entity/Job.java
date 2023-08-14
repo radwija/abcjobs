@@ -19,7 +19,7 @@ public class Job {
     private String companyName;
     private String companyLogoUrl;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "job")
+    @OneToOne(mappedBy = "job")
     UserProfile userProfile;
 
     @ManyToOne

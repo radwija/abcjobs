@@ -35,7 +35,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     // TODO: Bug is here
     @Override
     public List<UserProfile> findUserProfileByAppliedJob(Job job) {
-        return userProfileRepository.findUserProfileByJob(job);
+        return userProfileRepository.findByJob(job);
     }
 
 }

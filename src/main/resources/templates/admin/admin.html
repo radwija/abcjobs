@@ -16,7 +16,6 @@
 
 	<div
 		th:class="${#request.userPrincipal != null} ? 'my-jobs-container-custom container-fluid my-container-custom' : 'container-fluid my-container-custom'">
-		<div th:replace="components/message :: responseMessages"></div>
 		<div class="row">
 			<div class="d-none d-md-none d-lg-block col col-lg-2">
 				<div class="sidebar d-flex flex-column justify-content-between bg-white shadow-sm p-3 mb-5 rounded">
@@ -54,6 +53,14 @@
 									<a th:href="@{/admin/jobs}">
 										<h3>Jobs</h3>
 										<h1>[[${jobNumber}]]</h1>
+									</a>
+								</div>
+							</div>
+							<div class="col-12 col-sm-12 col-md-4 col-lg-4 mb-3">
+								<div class="recap-card bg-secondary text-center rounded border p-5">
+									<a th:href="@{/threads}">
+										<h3>Threads</h3>
+										<h1>[[${threadNumber}]]</h1>
 									</a>
 								</div>
 							</div>
@@ -131,7 +138,7 @@
 							</div>
 						</div>
 						<div th:if="${isInPendingTab}">
-							<h2 class="mb-4">Pending Applicants</h2>
+							<h2 class="mb-4">Pending Job Applications</h2>
 							<div th:replace="admin/section/data :: pendingApplicants"></div>
 						</div>
 						<div th:if="${isInAcceptedTab}">
