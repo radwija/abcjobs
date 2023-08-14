@@ -256,7 +256,7 @@ public class UserController {
         String currentUsername = principal.getName();
         User user = userService.getUserByUsername(currentUsername);
         if (user.getRole().equals("ADMIN")) {
-            return new ModelAndView("redirect:/");
+            return new ModelAndView("redirect:/admin/jobs/manage-applicant");
         }
         List<ApplyJob> myApplications = applyJobService.findApplyJobByAppliedBy(user);
         List<ApplyJob> acceptedApplications = applyJobService.findAppliedJobByStatus(EApplyJobStatus.ACCEPTED.toString());
@@ -273,8 +273,14 @@ public class UserController {
 
     @GetMapping("/jobs/my-job")
     public ModelAndView acceptedJobView(Principal principal, Model model) {
+        if (principal == null) {
+            return new ModelAndView("redirect:/login");
+        }
         String currentUsername = principal.getName();
         User user = userService.getUserByUsername(currentUsername);
+        if (user.getRole().equals("ADMIN")) {
+            return new ModelAndView("redirect:/admin/jobs/manage-applicant");
+        }
         List<ApplyJob> acceptedApplications = applyJobService.findByAppliedByAndStatus(user, EApplyJobStatus.ACCEPTED.toString());
 
         model.addAttribute("acceptedApplications", acceptedApplications);
