@@ -25,7 +25,7 @@
           <button type="submit" class="btn btn-outline-primary">search</button>
         </div>
       </form>
-      <div th:each="job : ${jobs}" class="mb-3">
+      <div th:each="job : ${jobs}" class="mb-3" th:fragment="jobList">
         <div class="job-card bg-white border rounded p-3 d-flex justify-content-between">
           <!-- Main information -->
           <div class="d-flex gap-4">
