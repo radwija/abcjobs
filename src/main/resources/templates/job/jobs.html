@@ -25,22 +25,37 @@
           <button type="submit" class="btn btn-outline-primary">search</button>
         </div>
       </form>
-      <table class="table">
-        <tr>
-          <th>Job Name</th>
-          <th>Company Name</th>
-          <th>Job Level</th>
-          <th>Job Time</th>
-          <th>Action</th>
-        </tr>
-        <tr th:each="job: ${jobs}" scope="row">
-          <td>[[${job.jobName}]]</td>
-          <td>[[${job.companyName}]]</td>
-          <td>[[${job.jobLevel}]]</td>
-          <td>[[${job.jobTime}]]</td>
-          <td><a th:href="@{/job?detail=__${job.jobId}__}" class="btn btn-primary">View</a></td>
-        </tr>
-      </table>
+      <div th:each="job : ${jobs}" class="mb-3">
+        <div class="job-card bg-white border rounded p-3 d-flex justify-content-between">
+          <!-- Main information -->
+          <div class="d-flex gap-4">
+            <h1><i class="bi bi-briefcase-fill"></i></h1>
+            <div class="">
+              <a th:href="@{/job?detail=__${job.jobId}__}" class="job-detail">
+                <h5 class="mb-0">[[${job.jobName}]]</h5>
+              </a>
+              <div class="mb-2">[[${job.companyName}]]</div>
+              <a href="" class="btn btn-outline-primary btn-sm">[[${job.jobLevel}]]</a>
+              <a href="" class="btn btn-outline-primary btn-sm">[[${job.jobTime}]]</a>
+            </div>
+          </div>
+
+          <!-- Kebab dropdown menu for admin -->
+          <div th:if="${#request.userPrincipal != null && #request.isUserInRole('ROLE_ADMIN')}" class="dropdown">
+            <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-three-dots-vertical"></i>
+            </a>
+
+            <ul class="dropdown-menu">
+              <li><a th:href="@{/edit-job?id=__${job.jobId}__}" class="dropdown-item">Edit</a>
+              </li>
+              <li><a th:href="@{/deleteJob?id=__${job.jobId}__}" class="dropdown-item"
+                  th:data-confirm-delete="|Are you sure you want to delete this experience?|"
+                  onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">Delete</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div th:replace="components/footer :: footer"></div>
