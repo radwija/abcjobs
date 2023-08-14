@@ -103,7 +103,7 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/deleteUser")
+        @GetMapping("/deleteUser")
     public ModelAndView deleteUser(@RequestParam("userId") String userIdStr, RedirectAttributes redirectAttributes, Model model) {
         try {
             Long userId = Long.parseLong(userIdStr);

@@ -41,7 +41,7 @@
           </div>
 
           <!-- Kebab dropdown menu for admin -->
-          <div th:if="${#request.userPrincipal != null && #request.isUserInRole('ROLE_ADMIN')}" class="dropdown">
+          <div th:if="${#request.isUserInRole('ROLE_ADMIN')}" class="dropdown">
             <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-three-dots-vertical"></i>
             </a>
