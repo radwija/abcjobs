@@ -14,6 +14,7 @@ public interface ApplyJobService {
     void deleteApplyJobByAppliedById(Long userId);
     List<ApplyJob> getAllAppliedJobs();
     List<ApplyJob> findAppliedJobByStatus(String status);
+    List<ApplyJob> findAppliedJobByAppliedJob(Job appliedJob);
     List<ApplyJob> findApplyJobByAppliedBy(User user);
     List<ApplyJob> findByAppliedByAndStatus(User user, String status);
     JobApplicationResponse acceptJobApplication(Long applyJobId);

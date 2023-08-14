@@ -21,6 +21,7 @@ public interface ApplyJobRepository extends JpaRepository<ApplyJob, Long> {
     void deleteByUserId(Long userId);
 
     List<ApplyJob> findAppliedJobByStatus(String status);
+    List<ApplyJob> findAppliedJobByAppliedJob(Job appliedJob);
     ApplyJob findJobApplicationByApplyJobId(Long applyJobId);
     List<ApplyJob> findByAppliedBy(User user);
     List<ApplyJob> findByAppliedByAndStatus(User user, String status);

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -63,20 +64,29 @@ public class JobController {
             ModelAndView jobDetailPage = new ModelAndView("job/jobDetail");
             Job detailedJob = jobService.findJobByJobId(jobId);
             ApplyJob applyJob = new ApplyJob();
+            List<ApplyJob> jobApplications = new ArrayList<>();
             User user = new User();
             boolean isUserAlreadyApply = false;
+            boolean isAdmin = false;
             if (principal != null) {
                 user = userService.getUserByUsername(principal.getName());
+                isAdmin = user.getRole().equals("ADMIN");
                 isUserAlreadyApply = applyJobService.checkUserAlreadyApply(user, detailedJob);
             }
             if (isUserAlreadyApply) {
                 applyJob = applyJobService.findByAppliedByAndApplyAppliedJob(user, detailedJob);
+                model.addAttribute("applyJob", applyJob);
+            }
+            if (isAdmin) {
+                jobApplications = applyJobService.findAppliedJobByAppliedJob(detailedJob);
+                jobApplications.size();
+                model.addAttribute("jobApplications", jobApplications);
             }
 
+            model.addAttribute("isUserAlreadyApply", isUserAlreadyApply);
+            model.addAttribute("isAdmin", isAdmin);
             jobDetailPage.addObject("applyJobRequest", applyJobRequest);
             model.addAttribute("detailedJob", detailedJob);
-            model.addAttribute("applyJob", applyJob);
-            model.addAttribute("isUserAlreadyApply", isUserAlreadyApply);
             return jobDetailPage;
         } catch (JobNotFoundException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());

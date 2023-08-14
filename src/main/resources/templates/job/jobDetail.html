@@ -34,7 +34,7 @@
       <div class="col-md-12 col-lg-5 mb-3">
         <div class="bg-white border rounded p-4">
           <h4>Apply for this job</h4>
-          <div th:if="${!isUserAlreadyApply}">
+          <div th:if="${!isUserAlreadyApply && !isAdmin}">
             <form th:action="@{/applyJob?detail=__${detailedJob.jobId}__}" th:object="${applyJobRequest}" method="POST">
               <div class="mb-3">
                 <label for="qualificationUrl" class="form-label">Your portfolio</label>
@@ -72,6 +72,14 @@
                     <button type="button" class="btn btn-primary">Understood</button>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div th:if="${isAdmin}">
+            <div class="mb-2">Applicants of this job: <strong>[[${jobApplications.size()}]]</strong></div>
+            <div class="mb-3">
+              <div class="d-grid">
+                <a th:href="@{/admin/jobs/manage-applicant}" class="btn btn-primary">See applications</a>
               </div>
             </div>
           </div>

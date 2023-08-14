@@ -76,6 +76,11 @@ public class ApplyJobServiceImpl implements ApplyJobService {
     }
 
     @Override
+    public List<ApplyJob> findAppliedJobByAppliedJob(Job appliedJob) {
+        return applyJobRepository.findAppliedJobByAppliedJob(appliedJob);
+    }
+
+    @Override
     public List<ApplyJob> findApplyJobByAppliedBy(User user) {
         return applyJobRepository.findByAppliedBy(user);
     }
