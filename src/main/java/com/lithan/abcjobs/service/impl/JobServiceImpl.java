@@ -93,14 +93,10 @@ public class JobServiceImpl implements JobService {
         Job job = jobRepository.findJobByJobId(jobId);
 
         List<UserProfile> userProfiles = userProfileService.findUserProfileByAppliedJob(job);
-        userProfiles.size();
         for (UserProfile userProfile : userProfiles) {
-            userProfile.getFirstName();
             userProfile.setJob(null);
             userProfileRepository.save(userProfile);
-            userProfile.getJob();
         }
-        userProfiles.get(0).getJob();
         List<ApplyJob> jobApplications = applyJobRepository.findByAppliedJob(job);
         for (ApplyJob jobApplication : jobApplications) {
             jobApplication.setAppliedBy(null);
