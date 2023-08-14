@@ -53,6 +53,7 @@ public class JobServiceImpl implements JobService {
         if (jobRequest.getJobId() == null) {
             Job newJob = mapJobRequestToJob(jobRequest);
 
+            newJob.setUser(postBy);
             convertJobTime(jobRequest.getJobTime(), newJob);
             convertJobLevel(jobRequest.getJobLevel(), newJob);
             jobRepository.save(newJob);
