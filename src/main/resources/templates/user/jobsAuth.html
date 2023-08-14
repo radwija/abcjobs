@@ -29,6 +29,7 @@
       </div>
       <!-- Main Content -->
       <div class="col-md-12 col-lg-10">
+        <div th:replace="components/message :: responseMessages"></div>
         <div class="table-responsive">
           <div th:if="${isInJobLists}">
             <div th:replace="job/jobs :: jobsAndSearchBar"></div>
