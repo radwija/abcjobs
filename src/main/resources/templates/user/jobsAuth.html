@@ -38,23 +38,27 @@
             <table class="table">
               <tr>
                 <th>App ID</th>
-                <th>Full Name</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Job Detail</th>
                 <th>Job Name</th>
-                <th>Company Name</th>
+                <th>Job Level</th>
+                <th>Job Time</th>
+                <th>Job Detail</th>
+                <th>My Qualification</th>
+                <th>Status</th>
               </tr>
               <tr th:each="myApplication: ${myApplications}" scope="row">
                 <td>[[${myApplication.applyJobId}]]</td>
-                <td>[[${myApplication.appliedBy.userProfile.firstName} + ' ' +
-                  ${myApplication.appliedBy.userProfile.lastName}]]
-                </td>
-                <td>[[${myApplication.appliedBy.username}]]</td>
-                <td>[[${myApplication.appliedBy.email}]]</td>
-                <td><a th:href="@{/job?detail=__${myApplication.appliedJob.jobId}__}">Detail</a></td>
                 <td>[[${myApplication.appliedJob.jobName}]]</td>
-                <td>[[${myApplication.appliedJob.companyName}]]</td>
+                <td>[[${myApplication.appliedJob.jobLevel}]]</td>
+                <td>[[${myApplication.appliedJob.jobTime}]]</td>
+                <td><a th:href="@{/job?detail=__${myApplication.appliedJob.jobId}__}">Detail</a></td>
+                <td>[[${myApplication.qualificationUrl}]]</td>
+                <td>
+                  <span th:class="${myApplication.status == 'PENDING'} ? text-warning : text-danger">
+                    <i th:if="${myApplication.status == 'PENDING'}" class="bi bi-clock-history"></i>
+                    <i th:if="${myApplication.status == 'DECLINED'}" class="bi bi-x-circle"></i>
+                    [[${myApplication.status}]]
+                  </span>
+                </td>
               </tr>
             </table>
           </div>
@@ -62,23 +66,26 @@
             <table class="table">
               <tr>
                 <th>App ID</th>
-                <th>Full Name</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Job Detail</th>
                 <th>Job Name</th>
-                <th>Company Name</th>
+                <th>Job Level</th>
+                <th>Job Time</th>
+                <th>Job Detail</th>
+                <th>My Qualification</th>
+                <th>Status</th>
               </tr>
               <tr th:each="acceptedApplication: ${acceptedApplications}" scope="row">
                 <td>[[${acceptedApplication.applyJobId}]]</td>
-                <td>[[${acceptedApplication.appliedBy.userProfile.firstName} + ' ' +
-                  ${acceptedApplication.appliedBy.userProfile.lastName}]]
-                </td>
-                <td>[[${acceptedApplication.appliedBy.username}]]</td>
-                <td>[[${acceptedApplication.appliedBy.email}]]</td>
-                <td><a th:href="@{/job?detail=__${acceptedApplication.appliedJob.jobId}__}">Detail</a></td>
                 <td>[[${acceptedApplication.appliedJob.jobName}]]</td>
-                <td>[[${acceptedApplication.appliedJob.companyName}]]</td>
+                <td>[[${acceptedApplication.appliedJob.jobLevel}]]</td>
+                <td>[[${acceptedApplication.appliedJob.jobTime}]]</td>
+                <td><a th:href="@{/job?detail=__${acceptedApplication.appliedJob.jobId}__}">Detail</a></td>
+                <td>[[${acceptedApplication.qualificationUrl}]]</td>
+                <td>
+                  <span class="text-success">
+                    <i class="bi bi-check-circle"></i>
+                    [[${acceptedApplication.status}]]
+                  </span>
+                </td>
               </tr>
             </table>
           </div>
