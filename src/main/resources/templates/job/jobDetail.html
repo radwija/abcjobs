@@ -25,8 +25,10 @@
           <div class="job-identity mb-4">
             <h1>[[${detailedJob.jobName}]]</h1>
             <h2><i class="bi bi-building-fill"></i> [[${detailedJob.companyName}]]</h2>
-            <a href="" class="btn btn-outline-primary btn-sm">[[${detailedJob.jobLevel}]]</a>
-            <a href="" class="btn btn-outline-primary btn-sm">[[${detailedJob.jobTime}]]</a>
+            <a th:href="@{/jobs?level=__${detailedJob.jobLevel.toLowerCase()}__}"
+              class="btn btn-outline-primary btn-sm">[[${detailedJob.jobLevel}]]</a>
+            <a th:href="@{/jobs?time=__${detailedJob.jobTime.toLowerCase()}__}"
+              class="btn btn-outline-primary btn-sm">[[${detailedJob.jobTime}]]</a>
           </div>
           <p style="white-space: pre-line">[[${detailedJob.jobDescription}]]</p>
         </div>

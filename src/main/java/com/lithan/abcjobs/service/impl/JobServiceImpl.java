@@ -85,6 +85,26 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    public List<Job> findJobsByJobLevel(String level) {
+        return jobRepository.findByJobLevel(level.toUpperCase());
+    }
+
+    @Override
+    public List<Job> findJobsByJobTime(String time) {
+        return jobRepository.findByJobTime(time.toUpperCase());
+    }
+
+    @Override
+    public List<Job> showRequestedJobs(String requestParamName, String request) {
+        return switch (requestParamName) {
+            case "q" -> jobRepository.searchForJobs(request);
+            case "level" -> jobRepository.findByJobLevel(request);
+            case "time" -> jobRepository.findByJobTime(request);
+            default -> null;
+        };
+    }
+
+    @Override
     public void deleteJob(Long jobId, String username) {
         boolean isAdmin = userService.getUserByUsername(username).getRole().equals("ADMIN");
         if (!isAdmin) {

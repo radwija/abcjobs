@@ -19,4 +19,6 @@ public interface JobRepository extends JpaRepository<Job, Long> {
             + "OR j.companyName LIKE '%' || :keyword || '%'"
     )
     List<Job> searchForJobs(@Param("keyword") String keyword);
+    List<Job> findByJobLevel(String level);
+    List<Job> findByJobTime(String time);
 }

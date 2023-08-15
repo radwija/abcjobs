@@ -27,6 +27,7 @@
           </div>
         </form>
       </div>
+      <h3 th:if="${noResultMessage}" th:text="${noResultMessage}" />
       <div th:each="job : ${jobs}" class="mb-3" th:fragment="jobList">
         <div class="job-card bg-white border rounded p-3 d-flex justify-content-between">
           <!-- Main information -->
@@ -37,8 +38,10 @@
                 <h5 class="mb-0">[[${job.jobName}]]</h5>
               </a>
               <div class="mb-2">[[${job.companyName}]]</div>
-              <a href="" class="btn btn-outline-primary btn-sm">[[${job.jobLevel}]]</a>
-              <a href="" class="btn btn-outline-primary btn-sm">[[${job.jobTime}]]</a>
+              <a th:href="@{/jobs?level=__${job.jobLevel.toLowerCase()}__}"
+                class="btn btn-outline-primary btn-sm">[[${job.jobLevel}]]</a>
+              <a th:href="@{/jobs?time=__${job.jobTime.toLowerCase()}__}"
+                class="btn btn-outline-primary btn-sm">[[${job.jobTime}]]</a>
             </div>
           </div>
 

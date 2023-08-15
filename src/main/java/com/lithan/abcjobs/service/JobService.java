@@ -10,5 +10,8 @@ public interface JobService {
     Job saveJob(JobRequest jobRequest, String postByUsername);
     List<Job> getAllJobs();
     List<Job> searchForJobs(String keyword);
+    List<Job> findJobsByJobLevel(String level);
+    List<Job> findJobsByJobTime(String time);
+    List<Job> showRequestedJobs(String requestParamName, String request);
     void deleteJob(Long jobId, String username);
 }

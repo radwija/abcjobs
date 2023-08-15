@@ -33,7 +33,7 @@ public class JobController {
     private ApplyJobService applyJobService;
 
     @GetMapping("/jobs")
-    public ModelAndView jobListView(@RequestParam(value = "q", required = false) String keyword, @ModelAttribute ApplyJobRequest applyJobRequest, Principal principal, Model model) {
+    public ModelAndView jobListView(@RequestParam(value = "q", required = false) String keyword, @RequestParam(value = "level", required = false) String level, @RequestParam(value = "time", required = false) String time, @ModelAttribute ApplyJobRequest applyJobRequest, Principal principal, Model model) {
         ModelAndView jobListPage = new ModelAndView("job/jobs");
         if (principal != null) {
             if (userService.getUserByUsername(principal.getName()).getRole().equals("ADMIN")) {
@@ -43,11 +43,24 @@ public class JobController {
         }
         List<Job> searchedJobs = jobService.getAllJobs();
 
-        if (searchedJobs.size() == 0) {
+        if (searchedJobs.isEmpty()) {
             model.addAttribute("noResultMessage", "There isn't any jobs");
         }
         if (keyword != null) {
             searchedJobs = jobService.searchForJobs(keyword);
+            if (searchedJobs.isEmpty()) {
+                model.addAttribute("noResultMessage", "No result for job search: " + keyword);
+            }
+        } else if (level != null) {
+            searchedJobs = jobService.findJobsByJobLevel(level);
+            if (searchedJobs.isEmpty()) {
+                model.addAttribute("noResultMessage", "No result for job level " + level);
+            }
+        }else if (time != null) {
+            searchedJobs = jobService.findJobsByJobTime(time);
+            if (searchedJobs.isEmpty()) {
+                model.addAttribute("noResultMessage", "No result for job time " + time);
+            }
         }
         model.addAttribute("jobs", searchedJobs);
         model.addAttribute("isInJobLists", true);

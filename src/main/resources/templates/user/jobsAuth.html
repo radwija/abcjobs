@@ -34,6 +34,7 @@
           <div th:if="${isInJobLists}">
             <div th:replace="job/jobs :: jobsAndSearchBar"></div>
           </div>
+          <h3 th:if="${noResultMessage}" th:text="${noResultMessage}" />
 
           <div th:if="${isInAppliedJobs}">
             <table class="table">
