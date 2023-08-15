@@ -16,13 +16,15 @@
   <div th:replace="components/navbar :: navbar"></div>
   <div class="container my-container-custom">
     <div th:replace="components/message :: responseMessages"></div>
-    <form th:action="@{/people}" method="get" class="mb-3">
-      <div class="input-group">
-        <input type="text" class="form-control rounded" name="q" placeholder="Search" aria-label="Search"
-          aria-describedby="search-addon" />
-        <button type="submit" class="btn btn-outline-primary">search</button>
-      </div>
-    </form>
+    <div class="mb-3">
+      <form th:fragment="publicPeopleSearchBar" th:action="@{/people}" method="get" class="">
+        <div class="input-group">
+          <input type="text" class="form-control rounded" name="q" placeholder="Search" aria-label="Search"
+            aria-describedby="search-addon" />
+          <button type="submit" class="btn btn-outline-primary">search</button>
+        </div>
+      </form>
+    </div>
     <div class="table-responsive">
       <div th:each="user : ${users}" class="mb-3" th:fragment="jobList">
         <div class="job-card bg-white border rounded p-3 d-flex justify-content-between">

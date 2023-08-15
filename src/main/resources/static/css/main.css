@@ -11,6 +11,16 @@ body {
   flex-direction: column;
 }
 
+.my-custom-10 {
+  margin-top: 10rem;
+  margin-bottom: 10rem;
+}
+
+.py-custom-20 {
+  padding-top: 20rem;
+  padding-bottom: 20rem;
+}
+
 .my-container-custom {
   margin-top: 100px !important;
   margin-bottom: 50px !important;
