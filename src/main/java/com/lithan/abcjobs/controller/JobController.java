@@ -33,10 +33,19 @@ public class JobController {
     private ApplyJobService applyJobService;
 
     @GetMapping("/jobs")
-    public ModelAndView jobListView(@RequestParam(value = "q", required = false) String keyword, @RequestParam(value = "level", required = false) String level, @RequestParam(value = "time", required = false) String time, @ModelAttribute ApplyJobRequest applyJobRequest, Principal principal, Model model) {
+    public ModelAndView jobListView(@RequestParam(value = "q", required = false) String keyword, @RequestParam(value = "level", required = false) String level, @RequestParam(value = "time", required = false) String time, @ModelAttribute ApplyJobRequest applyJobRequest, Principal principal, Model model, RedirectAttributes redirectAttributes) {
         ModelAndView jobListPage = new ModelAndView("job/jobs");
+        boolean isAdmin = false;
         if (principal != null) {
-            if (userService.getUserByUsername(principal.getName()).getRole().equals("ADMIN")) {
+            isAdmin = userService.getUserByUsername(principal.getName()).getRole().equals("ADMIN");
+            if (isAdmin) {
+                if (keyword != null) {
+                    return new ModelAndView("redirect:/admin/jobs?q=" + keyword);
+                } else if (level != null) {
+                    return new ModelAndView("redirect:/admin/jobs?level=" + level);
+                } else if (time != null) {
+                    return new ModelAndView("redirect:/admin/jobs?time=" + time);
+                }
                 return new ModelAndView("redirect:/admin/jobs");
             }
             jobListPage = new ModelAndView("user/jobsAuth");
@@ -56,7 +65,7 @@ public class JobController {
             if (searchedJobs.isEmpty()) {
                 model.addAttribute("noResultMessage", "No result for job level " + level);
             }
-        }else if (time != null) {
+        } else if (time != null) {
             searchedJobs = jobService.findJobsByJobTime(time);
             if (searchedJobs.isEmpty()) {
                 model.addAttribute("noResultMessage", "No result for job time " + time);

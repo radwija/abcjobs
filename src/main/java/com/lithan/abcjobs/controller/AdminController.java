@@ -103,7 +103,7 @@ public class AdminController {
         }
     }
 
-        @GetMapping("/deleteUser")
+    @GetMapping("/deleteUser")
     public ModelAndView deleteUser(@RequestParam("userId") String userIdStr, RedirectAttributes redirectAttributes, Model model) {
         try {
             Long userId = Long.parseLong(userIdStr);
@@ -117,7 +117,7 @@ public class AdminController {
     }
 
     @GetMapping("/jobs")
-    public ModelAndView jobListView(@RequestParam(value = "q", required = false) String keyword, Model model, RedirectAttributes redirectAttributes) {
+    public ModelAndView jobListView(@RequestParam(value = "q", required = false) String keyword, @RequestParam(value = "level", required = false) String level, @RequestParam(value = "time", required = false) String time, Model model, RedirectAttributes redirectAttributes) {
         ModelAndView jobListPage = new ModelAndView("admin/admin");
         List<Job> searchedJobs = jobService.getAllJobs();
         if (searchedJobs.size() == 0) {
@@ -125,6 +125,19 @@ public class AdminController {
         }
         if (keyword != null) {
             searchedJobs = jobService.searchForJobs(keyword);
+            if (searchedJobs.isEmpty()) {
+                model.addAttribute("noResultMessage", "No result for job search: " + keyword);
+            }
+        } else if (level != null) {
+            searchedJobs = jobService.findJobsByJobLevel(level);
+            if (searchedJobs.isEmpty()) {
+                model.addAttribute("noResultMessage", "No result for job level " + level);
+            }
+        } else if (time != null) {
+            searchedJobs = jobService.findJobsByJobTime(time);
+            if (searchedJobs.isEmpty()) {
+                model.addAttribute("noResultMessage", "No result for job time " + time);
+            }
         }
         model.addAttribute("jobs", searchedJobs);
         model.addAttribute("isInJobs", true);
