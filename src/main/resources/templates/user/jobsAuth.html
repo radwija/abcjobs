@@ -53,7 +53,8 @@
                 <td>[[${myApplication.appliedJob.jobLevel}]]</td>
                 <td>[[${myApplication.appliedJob.jobTime}]]</td>
                 <td><a th:href="@{/job?detail=__${myApplication.appliedJob.jobId}__}">Detail</a></td>
-                <td>[[${myApplication.qualificationUrl}]]</td>
+                <td><img th:if="${myApplication.qualification != null}"
+                    th:src="${'data:image/png;base64,' + myApplication.base64Qualification}" alt="qualification"></td>
                 <td>
                   <span th:class="${myApplication.status == 'PENDING'} ? text-warning : text-danger">
                     <i th:if="${myApplication.status == 'PENDING'}" class="bi bi-clock-history"></i>

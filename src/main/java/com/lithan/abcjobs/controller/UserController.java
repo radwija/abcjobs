@@ -12,10 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.Multipart;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -235,7 +238,10 @@ public class UserController {
     }
 
     @PostMapping("/applyJob")
-    public ModelAndView applyJob(@RequestParam("detail") String jobIdStr, Principal principal, @ModelAttribute ApplyJobRequest applyJobRequest, RedirectAttributes redirectAttributes) {
+    public ModelAndView applyJob(@RequestParam("detail") String jobIdStr,
+                                 Principal principal,
+                                 @ModelAttribute ApplyJobRequest applyJobRequest,
+                                 RedirectAttributes redirectAttributes) {
         Long jobId = Long.parseLong(jobIdStr);
         try {
             String appliedByUsername = principal.getName();
@@ -245,6 +251,8 @@ public class UserController {
         } catch (RefusedActionException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return new ModelAndView("redirect:/job?detail=" + jobId);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

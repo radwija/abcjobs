@@ -37,11 +37,12 @@
         <div class="bg-white border rounded p-4">
           <h4>Apply for this job</h4>
           <div th:if="${!isUserAlreadyApply && !isAdmin}">
-            <form th:action="@{/applyJob?detail=__${detailedJob.jobId}__}" th:object="${applyJobRequest}" method="POST">
+            <form th:action="@{/applyJob?detail=__${detailedJob.jobId}__}" th:object="${applyJobRequest}" method="POST"
+              enctype="multipart/form-data">
               <div class="mb-3">
                 <label for="qualificationUrl" class="form-label">Your portfolio</label>
-                <input type="text" th:field="*{qualificationUrl}" name="qualificationUrl" class="form-control"
-                  placeholder="Your portfolio URL" required>
+                <input type="file" th:field="*{qualification}" name="qualification" class="form-control"
+                  accept="image/*" placeholder="Your portfolio URL" required>
               </div>
               <div class="mb-3">
                 <div class="d-grid">

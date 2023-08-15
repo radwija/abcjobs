@@ -15,8 +15,12 @@ public class ApplyJob {
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "applied_job")
     private Job appliedJob;
+    @Lob
+    @Column(name = "qualification")
+    private byte[] qualification;
 
-    private String qualificationUrl;
+    @Lob
+    private String base64Qualification;
 
     private String status;
 
@@ -44,12 +48,20 @@ public class ApplyJob {
         this.appliedJob = appliedJob;
     }
 
-    public String getQualificationUrl() {
-        return qualificationUrl;
+    public byte[] getQualification() {
+        return qualification;
     }
 
-    public void setQualificationUrl(String qualificationUrl) {
-        this.qualificationUrl = qualificationUrl;
+    public void setQualification(byte[] qualification) {
+        this.qualification = qualification;
+    }
+
+    public String getBase64Qualification() {
+        return base64Qualification;
+    }
+
+    public void setBase64Qualification(String base64Qualification) {
+        this.base64Qualification = base64Qualification;
     }
 
     public String getStatus() {

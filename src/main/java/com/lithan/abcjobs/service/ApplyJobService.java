@@ -5,11 +5,14 @@ import com.lithan.abcjobs.entity.Job;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.payload.request.ApplyJobRequest;
 import com.lithan.abcjobs.payload.response.JobApplicationResponse;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Multipart;
+import java.io.IOException;
 import java.util.List;
 
 public interface ApplyJobService {
-    ApplyJob saveAppliedJob(Long jobId, ApplyJobRequest applyJobRequest, String username);
+    ApplyJob saveAppliedJob(Long jobId, ApplyJobRequest applyJobRequest, String username) throws IOException;
     void deleteApplyJobByAppliedJobId(Long jobId);
     void deleteApplyJobByAppliedById(Long userId);
     List<ApplyJob> getAllAppliedJobs();

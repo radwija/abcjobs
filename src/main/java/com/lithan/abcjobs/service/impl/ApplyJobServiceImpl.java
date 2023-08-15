@@ -13,7 +13,11 @@ import com.lithan.abcjobs.repository.ApplyJobRepository;
 import com.lithan.abcjobs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Multipart;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -34,7 +38,7 @@ public class ApplyJobServiceImpl implements ApplyJobService {
     private UserProfileService userProfileService;
 
     @Override
-    public ApplyJob saveAppliedJob(Long jobId, ApplyJobRequest applyJobRequest, String username) {
+    public ApplyJob saveAppliedJob(Long jobId, ApplyJobRequest applyJobRequest, String username) throws IOException {
         ApplyJob applyJob = new ApplyJob();
         User appliedBy = userService.getUserByUsername(username);
 
@@ -47,7 +51,13 @@ public class ApplyJobServiceImpl implements ApplyJobService {
             throw new RefusedActionException("You already applied for this job");
         }
 
-        applyJob.setQualificationUrl(applyJobRequest.getQualificationUrl());
+        byte[] rawQualification = applyJobRequest.getQualification().getBytes();
+        if (!applyJobRequest.getQualification().isEmpty()) {
+            applyJob.setQualification(rawQualification);
+        }
+
+        String base64Qualification = Base64.getEncoder().encodeToString(rawQualification);
+        applyJob.setBase64Qualification(base64Qualification);
         applyJob.setAppliedBy(appliedBy);
         applyJob.setAppliedJob(appliedJob);
         applyJob.setStatus(EApplyJobStatus.PENDING.toString());
@@ -113,7 +123,7 @@ public class ApplyJobServiceImpl implements ApplyJobService {
         String jobLevel = job.getJobLevel();
         String jobTime = job.getJobTime();
 
-        String message = "ACCEPTED: Job application from " + applicantFullname + " in applying for job ID: " +  job.getJobId() + ", name: " + jobName + ", company: " + companyName + ".";
+        String message = "ACCEPTED: Job application from " + applicantFullname + " in applying for job ID: " + job.getJobId() + ", name: " + jobName + ", company: " + companyName + ".";
         response.setApplyJob(acceptedJobApplication);
         response.setMessage(message);
         emailSenderService.sendMail(applicant.getEmail(),
