@@ -5,6 +5,7 @@ import com.lithan.abcjobs.entity.UserProfile;
 import javax.persistence.Lob;
 
 public class JobRequest {
+    private Long jobId;
     private String jobName;
     private String jobLevel;
     private String jobTime;
@@ -12,6 +13,14 @@ public class JobRequest {
     private String jobDescription;
     private String companyName;
     private String companyLogoUrl;
+
+    public Long getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
+    }
 
     public String getJobName() {
         return jobName;

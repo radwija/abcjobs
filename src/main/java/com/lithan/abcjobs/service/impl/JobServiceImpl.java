@@ -9,12 +9,14 @@ import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.JobNotFoundException;
 import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.JobRequest;
+import com.lithan.abcjobs.payload.response.JobResponse;
 import com.lithan.abcjobs.repository.ApplyJobRepository;
 import com.lithan.abcjobs.repository.JobRepository;
 import com.lithan.abcjobs.repository.UserProfileRepository;
 import com.lithan.abcjobs.service.JobService;
 import com.lithan.abcjobs.service.UserProfileService;
 import com.lithan.abcjobs.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,33 +48,71 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Job saveJob(JobRequest jobRequest, String postByUsername) {
+    public JobResponse saveJob(JobRequest jobRequest, String postByUsername) {
         User postBy = userService.getUserByUsername(postByUsername);
         if (!postBy.getRole().equals("ADMIN")) {
             throw new RefusedActionException("Only ADMIN can post jobs!");
         }
 
-        Job newJob = new Job();
-        newJob.setUser(postBy);
-        newJob.setJobName(jobRequest.getJobName());
-        newJob.setCompanyName(jobRequest.getCompanyName());
-        if (jobRequest.getJobTime().equals("fullTime")) {
-            newJob.setJobTime(EJobTime.FULLTIME.toString());
-        } else if (jobRequest.getJobTime().equals("partTime")) {
-            newJob.setJobTime(EJobTime.PARTTIME.toString());
+        if (jobRequest.getJobId() == null) {
+            Job newJob = mapJobRequestToJob(jobRequest);
+
+            convertJobTime(jobRequest.getJobTime(), newJob);
+            convertJobLevel(jobRequest.getJobLevel(), newJob);
+            jobRepository.save(newJob);
+
+            JobResponse response = new JobResponse();
+            response.setJob(newJob);
+            response.setMessage("New job posted successfully!");
+            return  response;
+        } else {
+            Job existingJob = jobRepository.findJobByJobId(jobRequest.getJobId());
+            if (existingJob == null) {
+                throw new RuntimeException("Job not found!");
+            }
+            mapJobRequestToJob(jobRequest, existingJob);
+            convertJobTime(jobRequest.getJobTime(), existingJob);
+            convertJobLevel(jobRequest.getJobLevel(), existingJob);
+            jobRepository.save(existingJob);
+
+            JobResponse response = new JobResponse();
+            response.setJob(existingJob);
+            response.setMessage("Job successfully updated!");
+            return  response;
         }
-
-        switch (jobRequest.getJobLevel()) {
-            case "junior" -> newJob.setJobLevel(EJobLevel.JUNIOR.toString());
-            case "middle" -> newJob.setJobLevel(EJobLevel.MIDDLE.toString());
-            case "senior" -> newJob.setJobLevel(EJobLevel.SENIOR.toString());
-            case "internship" -> newJob.setJobLevel(EJobLevel.INTERNSHIP.toString());
-        }
-
-        newJob.setJobDescription(jobRequest.getJobDescription());
-
-        return jobRepository.save(newJob);
     }
+
+    @Override
+    public Job mapJobRequestToJob(JobRequest jobRequest) {
+        Job job = new Job();
+        BeanUtils.copyProperties(jobRequest, job);
+        return job;
+    }
+
+    @Override
+    public void mapJobRequestToJob(JobRequest jobRequest, Job job) {
+        BeanUtils.copyProperties(jobRequest, job);
+    }
+
+    @Override
+    public void convertJobLevel(String jobLevel, Job job) {
+        switch (jobLevel) {
+            case "junior" -> job.setJobLevel(EJobLevel.JUNIOR.toString());
+            case "middle" -> job.setJobLevel(EJobLevel.MIDDLE.toString());
+            case "senior" -> job.setJobLevel(EJobLevel.SENIOR.toString());
+            case "internship" -> job.setJobLevel(EJobLevel.INTERNSHIP.toString());
+        }
+    }
+
+    @Override
+    public void convertJobTime(String jobTime, Job job) {
+        if (jobTime.equals("fullTime")) {
+            job.setJobTime(EJobTime.FULLTIME.toString());
+        } else if (jobTime.equals("partTime")) {
+            job.setJobTime(EJobTime.PARTTIME.toString());
+        }
+    }
+
 
     @Override
     public List<Job> getAllJobs() {

@@ -8,7 +8,10 @@ import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.JobRequest;
 import com.lithan.abcjobs.payload.request.SendMailRequest;
 import com.lithan.abcjobs.payload.response.JobApplicationResponse;
+import com.lithan.abcjobs.payload.response.JobResponse;
+import com.lithan.abcjobs.repository.JobRepository;
 import com.lithan.abcjobs.service.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,6 +43,9 @@ public class AdminController {
 
     @Autowired
     private ThreadPostService threadPostService;
+
+    @Autowired
+    private JobRepository jobRepository;
 
     @GetMapping({"", "/", "/dashboard"})
     public ModelAndView mantap(Model model) {
@@ -144,13 +150,6 @@ public class AdminController {
         return jobListPage;
     }
 
-    @GetMapping("/jobs/post-job")
-    public ModelAndView postJobAdminView(@ModelAttribute JobRequest jobRequest, Model model, RedirectAttributes redirectAttributes) {
-        ModelAndView postJobAdminPage = new ModelAndView("admin/postJob");
-        postJobAdminPage.addObject("jobRequest", jobRequest);
-        return postJobAdminPage;
-    }
-
     @GetMapping("/jobs/manage-applicant")
     public ModelAndView manageApplicantView(@RequestParam(value = "tab", required = false) String tab, RedirectAttributes redirectAttributes, Model model) {
         ModelAndView manageApplicantPage = new ModelAndView("admin/admin");
@@ -183,15 +182,53 @@ public class AdminController {
         return manageApplicantPage;
     }
 
+    @GetMapping("/jobs/post-job")
+    public ModelAndView postJobAdminView(Principal principal, Model model, RedirectAttributes redirectAttributes) {
+        boolean isAdmin = userService.getUserByUsername(principal.getName()).getRole().equals("ADMIN");
+        if (!isAdmin) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Only ADMIN can post jobs!");
+            return new ModelAndView("redirect:/jobs");
+        }
+        ModelAndView postJobAdminPage = new ModelAndView("admin/postJob");
+        JobRequest jobRequest = new JobRequest();
+        model.addAttribute("heading", "Post new job");
+        postJobAdminPage.addObject("jobRequest", jobRequest);
+        return postJobAdminPage;
+    }
+
+    @GetMapping("/jobs/edit-job")
+    public ModelAndView editJobAdminView(@RequestParam("id") String jobIdStr, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+        boolean isAdmin = userService.getUserByUsername(principal.getName()).getRole().equals("ADMIN");
+        if (!isAdmin) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Only ADMIN can post jobs!");
+            return new ModelAndView("redirect:/jobs");
+        }
+        ModelAndView postJobAdminPage = new ModelAndView("admin/postJob");
+        Long jobId = Long.parseLong(jobIdStr);
+        Job existingJob = jobRepository.findJobByJobId(jobId);
+        JobRequest jobRequest = new JobRequest();
+        BeanUtils.copyProperties(existingJob, jobRequest);
+
+        model.addAttribute("heading", "Update job");
+        postJobAdminPage.addObject("jobRequest", jobRequest);
+        return postJobAdminPage;
+    }
+
     @PostMapping("/saveNewJob")
     public ModelAndView saveNewJob(@ModelAttribute JobRequest jobRequest, Principal principal, Model model, RedirectAttributes redirectAttributes) {
         if (principal == null) {
             return new ModelAndView("redirect:/login");
         }
-        String postByUsername = principal.getName();
-        jobService.saveJob(jobRequest, postByUsername);
-        redirectAttributes.addFlashAttribute("successMessage", "New job posted successfully!");
-        return new ModelAndView("redirect:/admin/jobs");
+        try {
+            String postByUsername = principal.getName();
+            JobResponse response = jobService.saveJob(jobRequest, postByUsername);
+            redirectAttributes.addFlashAttribute("successMessage", response.getMessage());
+            return new ModelAndView("redirect:/admin/jobs");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return new ModelAndView("redirect:/admin/jobs");
+        }
+
     }
 
     @GetMapping("/deleteJob")

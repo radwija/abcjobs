@@ -15,7 +15,9 @@
 <body>
   <div th:replace="components/navbar :: navbar"></div>
   <div class="container my-container-custom">
+    <h1>[[${heading}]]</h1>
     <form th:action="@{/admin/saveNewJob}" th:object="${jobRequest}" method="POST">
+      <input type="hidden" th:field="*{jobId}">
       <div class="mb-3">
         <label for="jobName" class="form-label">Job name</label>
         <input type="text" th:field="*{jobName}" name="jobName" class="form-control" placeholder="Job name" required>
@@ -33,18 +35,18 @@
         <label for="jobLevel" class="form-label">Job level</label>
         <select name="jobLevel" id="jobLevel" class="form-select" required>
           <option value="">-- Select job level --</option>
-          <option value="junior">Junior</option>
-          <option value="middle">Middle</option>
-          <option value="senior">Senior</option>
-          <option value="internship">Internship</option>
+          <option value="junior" th:selected="${jobRequest.jobLevel == 'JUNIOR'}">Junior</option>
+          <option value="middle" th:selected="${jobRequest.jobLevel == 'MIDDLE'}">Middle</option>
+          <option value="senior" th:selected="${jobRequest.jobLevel == 'SENIOR'}">Senior</option>
+          <option value="internship" th:selected="${jobRequest.jobLevel == 'INTERNSHIP'}">Internship</option>
         </select>
       </div>
       <div class="mb-3">
         <label for="jobTime" class="form-label">Job time</label>
         <select name="jobTime" id="jobTime" class="form-select" required>
           <option value="">-- Select job time --</option>
-          <option value="fullTime">Full time</option>
-          <option value="partTime">Part time</option>
+          <option value="fullTime" th:selected="${jobRequest.jobTime == 'FULLTIME'}">Full time</option>
+          <option value="partTime" th:selected="${jobRequest.jobTime == 'PARTTIME'}">Part time</option>
         </select>
       </div>
       <div class="mb-3">
@@ -52,7 +54,7 @@
         <textarea class="form-control" name="jobDescription" id="jobDescription" th:field="*{jobDescription}" rows="15"
           cols="40" required></textarea>
       </div>
-      <button type="submit" class="btn btn-primary"><i class="bi bi-send"></i> Post job</button>
+      <button type="submit" class="btn btn-primary"><i class="bi bi-send"></i> [[${heading}]]</button>
     </form>
   </div>
   <div th:replace="components/footer :: footer"></div>
