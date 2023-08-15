@@ -17,7 +17,6 @@ public class Job {
     private String jobDescription;
 
     private String companyName;
-    private String companyLogoUrl;
 
     @OneToOne(mappedBy = "job")
     UserProfile userProfile;
@@ -73,14 +72,6 @@ public class Job {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
-    }
-
-    public String getCompanyLogoUrl() {
-        return companyLogoUrl;
-    }
-
-    public void setCompanyLogoUrl(String companyLogoUrl) {
-        this.companyLogoUrl = companyLogoUrl;
     }
 
     public UserProfile getUserProfile() {
