@@ -106,7 +106,32 @@
                 <td>[[${acceptedApplication.appliedJob.jobLevel}]]</td>
                 <td>[[${acceptedApplication.appliedJob.jobTime}]]</td>
                 <td><a th:href="@{/job?detail=__${acceptedApplication.appliedJob.jobId}__}">Detail</a></td>
-                <td>[[${acceptedApplication.qualificationUrl}]]</td>
+                <td>
+                  <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="bi bi-file-earmark-fill"></i> Qualification
+                  </button>
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">My Qualification</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <img th:src="${'data:image/png;base64,' + acceptedApplication.base64Qualification}"
+                            alt="qualification" class="w-100">
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
                 <td>
                   <span class="text-success">
                     <i class="bi bi-check-circle"></i>
