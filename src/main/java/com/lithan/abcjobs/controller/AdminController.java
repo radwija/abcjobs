@@ -209,12 +209,16 @@ public class AdminController {
     public ModelAndView editJobAdminView(@RequestParam("id") String jobIdStr, Principal principal, Model model, RedirectAttributes redirectAttributes) {
         boolean isAdmin = userService.getUserByUsername(principal.getName()).getRole().equals("ADMIN");
         if (!isAdmin) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Only ADMIN can post jobs!");
+            redirectAttributes.addFlashAttribute("errorMessage", "Only ADMIN can update jobs!");
             return new ModelAndView("redirect:/jobs");
         }
         ModelAndView postJobAdminPage = new ModelAndView("admin/postJob");
         Long jobId = Long.parseLong(jobIdStr);
         Job existingJob = jobRepository.findJobByJobId(jobId);
+        if (existingJob == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Job not found");
+            return new ModelAndView("redirect:/admin/jobs");
+        }
         JobRequest jobRequest = new JobRequest();
         BeanUtils.copyProperties(existingJob, jobRequest);
 

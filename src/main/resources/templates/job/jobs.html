@@ -16,8 +16,8 @@
   <div th:replace="components/navbar :: navbar"></div>
 
   <div class="container my-container-custom">
+    <div th:replace="components/message :: responseMessages"></div>
     <div th:fragment="jobsAndSearchBar">
-      <div th:replace="components/message :: responseMessages"></div>
       <div class="mb-3">
         <form th:fragment="jobSearchBar" th:action="@{/jobs}" method="get">
           <div class="input-group">

@@ -78,6 +78,7 @@ public class JobController {
 
     @GetMapping("/job")
     public ModelAndView jobDetailView(@RequestParam(value = "detail", required = false) String jobIdStr, @ModelAttribute ApplyJobRequest applyJobRequest, Principal principal, Model model, RedirectAttributes redirectAttributes) {
+        boolean isAdmin = false;
         try {
             if (jobIdStr.equals("")) {
                 return new ModelAndView("redirect:/jobs");
@@ -89,11 +90,18 @@ public class JobController {
             List<ApplyJob> jobApplications = new ArrayList<>();
             User user = new User();
             boolean isUserAlreadyApply = false;
-            boolean isAdmin = false;
+
             if (principal != null) {
                 user = userService.getUserByUsername(principal.getName());
                 isAdmin = user.getRole().equals("ADMIN");
                 isUserAlreadyApply = applyJobService.checkUserAlreadyApply(user, detailedJob);
+            }
+            if (detailedJob == null) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Job not found");
+                if (isAdmin) {
+                    return new ModelAndView("redirect:/admin/jobs");
+                }
+                return new ModelAndView("redirect:/jobs");
             }
             if (isUserAlreadyApply) {
                 applyJob = applyJobService.findByAppliedByAndApplyAppliedJob(user, detailedJob);

@@ -44,6 +44,7 @@
         <button type="submit" class="btn btn-outline-primary">search</button>
       </div>
     </form>
+    <h3 th:if="${noResultMessage}" th:text="${noResultMessage}" />
     <div class="table-responsive">
       <div th:replace="job/jobs :: jobList"></div>
     </div>

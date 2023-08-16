@@ -6,6 +6,7 @@ import com.lithan.abcjobs.entity.Job;
 import com.lithan.abcjobs.entity.User;
 import com.lithan.abcjobs.entity.UserProfile;
 import com.lithan.abcjobs.exception.JobApplicationNotFoundException;
+import com.lithan.abcjobs.exception.JobNotFoundException;
 import com.lithan.abcjobs.exception.RefusedActionException;
 import com.lithan.abcjobs.payload.request.ApplyJobRequest;
 import com.lithan.abcjobs.payload.response.JobApplicationResponse;
@@ -47,6 +48,9 @@ public class ApplyJobServiceImpl implements ApplyJobService {
             throw new RefusedActionException("Admin unable to apply for any jobs!");
         }
         Job appliedJob = jobService.findJobByJobId(jobId);
+        if (appliedJob == null) {
+            throw new JobNotFoundException("Job not found");
+        }
         boolean isUserAlreadyApply = applyJobRepository.existsByAppliedByAndAppliedJob(appliedBy, appliedJob);
         if (isUserAlreadyApply) {
             throw new RefusedActionException("You already applied for this job");

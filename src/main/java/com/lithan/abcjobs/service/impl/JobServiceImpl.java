@@ -40,10 +40,6 @@ public class JobServiceImpl implements JobService {
     private ApplyJobRepository applyJobRepository;
 
     public Job findJobByJobId(Long jobId) {
-        Job job = jobRepository.findJobByJobId(jobId);
-        if (job == null) {
-            throw new JobNotFoundException("Job not found");
-        }
         return jobRepository.findJobByJobId(jobId);
     }
 
