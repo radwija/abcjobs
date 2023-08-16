@@ -63,7 +63,7 @@
         </nav>
         <div th:if="${#request.userPrincipal != null && !#request.isUserInRole('ROLE_ADMIN') && #httpServletRequest.requestURI.contains('/job')}"
             class="bg-light border d-md-block d-lg-none">
-            <div class="container m-2">
+            <div class="table-responsive container m-2">
                 <div class="d-flex gap-2">
                     <a th:href="@{/jobs}" class="btn btn-outline-primary">Jobs</a>
                     <a th:href="@{/jobs/applied}" class="btn btn-outline-primary">Applied</a>
@@ -74,7 +74,7 @@
         <div th:if="${#request.userPrincipal != null && #request.isUserInRole('ROLE_ADMIN') && #httpServletRequest.requestURI.contains('/admin')}"
             class="bg-light border d-md-block d-lg-none">
             <div class="container m-2">
-                <div class="d-flex gap-2">
+                <div class="table-responsive d-flex gap-2">
                     <a th:href="@{/admin}" class="btn btn-outline-primary">Dashboard</a>
                     <a th:href="@{/admin/user-management}" class="btn btn-outline-primary">User Management</a>
                     <a th:href="@{/admin/jobs}" class="btn btn-outline-primary">Jobs</a>
