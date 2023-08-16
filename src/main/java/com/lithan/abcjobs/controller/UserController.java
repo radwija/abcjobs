@@ -79,12 +79,12 @@ public class UserController {
 
                 List<Experience> experiences = experienceService.findExperiencesByUserProfile(userProfile);
                 experiences.forEach(experience -> experience.setFormattedStartDate(formatDate(experience.getStartDate())));
-                experiences.forEach(experience -> experience.setFormattedEndDate(formatDate(experience.getStartDate())));
+                experiences.forEach(experience -> experience.setFormattedEndDate(formatDate(experience.getEndDate())));
                 model.addAttribute("experiences", experiences);
 
                 List<Education> educations = educationService.findEducationsByUserProfile(userProfile);
                 educations.forEach(education -> education.setFormattedStartDate(formatDate(education.getStartDate())));
-                educations.forEach(education -> education.setFormattedEndDate(formatDate(education.getStartDate())));
+                educations.forEach(education -> education.setFormattedEndDate(formatDate(education.getEndDate())));
                 model.addAttribute("educations", educations);
             } else if (Objects.equals(tab, "threads")) {
                 model.addAttribute("isInThreadTab", true);
