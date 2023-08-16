@@ -64,6 +64,7 @@ public class JobServiceImpl implements JobService {
             JobResponse response = new JobResponse();
             response.setJob(newJob);
             response.setMessage("New job posted successfully!");
+            response.setJobId(newJob.getJobId());
             return  response;
         } else {
             Job existingJob = jobRepository.findJobByJobId(jobRequest.getJobId());
@@ -78,6 +79,7 @@ public class JobServiceImpl implements JobService {
             JobResponse response = new JobResponse();
             response.setJob(existingJob);
             response.setMessage("Job successfully updated!");
+            response.setJobId(existingJob.getJobId());
             return  response;
         }
     }

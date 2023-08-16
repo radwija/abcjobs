@@ -232,7 +232,7 @@ public class AdminController {
             String postByUsername = principal.getName();
             JobResponse response = jobService.saveJob(jobRequest, postByUsername);
             redirectAttributes.addFlashAttribute("successMessage", response.getMessage());
-            return new ModelAndView("redirect:/admin/jobs");
+            return new ModelAndView("redirect:/job?detail=" + response.getJobId());
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return new ModelAndView("redirect:/admin/jobs");
