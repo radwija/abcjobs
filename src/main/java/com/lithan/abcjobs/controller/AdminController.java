@@ -167,14 +167,23 @@ public class AdminController {
             model.addAttribute("declinedNumber", declined);
         } else if (Objects.equals(tab, "pending")) {
             applicants = applyJobService.findAppliedJobByStatus(EApplyJobStatus.PENDING.toString());
+            for (ApplyJob applicant : applicants) {
+                applicant.setQualificationSrc("data:image/png;base64," + applicant.getBase64Qualification());
+            }
             model.addAttribute("isInPendingTab", true);
             model.addAttribute("applicants", applicants);
         } else if (Objects.equals(tab, "accepted")) {
             applicants = applyJobService.findAppliedJobByStatus(EApplyJobStatus.ACCEPTED.toString());
+            for (ApplyJob applicant : applicants) {
+                applicant.setQualificationSrc("data:image/png;base64," + applicant.getBase64Qualification());
+            }
             model.addAttribute("isInAcceptedTab", true);
             model.addAttribute("applicants", applicants);
         } else if (Objects.equals(tab, "declined")) {
             applicants = applyJobService.findAppliedJobByStatus(EApplyJobStatus.DECLINED.toString());
+            for (ApplyJob applicant : applicants) {
+                applicant.setQualificationSrc("data:image/png;base64," + applicant.getBase64Qualification());
+            }
             model.addAttribute("isInDeclinedTab", true);
             model.addAttribute("applicants", applicants);
         }

@@ -22,6 +22,9 @@ public class ApplyJob {
     @Lob
     private String base64Qualification;
 
+    @Transient
+    private String qualificationSrc;
+
     private String status;
 
     public Long getApplyJobId() {
@@ -70,5 +73,13 @@ public class ApplyJob {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getQualificationSrc() {
+        return qualificationSrc;
+    }
+
+    public void setQualificationSrc(String qualificationSrc) {
+        this.qualificationSrc = qualificationSrc;
     }
 }
