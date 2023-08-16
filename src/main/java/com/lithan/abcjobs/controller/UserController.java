@@ -12,11 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.Multipart;
+import javax.naming.SizeLimitExceededException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.Principal;
@@ -248,7 +250,7 @@ public class UserController {
             applyJobService.saveAppliedJob(jobId, applyJobRequest, appliedByUsername);
             redirectAttributes.addFlashAttribute("successMessage", "Job applied successfully!");
             return new ModelAndView("redirect:/jobs/applied");
-        } catch (RefusedActionException e) {
+        } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return new ModelAndView("redirect:/job?detail=" + jobId);
         } catch (IOException e) {

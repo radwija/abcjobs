@@ -13,6 +13,7 @@ import com.lithan.abcjobs.repository.ApplyJobRepository;
 import com.lithan.abcjobs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.Multipart;
@@ -51,6 +52,10 @@ public class ApplyJobServiceImpl implements ApplyJobService {
             throw new RefusedActionException("You already applied for this job");
         }
 
+        long maxSize = 2 * 1024 * 1024; // 2MB in bytes
+        if (applyJobRequest.getQualification().getSize() > maxSize) {
+            throw new RuntimeException("File size exceeds the allowed limit. File must be under 2 MB.");
+        }
         byte[] rawQualification = applyJobRequest.getQualification().getBytes();
         if (!applyJobRequest.getQualification().isEmpty()) {
             applyJob.setQualification(rawQualification);
