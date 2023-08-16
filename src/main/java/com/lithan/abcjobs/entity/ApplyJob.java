@@ -1,6 +1,7 @@
 package com.lithan.abcjobs.entity;
 
 import javax.persistence.*;
+import java.util.Base64;
 
 @Entity
 public class ApplyJob {
@@ -19,11 +20,12 @@ public class ApplyJob {
     @Column(name = "qualification")
     private byte[] qualification;
 
-    @Lob
-    private String base64Qualification;
-
     @Transient
     private String qualificationSrc;
+
+    public static String encodeQualificationInSrcHtml(byte[] base64Qualification) {
+        return "data:image/png;base64," + Base64.getEncoder().encodeToString(base64Qualification);
+    }
 
     private String status;
 
@@ -57,14 +59,6 @@ public class ApplyJob {
 
     public void setQualification(byte[] qualification) {
         this.qualification = qualification;
-    }
-
-    public String getBase64Qualification() {
-        return base64Qualification;
-    }
-
-    public void setBase64Qualification(String base64Qualification) {
-        this.base64Qualification = base64Qualification;
     }
 
     public String getStatus() {

@@ -274,7 +274,7 @@ public class UserController {
         for (ApplyJob acceptedApplication : acceptedApplications) {
             myApplications.remove(acceptedApplication);
         }
-        myApplications.forEach(myApplication -> myApplication.setQualificationSrc("data:image/png;base64," + myApplication.getBase64Qualification()));
+        myApplications.forEach(myApplication -> myApplication.setQualificationSrc(ApplyJob.encodeQualificationInSrcHtml(myApplication.getQualification())));
         model.addAttribute("myApplications", myApplications);
         model.addAttribute("isInAppliedJobs", true);
 
@@ -292,7 +292,7 @@ public class UserController {
             return new ModelAndView("redirect:/admin/jobs/manage-applicant");
         }
         List<ApplyJob> acceptedApplications = applyJobService.findByAppliedByAndStatus(user, EApplyJobStatus.ACCEPTED.toString());
-        acceptedApplications.forEach(acceptedApplication -> acceptedApplication.setQualificationSrc("data:image/png;base64," + acceptedApplication.getBase64Qualification()));
+        acceptedApplications.forEach(acceptedApplication -> acceptedApplication.setQualificationSrc(ApplyJob.encodeQualificationInSrcHtml(acceptedApplication.getQualification())));
         model.addAttribute("acceptedApplications", acceptedApplications);
         model.addAttribute("isInMyJob", true);
 

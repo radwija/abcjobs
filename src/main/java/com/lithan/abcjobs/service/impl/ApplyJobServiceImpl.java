@@ -60,9 +60,6 @@ public class ApplyJobServiceImpl implements ApplyJobService {
         if (!applyJobRequest.getQualification().isEmpty()) {
             applyJob.setQualification(rawQualification);
         }
-
-        String base64Qualification = Base64.getEncoder().encodeToString(rawQualification);
-        applyJob.setBase64Qualification(base64Qualification);
         applyJob.setAppliedBy(appliedBy);
         applyJob.setAppliedJob(appliedJob);
         applyJob.setStatus(EApplyJobStatus.PENDING.toString());

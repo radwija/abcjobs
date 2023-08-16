@@ -97,7 +97,7 @@ public class JobController {
             }
             if (isUserAlreadyApply) {
                 applyJob = applyJobService.findByAppliedByAndApplyAppliedJob(user, detailedJob);
-                applyJob.setQualificationSrc("data:image/png;base64," + applyJob.getBase64Qualification());
+                applyJob.setQualificationSrc(ApplyJob.encodeQualificationInSrcHtml(applyJob.getQualification()));
                 model.addAttribute("applyJob", applyJob);
             }
             if (isAdmin) {
