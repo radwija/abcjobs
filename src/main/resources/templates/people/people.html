@@ -26,6 +26,7 @@
       </form>
     </div>
     <div class="table-responsive">
+      <h3 th:if="${noResultMessage}" th:text="${noResultMessage}" />
       <div th:each="user : ${users}" class="mb-3" th:fragment="peopleList">
         <div class="job-card bg-white border rounded p-3 d-flex justify-content-between">
           <!-- Main information -->

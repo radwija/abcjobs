@@ -231,7 +231,6 @@ public class UserController {
         for (User adminUser : adminUsers) {
             users.remove(adminUser);
         }
-        System.out.println();
         if (users.size() == 0 && keyword != null) {
             model.addAttribute("noResultMessage", "No search result for: " + keyword);
         }
