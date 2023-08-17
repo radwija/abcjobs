@@ -194,8 +194,7 @@ public class ThreadPostServiceTest {
 
     @Test
     public void testDeleteThreadAsAdmin() {
-        // Mocking
-        Long threadId = 1L; // Replace with an actual thread ID
+        Long threadId = 1L;
         String adminUsername = "admin123";
         User owner = new User();
         owner.setUsername("owner");
@@ -239,6 +238,4 @@ public class ThreadPostServiceTest {
             threadPostService.deleteThread(threadId, otherUsername);
         });
     }
-
-
 }
