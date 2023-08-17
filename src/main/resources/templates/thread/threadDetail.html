@@ -100,7 +100,7 @@
             <form th:action="@{/saveThreadComment?threadId=__${thread.threadId}__}" th:object="${threadCommentRequest}"
               method="post">
               <textarea type="text" name="commentMessage" id="commentMessage" th:field="*{commentMessage}"
-                class="form-control mb-2" placeholder="Write comment..." rows="4" cols="40"></textarea>
+                class="form-control mb-2" placeholder="Write comment..." rows="4" cols="40" required></textarea>
               <button type="submit" class="btn btn-light"><i class="bi bi-chat"></i> Comment</button>
             </form>
           </div>
