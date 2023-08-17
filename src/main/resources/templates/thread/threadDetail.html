@@ -81,13 +81,13 @@
             </div>
             <div th:if="${threadComments.size() != 0}" class="comments mb-4">
               <div class="comment mb-4" th:each="comment: ${threadComments}">
-                <a th:href="@{/u/__${thread.user.username}__}" class="text-decoration-none">
+                <a th:href="@{/u/__${comment.user.username}__}" class="text-decoration-none">
                   <div class="comment-user-profile d-flex">
                     <img src="https://www.repol.copl.ulaval.ca/wp-content/uploads/2019/01/default-user-icon.jpg" alt=""
                       class="sm-profile-img rounded-circle">
                     <div class="comment-bulb p-2 rounded">
-                      <a th:href="@{/u/__${thread.user.username}__}" class="text-decoration-none ">
-                        <div th:text="${comment.user.userProfile.firstName + ' ' + thread.user.userProfile.lastName}"
+                      <a th:href="@{/u/__${comment.user.username}__}" class="text-decoration-none ">
+                        <div th:text="${comment.user.userProfile.firstName + ' ' + comment.user.userProfile.lastName}"
                           class="fw-medium" />
                       </a>
                       <p th:text="${comment.commentMessage}" class="mb-0" style="white-space: pre-line" />
