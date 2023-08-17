@@ -120,7 +120,7 @@ public class ThreadPostServiceImpl implements ThreadPostService {
     public void deleteThread(Long threadId, String usernameDeleter) {
         String threadOwner = threadPostRepository.getThreadPostByThreadId(threadId).getUser().getUsername();
         boolean isAdmin = userService.getUserByUsername(usernameDeleter).getRole().equals("ADMIN");
-        if (!(threadOwner.equals(usernameDeleter) || isAdmin)) {
+        if (!threadOwner.equals(usernameDeleter) && !isAdmin) {
             throw new RefusedActionException("You're not allowed to delete this thread!");
         }
 
