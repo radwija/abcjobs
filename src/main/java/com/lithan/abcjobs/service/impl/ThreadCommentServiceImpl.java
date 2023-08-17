@@ -24,7 +24,7 @@ public class ThreadCommentServiceImpl implements ThreadCommentService {
     ThreadPostService threadPostService;
 
     @Override
-    public void saveComment(Long threadId, ThreadCommentRequest threadCommentRequest, String username) {
+    public ThreadComment saveComment(Long threadId, ThreadCommentRequest threadCommentRequest, String username) {
         User user = userService.getUserByUsername(username);
         if (user.getRole().equals("ADMIN")) {
             throw new RefusedActionException("Admin unable to comment on any threads!");
@@ -37,5 +37,6 @@ public class ThreadCommentServiceImpl implements ThreadCommentService {
         savedComment.setCommentMessage(threadCommentRequest.getCommentMessage());
 
         threadCommentRepository.save(savedComment);
+        return savedComment;
     }
 }
