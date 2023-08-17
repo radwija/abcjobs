@@ -58,7 +58,7 @@ public class ThreadCommentServiceTest {
 
         when(userService.getUserByUsername(username)).thenReturn(user);
         when(threadPostService.getThreadPostByThreadId(threadId)).thenReturn(threadPost);
-        when(threadCommentRepository.save(any(ThreadComment.class))).thenAnswer(invocation -> invocation.getArgument(0)); // Return the argument as-is
+        when(threadCommentRepository.save(any(ThreadComment.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         ThreadComment savedComment = threadCommentService.saveComment(threadId, commentRequest, username);
 
